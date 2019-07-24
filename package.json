@@ -1,0 +1,94 @@
+{
+  "name": "@seegno/react-forms",
+  "version": "0.0.0",
+  "description": "",
+  "keywords": [
+    "form",
+    "forms",
+    "react"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/seegno/react-forms.git"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "Seegno",
+    "email": "projects@seegno.com",
+    "url": "https://seegno.com"
+  },
+  "main": "dist/index.js",
+  "scripts": {
+    "bundle": "rm -rf dist && babel src --out-dir dist",
+    "changelog": "github_changelog_generator --no-issues --header-label='# Changelog' --future-release=v$npm_config_future_release && sed -i '' -e :a -e '$d;N;2,4ba' -e 'P;D' CHANGELOG.md",
+    "coverage": "jest --coverage",
+    "lint": "eslint .",
+    "lint-staged": "lint-staged",
+    "test": "jest",
+    "test-watch": "jest --watch --notify --onlyChanged",
+    "version": "NODE_ENV=production npm run bundle && npm run changelog --future-release=$npm_package_version && git add -A CHANGELOG.md dist"
+  },
+  "pre-commit": [
+    "lint-staged"
+  ],
+  "lint-staged": {
+    "(src|test)/**/*.js": [
+      "jest --findRelatedTests"
+    ],
+    "**/*.js": [
+      "eslint"
+    ],
+    "package.json": [
+      "sort-package-json",
+      "git add"
+    ],
+    "src/**/*.js": [
+      "flow focus-check --quiet"
+    ]
+  },
+  "jest": {
+    "coverageDirectory": "coverage",
+    "coverageReporters": [
+      "html",
+      "lcov",
+      "text"
+    ],
+    "modulePaths": [
+      "<rootDir>/src/"
+    ],
+    "setupFilesAfterEnv": [
+      "./test/utils/setup.js"
+    ],
+    "testRegex": "(test/.*\\.test.js)$"
+  },
+  "dependencies": {
+    "ajv": "^6.10.2"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.5.5",
+    "@babel/core": "^7.5.5",
+    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.4.4",
+    "@babel/plugin-proposal-optional-chaining": "^7.2.0",
+    "@babel/preset-env": "^7.5.5",
+    "@babel/preset-flow": "^7.0.0",
+    "@babel/preset-react": "^7.0.0",
+    "@testing-library/jest-dom": "^4.0.0",
+    "@testing-library/react": "^8.0.6",
+    "@testing-library/react-hooks": "^1.1.0",
+    "babel-plugin-module-resolver": "^3.2.0",
+    "eslint": "^5.16.0",
+    "eslint-config-seegno": "^15.0.0",
+    "flow-bin": "^0.103.0",
+    "flow-typed": "^2.6.0",
+    "jest": "^24.8.0",
+    "lint-staged": "^9.2.1",
+    "pre-commit": "^1.2.2",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-test-renderer": "^16.8.6",
+    "sort-package-json": "^1.22.1"
+  },
+  "peerDependencies": {
+    "react": "^16.8.0"
+  }
+}
