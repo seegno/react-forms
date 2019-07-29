@@ -45,8 +45,8 @@ const FormProvider = (props: Props): Node => {
   } = useForm({
     initialValues,
     jsonSchema,
-    onFormValuesChanged,
-    onSubmit
+    onSubmit,
+    onValuesChanged: onFormValuesChanged
   });
 
   return (

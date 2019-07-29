@@ -242,12 +242,12 @@ const formReducer = jsonSchema => (state: FormState, action: Action) => {
  * `Options` type.
  */
 
-type Options = {
+type Options = {|
   initialValues: Object,
   jsonSchema: Object,
   onSubmit: Submit,
   onValuesChanged?: (formState: Object) => void
-};
+|};
 
 /**
  * Export `useForm`.
