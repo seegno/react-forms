@@ -34,8 +34,8 @@ var FormProvider = function FormProvider(props) {
   var _useForm = (0, _useForm2["default"])({
     initialValues: initialValues,
     jsonSchema: jsonSchema,
-    onFormValuesChanged: onFormValuesChanged,
-    onSubmit: onSubmit
+    onSubmit: onSubmit,
+    onValuesChanged: onFormValuesChanged
   }),
       fieldActions = _useForm.fieldActions,
       formActions = _useForm.formActions,
