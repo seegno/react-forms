@@ -1,5 +1,12 @@
 # Changelog
 
+## [v0.1.2](https://github.com/seegno/react-forms/tree/v0.1.2) (2019-07-30)
+[Full Changelog](https://github.com/seegno/react-forms/compare/v0.1.1...v0.1.2)
+
+**Merged pull requests:**
+
+- Add .npmignore [\#3](https://github.com/seegno/react-forms/pull/3) ([bsonntag](https://github.com/bsonntag))
+
 ## [v0.1.1](https://github.com/seegno/react-forms/tree/v0.1.1) (2019-07-29)
 [Full Changelog](https://github.com/seegno/react-forms/compare/v0.1.0...v0.1.1)
 
