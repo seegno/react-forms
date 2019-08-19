@@ -265,9 +265,9 @@ describe('useForm hook', () => {
   });
 
   describe('submit', () => {
-    it('should call the `onSubmit` option with the form values and actions', () => {
+    it('should call the `onSubmit` option with the form values and actions', async () => {
       const onSubmit = jest.fn(() => Promise.resolve());
-      const { rerender, result } = renderHook(() => useForm({
+      const { result, waitForNextUpdate } = renderHook(() => useForm({
         initialValues: { foo: 'bar' },
         jsonSchema: { type: 'object' },
         onSubmit
@@ -277,8 +277,7 @@ describe('useForm hook', () => {
         result.current.formActions.submit();
       });
 
-      // Force rerender to ensure effect is called.
-      rerender();
+      await waitForNextUpdate();
 
       expect(onSubmit).toHaveBeenCalledTimes(1);
       expect(onSubmit).toHaveBeenCalledWith({ foo: 'bar' }, {
@@ -330,9 +329,9 @@ describe('useForm hook', () => {
       expect(result.current.state.isSubmitting).toBe(false);
     });
 
-    it('should not reset the form values', () => {
+    it('should not reset the form values', async () => {
       const onSubmit = jest.fn(() => Promise.resolve());
-      const { result } = renderHook(() => useForm({
+      const { result, waitForNextUpdate } = renderHook(() => useForm({
         jsonSchema: { type: 'object' },
         onSubmit
       }));
@@ -342,11 +341,13 @@ describe('useForm hook', () => {
         result.current.formActions.submit();
       });
 
+      await waitForNextUpdate();
+
       expect(result.current.state.values).toEqual({ foo: 'bar' });
     });
 
-    it('should set all fields to touched', () => {
-      const { result } = renderHook(() => useForm({
+    it('should set all fields to touched', async () => {
+      const { result, waitForNextUpdate } = renderHook(() => useForm({
         jsonSchema: { type: 'object' },
         onSubmit: () => Promise.resolve()
       }));
@@ -355,6 +356,8 @@ describe('useForm hook', () => {
         result.current.fieldActions.registerField('foo');
         result.current.formActions.submit();
       });
+
+      await waitForNextUpdate();
 
       expect(result.current.state.meta).toEqual({
         foo: expect.objectContaining({
@@ -382,14 +385,14 @@ describe('useForm hook', () => {
       expect(result.current.state.errors).toHaveProperty('foo');
     });
 
-    it('should reset the form if the passed `reset` action is called', () => {
+    it('should reset the form if the passed `reset` action is called', async () => {
       const onSubmit = jest.fn((values, { reset }) => {
         reset();
 
         return Promise.resolve();
       });
 
-      const { result } = renderHook(() => useForm({
+      const { result, waitForNextUpdate } = renderHook(() => useForm({
         jsonSchema: { type: 'object' },
         onSubmit
       }));
@@ -398,6 +401,8 @@ describe('useForm hook', () => {
         result.current.fieldActions.setFieldValue('foo', 'bar');
         result.current.formActions.submit();
       });
+
+      await waitForNextUpdate();
 
       expect(result.current.state.values).toEqual({});
     });
