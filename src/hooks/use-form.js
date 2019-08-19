@@ -338,21 +338,17 @@ export default function useForm(options: Options) {
     }
 
     onSubmit(state.values, { reset }).then(
-      result => {
+      () => {
         dispatch({
           payload: {},
           type: actionTypes.SUBMIT_SUCCESS
         });
-
-        return result;
       },
-      error => {
+      () => {
         dispatch({
           payload: {},
           type: actionTypes.SUBMIT_FAILURE
         });
-
-        return Promise.reject(error);
       }
     );
   }, [state, jsonSchema, onSubmit, reset]);
