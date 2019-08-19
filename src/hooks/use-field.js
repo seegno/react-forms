@@ -6,14 +6,14 @@
 
 import { useCallback, useEffect } from 'react';
 import { useFieldActions } from 'context/field-actions-context';
-import { useFormState } from 'context/form-state-context';
+import useFieldState from './use-field-state';
 
 /**
  * Export `useField`.
  */
 
 export default function useField(field: string) {
-  const { errors, meta, values } = useFormState();
+  const { error, meta, value } = useFieldState(field);
   const {
     blurField,
     focusField,
@@ -38,11 +38,11 @@ export default function useField(field: string) {
   }, [field, focusField]);
 
   return {
-    error: errors?.[field] ?? null,
-    meta: meta?.[field] ?? {},
+    error,
+    meta,
     onBlur,
     onChange,
     onFocus,
-    value: values?.[field]
+    value
   };
 }
