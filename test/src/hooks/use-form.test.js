@@ -76,7 +76,7 @@ describe('useForm hook', () => {
   });
 
   describe('focusField', () => {
-    it('should set the field to active', () => {
+    it('should set the field to active and touched', () => {
       const { result } = renderHook(() => useForm({
         jsonSchema: { type: 'object' },
         onSubmit: () => Promise.resolve()
@@ -86,7 +86,10 @@ describe('useForm hook', () => {
         result.current.fieldActions.focusField('foo');
       });
 
-      expect(result.current.state.meta.foo).toEqual({ active: true });
+      expect(result.current.state.meta.foo).toEqual({
+        active: true,
+        touched: true
+      });
     });
 
     it('should not validate the form', () => {
