@@ -338,7 +338,7 @@ export default function useForm(options: Options) {
       return;
     }
 
-    onSubmit(state.values, { reset }).then(
+    Promise.resolve(onSubmit(state.values, { reset })).then(
       () => {
         dispatch({
           payload: {},

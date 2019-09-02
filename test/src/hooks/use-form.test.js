@@ -15,7 +15,7 @@ describe('useForm hook', () => {
     const { result } = renderHook(() => useForm({
       initialValues: { foo: 'bar' },
       jsonSchema: { type: 'object' },
-      onSubmit: () => Promise.resolve()
+      onSubmit: () => {}
     }));
 
     expect(result.current.state.values).toEqual({
@@ -27,7 +27,7 @@ describe('useForm hook', () => {
     const onValuesChanged = jest.fn();
     const { result } = renderHook(() => useForm({
       jsonSchema: { type: 'object' },
-      onSubmit: () => Promise.resolve(),
+      onSubmit: () => {},
       onValuesChanged
     }));
 
@@ -42,7 +42,7 @@ describe('useForm hook', () => {
     it('should set the field to inactive and touched', () => {
       const { result } = renderHook(() => useForm({
         jsonSchema: { type: 'object' },
-        onSubmit: () => Promise.resolve()
+        onSubmit: () => {}
       }));
 
       act(() => {
@@ -64,7 +64,7 @@ describe('useForm hook', () => {
           },
           type: 'object'
         },
-        onSubmit: () => Promise.resolve()
+        onSubmit: () => {}
       }));
 
       act(() => {
@@ -79,7 +79,7 @@ describe('useForm hook', () => {
     it('should set the field to active and touched', () => {
       const { result } = renderHook(() => useForm({
         jsonSchema: { type: 'object' },
-        onSubmit: () => Promise.resolve()
+        onSubmit: () => {}
       }));
 
       act(() => {
@@ -101,7 +101,7 @@ describe('useForm hook', () => {
           },
           type: 'object'
         },
-        onSubmit: () => Promise.resolve()
+        onSubmit: () => {}
       }));
 
       act(() => {
@@ -116,7 +116,7 @@ describe('useForm hook', () => {
     it('should register the field', () => {
       const { result } = renderHook(() => useForm({
         jsonSchema: { type: 'object' },
-        onSubmit: () => Promise.resolve()
+        onSubmit: () => {}
       }));
 
       expect(result.current.state.values).not.toHaveProperty('foo');
@@ -134,7 +134,7 @@ describe('useForm hook', () => {
       const { result } = renderHook(() => useForm({
         initialValues: { foo: 'bar' },
         jsonSchema: { type: 'object' },
-        onSubmit: () => Promise.resolve()
+        onSubmit: () => {}
       }));
 
       act(() => {
@@ -153,7 +153,7 @@ describe('useForm hook', () => {
           },
           type: 'object'
         },
-        onSubmit: () => Promise.resolve()
+        onSubmit: () => {}
       }));
 
       act(() => {
@@ -168,7 +168,7 @@ describe('useForm hook', () => {
     it('should clear the form values', () => {
       const { result } = renderHook(() => useForm({
         jsonSchema: { type: 'object' },
-        onSubmit: () => Promise.resolve()
+        onSubmit: () => {}
       }));
 
       act(() => {
@@ -183,7 +183,7 @@ describe('useForm hook', () => {
       const { result } = renderHook(() => useForm({
         initialValues: { foo: 'bar' },
         jsonSchema: { type: 'object' },
-        onSubmit: () => Promise.resolve()
+        onSubmit: () => {}
       }));
 
       act(() => {
@@ -202,7 +202,7 @@ describe('useForm hook', () => {
           },
           type: 'object'
         },
-        onSubmit: () => Promise.resolve()
+        onSubmit: () => {}
       }));
 
       act(() => {
@@ -216,7 +216,7 @@ describe('useForm hook', () => {
     it('should set all fields to inactive and untouched', () => {
       const { result } = renderHook(() => useForm({
         jsonSchema: { type: 'object' },
-        onSubmit: () => Promise.resolve()
+        onSubmit: () => {}
       }));
 
       act(() => {
@@ -238,7 +238,7 @@ describe('useForm hook', () => {
     it('should set the field value', () => {
       const { result } = renderHook(() => useForm({
         jsonSchema: { type: 'object' },
-        onSubmit: () => Promise.resolve()
+        onSubmit: () => {}
       }));
 
       act(() => {
@@ -256,7 +256,7 @@ describe('useForm hook', () => {
           },
           type: 'object'
         },
-        onSubmit: () => Promise.resolve()
+        onSubmit: () => {}
       }));
 
       act(() => {
@@ -269,7 +269,7 @@ describe('useForm hook', () => {
 
   describe('submit', () => {
     it('should call the `onSubmit` option with the form values and actions', async () => {
-      const onSubmit = jest.fn(() => Promise.resolve());
+      const onSubmit = jest.fn();
       const { result, waitForNextUpdate } = renderHook(() => useForm({
         initialValues: { foo: 'bar' },
         jsonSchema: { type: 'object' },
@@ -289,7 +289,7 @@ describe('useForm hook', () => {
     });
 
     it('should not call `onSubmit` when the form has errors', () => {
-      const onSubmit = jest.fn(() => Promise.resolve());
+      const onSubmit = jest.fn();
       const { rerender, result } = renderHook(() => useForm({
         initialValues: { foo: 1 },
         jsonSchema: {
@@ -315,7 +315,7 @@ describe('useForm hook', () => {
     it('should set the `isSubmitting` flag', async () => {
       expect.assertions(2);
 
-      const onSubmit = jest.fn(() => Promise.resolve());
+      const onSubmit = jest.fn();
       const { result, waitForNextUpdate } = renderHook(() => useForm({
         jsonSchema: { type: 'object' },
         onSubmit
@@ -333,7 +333,7 @@ describe('useForm hook', () => {
     });
 
     it('should not reset the form values', async () => {
-      const onSubmit = jest.fn(() => Promise.resolve());
+      const onSubmit = jest.fn();
       const { result, waitForNextUpdate } = renderHook(() => useForm({
         jsonSchema: { type: 'object' },
         onSubmit
@@ -352,7 +352,7 @@ describe('useForm hook', () => {
     it('should set all fields to touched', async () => {
       const { result, waitForNextUpdate } = renderHook(() => useForm({
         jsonSchema: { type: 'object' },
-        onSubmit: () => Promise.resolve()
+        onSubmit: () => {}
       }));
 
       act(() => {
@@ -378,7 +378,7 @@ describe('useForm hook', () => {
           },
           type: 'object'
         },
-        onSubmit: () => Promise.resolve()
+        onSubmit: () => {}
       }));
 
       act(() => {
