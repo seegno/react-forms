@@ -21,6 +21,12 @@ Object.defineProperty(exports, "useFieldActions", {
     return _fieldActionsContext.useFieldActions;
   }
 });
+Object.defineProperty(exports, "useFieldState", {
+  enumerable: true,
+  get: function get() {
+    return _useFieldState["default"];
+  }
+});
 Object.defineProperty(exports, "useForm", {
   enumerable: true,
   get: function get() {
@@ -45,6 +51,8 @@ var _formProvider = _interopRequireDefault(require("./components/form-provider")
 var _useField = _interopRequireDefault(require("./hooks/use-field"));
 
 var _fieldActionsContext = require("./context/field-actions-context");
+
+var _useFieldState = _interopRequireDefault(require("./hooks/use-field-state"));
 
 var _useForm = _interopRequireDefault(require("./hooks/use-form"));
 

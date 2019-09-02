@@ -82,7 +82,8 @@ var metaReducer = function metaReducer(state, action) {
 
     case actionTypes.FOCUS:
       return _objectSpread({}, state, _defineProperty({}, payload.field, _objectSpread({}, state[payload.field], {
-        active: true
+        active: true,
+        touched: true
       })));
 
     case actionTypes.REGISTER_FIELD:
@@ -290,20 +291,18 @@ function useForm(options) {
       return;
     }
 
-    onSubmit(state.values, {
+    Promise.resolve(onSubmit(state.values, {
       reset: reset
-    }).then(function (result) {
+    })).then(function () {
       dispatch({
         payload: {},
         type: actionTypes.SUBMIT_SUCCESS
       });
-      return result;
-    }, function (error) {
+    }, function () {
       dispatch({
         payload: {},
         type: actionTypes.SUBMIT_FAILURE
       });
-      return Promise.reject(error);
     });
   }, [state, jsonSchema, onSubmit, reset]);
   var formActions = (0, _react.useMemo)(function () {

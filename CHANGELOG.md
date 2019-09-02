@@ -1,5 +1,16 @@
 # Changelog
 
+## [v0.2.0](https://github.com/seegno/react-forms/tree/v0.2.0) (2019-09-02)
+[Full Changelog](https://github.com/seegno/react-forms/compare/v0.1.2...v0.2.0)
+
+**Merged pull requests:**
+
+- Update form onSubmit to be a function [\#8](https://github.com/seegno/react-forms/pull/8) ([flaviocastro](https://github.com/flaviocastro))
+- Fix useForm touched state not triggered by focus [\#7](https://github.com/seegno/react-forms/pull/7) ([flaviocastro](https://github.com/flaviocastro))
+- Fix unhandled promise rejection on useForm hook [\#6](https://github.com/seegno/react-forms/pull/6) ([bsonntag](https://github.com/bsonntag))
+- Fix React warnings in tests [\#5](https://github.com/seegno/react-forms/pull/5) ([bsonntag](https://github.com/bsonntag))
+- Add useFieldState hook [\#4](https://github.com/seegno/react-forms/pull/4) ([bsonntag](https://github.com/bsonntag))
+
 ## [v0.1.2](https://github.com/seegno/react-forms/tree/v0.1.2) (2019-07-30)
 [Full Changelog](https://github.com/seegno/react-forms/compare/v0.1.1...v0.1.2)
 

@@ -9,7 +9,9 @@ var _react = require("react");
 
 var _fieldActionsContext = require("../context/field-actions-context");
 
-var _formStateContext = require("../context/form-state-context");
+var _useFieldState2 = _interopRequireDefault(require("./use-field-state"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 /**
  * Module dependencies.
@@ -19,12 +21,10 @@ var _formStateContext = require("../context/form-state-context");
  * Export `useField`.
  */
 function useField(field) {
-  var _ref, _ref2;
-
-  var _useFormState = (0, _formStateContext.useFormState)(),
-      errors = _useFormState.errors,
-      meta = _useFormState.meta,
-      values = _useFormState.values;
+  var _useFieldState = (0, _useFieldState2["default"])(field),
+      error = _useFieldState.error,
+      meta = _useFieldState.meta,
+      value = _useFieldState.value;
 
   var _useFieldActions = (0, _fieldActionsContext.useFieldActions)(),
       blurField = _useFieldActions.blurField,
@@ -45,11 +45,11 @@ function useField(field) {
     focusField(field);
   }, [field, focusField]);
   return {
-    error: (_ref = errors === null || errors === void 0 ? void 0 : errors[field]) !== null && _ref !== void 0 ? _ref : null,
-    meta: (_ref2 = meta === null || meta === void 0 ? void 0 : meta[field]) !== null && _ref2 !== void 0 ? _ref2 : {},
+    error: error,
+    meta: meta,
     onBlur: onBlur,
     onChange: onChange,
     onFocus: onFocus,
-    value: values === null || values === void 0 ? void 0 : values[field]
+    value: value
   };
 }
