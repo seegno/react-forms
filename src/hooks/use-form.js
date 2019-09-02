@@ -121,7 +121,8 @@ const metaReducer = (state, action) => {
         ...state,
         [payload.field]: {
           ...state[payload.field],
-          active: true
+          active: true,
+          touched: true
         }
       };
 
