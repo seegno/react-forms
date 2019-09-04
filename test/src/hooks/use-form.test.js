@@ -18,7 +18,7 @@ describe('useForm hook', () => {
       onSubmit: () => {}
     }));
 
-    expect(result.current.state.values).toEqual({
+    expect(result.current.state.fields.values).toEqual({
       foo: 'bar'
     });
   });
@@ -49,7 +49,7 @@ describe('useForm hook', () => {
         result.current.fieldActions.blurField('foo');
       });
 
-      expect(result.current.state.meta.foo).toEqual({
+      expect(result.current.state.fields.meta.foo).toEqual({
         active: false,
         touched: true
       });
@@ -71,7 +71,7 @@ describe('useForm hook', () => {
         result.current.fieldActions.blurField('foo');
       });
 
-      expect(result.current.state.errors).toHaveProperty('foo');
+      expect(result.current.state.fields.errors).toHaveProperty('foo');
     });
   });
 
@@ -86,7 +86,7 @@ describe('useForm hook', () => {
         result.current.fieldActions.focusField('foo');
       });
 
-      expect(result.current.state.meta.foo).toEqual({
+      expect(result.current.state.fields.meta.foo).toEqual({
         active: true,
         touched: true
       });
@@ -108,7 +108,7 @@ describe('useForm hook', () => {
         result.current.fieldActions.focusField('foo');
       });
 
-      expect(result.current.state.errors).toEqual({});
+      expect(result.current.state.fields.errors).toEqual({});
     });
   });
 
@@ -119,15 +119,15 @@ describe('useForm hook', () => {
         onSubmit: () => {}
       }));
 
-      expect(result.current.state.values).not.toHaveProperty('foo');
-      expect(result.current.state.meta).not.toHaveProperty('foo');
+      expect(result.current.state.fields.values).not.toHaveProperty('foo');
+      expect(result.current.state.fields.meta).not.toHaveProperty('foo');
 
       act(() => {
         result.current.fieldActions.registerField('foo');
       });
 
-      expect(result.current.state.values).toHaveProperty('foo');
-      expect(result.current.state.meta).toHaveProperty('foo');
+      expect(result.current.state.fields.values).toHaveProperty('foo');
+      expect(result.current.state.fields.meta).toHaveProperty('foo');
     });
 
     it('should keep initial values', () => {
@@ -141,10 +141,10 @@ describe('useForm hook', () => {
         result.current.fieldActions.registerField('foo');
       });
 
-      expect(result.current.state.values).toEqual({ foo: 'bar' });
+      expect(result.current.state.fields.values).toEqual({ foo: 'bar' });
     });
 
-    it('should not validate the form', () => {
+    it('should validate the form', () => {
       const { result } = renderHook(() => useForm({
         initialValues: { foo: 1 },
         jsonSchema: {
@@ -160,7 +160,7 @@ describe('useForm hook', () => {
         result.current.fieldActions.registerField('foo');
       });
 
-      expect(result.current.state.errors).toEqual({});
+      expect(result.current.state.fields.errors).toHaveProperty('foo');
     });
   });
 
@@ -176,7 +176,7 @@ describe('useForm hook', () => {
         result.current.formActions.reset();
       });
 
-      expect(result.current.state.values).toEqual({});
+      expect(result.current.state.fields.values).toEqual({});
     });
 
     it('should set the initial values', () => {
@@ -191,7 +191,7 @@ describe('useForm hook', () => {
         result.current.formActions.reset();
       });
 
-      expect(result.current.state.values).toEqual({ foo: 'bar' });
+      expect(result.current.state.fields.values).toEqual({ foo: 'bar' });
     });
 
     it('should clear the form errors', () => {
@@ -210,7 +210,7 @@ describe('useForm hook', () => {
         result.current.formActions.reset();
       });
 
-      expect(result.current.state.errors).toEqual({});
+      expect(result.current.state.fields.errors).toEqual({});
     });
 
     it('should set all fields to inactive and untouched', () => {
@@ -225,7 +225,7 @@ describe('useForm hook', () => {
         result.current.formActions.reset();
       });
 
-      expect(result.current.state.meta).toEqual({
+      expect(result.current.state.fields.meta).toEqual({
         foo: {
           active: false,
           touched: false
@@ -245,7 +245,7 @@ describe('useForm hook', () => {
         result.current.fieldActions.setFieldValue('foo', 'bar');
       });
 
-      expect(result.current.state.values).toEqual({ foo: 'bar' });
+      expect(result.current.state.fields.values).toEqual({ foo: 'bar' });
     });
 
     it('should validate the form', () => {
@@ -263,7 +263,7 @@ describe('useForm hook', () => {
         result.current.fieldActions.setFieldValue('foo', 1);
       });
 
-      expect(result.current.state.errors).toHaveProperty('foo');
+      expect(result.current.state.fields.errors).toHaveProperty('foo');
     });
   });
 
@@ -346,7 +346,7 @@ describe('useForm hook', () => {
 
       await waitForNextUpdate();
 
-      expect(result.current.state.values).toEqual({ foo: 'bar' });
+      expect(result.current.state.fields.values).toEqual({ foo: 'bar' });
     });
 
     it('should set all fields to touched', async () => {
@@ -362,7 +362,7 @@ describe('useForm hook', () => {
 
       await waitForNextUpdate();
 
-      expect(result.current.state.meta).toEqual({
+      expect(result.current.state.fields.meta).toEqual({
         foo: expect.objectContaining({
           touched: true
         })
@@ -385,7 +385,7 @@ describe('useForm hook', () => {
         result.current.formActions.submit();
       });
 
-      expect(result.current.state.errors).toHaveProperty('foo');
+      expect(result.current.state.fields.errors).toHaveProperty('foo');
     });
 
     it('should reset the form if the passed `reset` action is called', async () => {
@@ -407,7 +407,7 @@ describe('useForm hook', () => {
 
       await waitForNextUpdate();
 
-      expect(result.current.state.values).toEqual({});
+      expect(result.current.state.fields.values).toEqual({});
     });
   });
 });
