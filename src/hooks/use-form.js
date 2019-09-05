@@ -53,21 +53,32 @@ export type FieldMetaType = {
 };
 
 /**
+ * Export `FormMetaType` type.
+ */
+
+export type FormMetaType = FieldMetaType & {
+  hasErrors: boolean
+};
+
+/**
  * Export `FormState` type.
  */
 
 export type FormState = {
-  errors: {
-    [fieldName: string]: FieldErrorType
+  fields: {
+    errors: {
+      [fieldName: string]: FieldErrorType
+    },
+    meta: {
+      [fieldName: string]: FieldMetaType
+    },
+    values: {
+      [fieldName: string]: any
+    }
   },
   isSubmitting: boolean,
-  meta: {
-    [fieldName: string]: FieldMetaType
-  },
-  submitStatus: 'idle' | 'submitStart' | 'submitting',
-  values: {
-    [fieldName: string]: any
-  }
+  meta: FormMetaType,
+  submitStatus: 'idle' | 'submitStart' | 'submitting'
 };
 
 /**
@@ -168,6 +179,7 @@ function errorsReducer(state, action, jsonSchema, values) {
   switch (action.type) {
     case actionTypes.BLUR:
     case actionTypes.SET_FIELD_VALUE:
+    case actionTypes.REGISTER_FIELD:
     case actionTypes.SUBMIT_START:
       return validate(jsonSchema, values);
 
@@ -224,18 +236,26 @@ function isSubmittingReducer(state, action) {
  */
 
 const formReducer = jsonSchema => (state: FormState, action: Action) => {
-  const values = valuesReducer(state.values, action);
-  const meta = metaReducer(state.meta, action);
-  const errors = errorsReducer(state.errors, action, jsonSchema, values);
-  const submitStatus = submitStatusReducer(state.submitStatus, action);
+  const fieldsValues = valuesReducer(state.fields.values, action);
+  const fieldsErrors = errorsReducer(state.fields.errors, action, jsonSchema, fieldsValues);
+  const fieldsMeta = metaReducer(state.fields.meta, action);
   const isSubmitting = isSubmittingReducer(state.isSubmitting, action);
+  const submitStatus = submitStatusReducer(state.submitStatus, action);
+  const fieldsMetaValues: Array<Object> = Object.values(fieldsMeta);
 
   return {
-    errors,
+    fields: {
+      errors: fieldsErrors,
+      meta: fieldsMeta,
+      values: fieldsValues
+    },
     isSubmitting,
-    meta,
-    submitStatus,
-    values
+    meta: {
+      active: fieldsMetaValues.some(({ active }) => active),
+      hasErrors: Object.entries(fieldsErrors).length > 0,
+      touched: fieldsMetaValues.some(({ touched }) => touched)
+    },
+    submitStatus
   };
 };
 
@@ -259,11 +279,18 @@ export default function useForm(options: Options) {
   const [state, dispatch] = useReducer(
     formReducer(jsonSchema),
     {
-      errors: {},
+      fields: {
+        errors: {},
+        meta: {},
+        values: initialValues
+      },
       isSubmitting: false,
-      meta: {},
-      submitStatus: 'idle',
-      values: initialValues
+      meta: {
+        active: false,
+        hasErrors: false,
+        touched: false
+      },
+      submitStatus: 'idle'
     }
   );
 
@@ -315,7 +342,7 @@ export default function useForm(options: Options) {
 
   useEffect(() => {
     if (onValuesChanged) {
-      onValuesChanged(state.values);
+      onValuesChanged(state.fields.values);
     }
   }, [state, onValuesChanged]);
 
@@ -329,7 +356,7 @@ export default function useForm(options: Options) {
       type: actionTypes.SUBMITTING
     });
 
-    if (Object.keys(state.errors).length > 0) {
+    if (Object.keys(state.fields.errors).length > 0) {
       dispatch({
         payload: {},
         type: actionTypes.SUBMIT_FAILURE
@@ -338,7 +365,7 @@ export default function useForm(options: Options) {
       return;
     }
 
-    Promise.resolve(onSubmit(state.values, { reset })).then(
+    Promise.resolve(onSubmit(state.fields.values, { reset })).then(
       () => {
         dispatch({
           payload: {},

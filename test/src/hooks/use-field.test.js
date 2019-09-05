@@ -27,7 +27,9 @@ describe('useField', () => {
 
   it('should return the field value', () => {
     const state = {
-      values: { foo: 'bar' }
+      fields: {
+        values: { foo: 'bar' }
+      }
     };
 
     const Wrapper = ({ children }) => (
@@ -45,7 +47,9 @@ describe('useField', () => {
 
   it('should return the field error', () => {
     const state = {
-      errors: { foo: 'bar' }
+      fields: {
+        errors: { foo: 'bar' }
+      }
     };
 
     const Wrapper = ({ children }) => (
@@ -63,7 +67,9 @@ describe('useField', () => {
 
   it('should return the field meta state', () => {
     const state = {
-      meta: { foo: 'bar' }
+      fields: {
+        meta: { foo: 'bar' }
+      }
     };
 
     const Wrapper = ({ children }) => (

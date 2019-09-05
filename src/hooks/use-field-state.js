@@ -11,7 +11,8 @@ import { useFormState } from 'context/form-state-context';
  */
 
 export default function useFieldState(field: string) {
-  const { errors, meta, values } = useFormState();
+  const { fields } = useFormState();
+  const { errors, meta, values } = fields ?? {};
 
   return {
     error: errors?.[field] ?? null,
