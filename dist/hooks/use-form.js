@@ -120,6 +120,7 @@ function errorsReducer(state, action, jsonSchema, values) {
   switch (action.type) {
     case actionTypes.BLUR:
     case actionTypes.SET_FIELD_VALUE:
+    case actionTypes.REGISTER_FIELD:
     case actionTypes.SUBMIT_START:
       return (0, _validate["default"])(jsonSchema, values);
 
@@ -177,17 +178,31 @@ function isSubmittingReducer(state, action) {
 
 var formReducer = function formReducer(jsonSchema) {
   return function (state, action) {
-    var values = valuesReducer(state.values, action);
-    var meta = metaReducer(state.meta, action);
-    var errors = errorsReducer(state.errors, action, jsonSchema, values);
-    var submitStatus = submitStatusReducer(state.submitStatus, action);
+    var fieldsValues = valuesReducer(state.fields.values, action);
+    var fieldsErrors = errorsReducer(state.fields.errors, action, jsonSchema, fieldsValues);
+    var fieldsMeta = metaReducer(state.fields.meta, action);
     var isSubmitting = isSubmittingReducer(state.isSubmitting, action);
+    var submitStatus = submitStatusReducer(state.submitStatus, action);
+    var fieldsMetaValues = Object.values(fieldsMeta);
     return {
-      errors: errors,
+      fields: {
+        errors: fieldsErrors,
+        meta: fieldsMeta,
+        values: fieldsValues
+      },
       isSubmitting: isSubmitting,
-      meta: meta,
-      submitStatus: submitStatus,
-      values: values
+      meta: {
+        active: fieldsMetaValues.some(function (_ref) {
+          var active = _ref.active;
+          return active;
+        }),
+        hasErrors: Object.entries(fieldsErrors).length > 0,
+        touched: fieldsMetaValues.some(function (_ref2) {
+          var touched = _ref2.touched;
+          return touched;
+        })
+      },
+      submitStatus: submitStatus
     };
   };
 };
@@ -207,11 +222,18 @@ function useForm(options) {
       onValuesChanged = options.onValuesChanged;
 
   var _useReducer = (0, _react.useReducer)(formReducer(jsonSchema), {
-    errors: {},
+    fields: {
+      errors: {},
+      meta: {},
+      values: initialValues
+    },
     isSubmitting: false,
-    meta: {},
-    submitStatus: 'idle',
-    values: initialValues
+    meta: {
+      active: false,
+      hasErrors: false,
+      touched: false
+    },
+    submitStatus: 'idle'
   }),
       _useReducer2 = _slicedToArray(_useReducer, 2),
       state = _useReducer2[0],
@@ -270,7 +292,7 @@ function useForm(options) {
   }, []);
   (0, _react.useEffect)(function () {
     if (onValuesChanged) {
-      onValuesChanged(state.values);
+      onValuesChanged(state.fields.values);
     }
   }, [state, onValuesChanged]);
   (0, _react.useEffect)(function () {
@@ -283,7 +305,7 @@ function useForm(options) {
       type: actionTypes.SUBMITTING
     });
 
-    if (Object.keys(state.errors).length > 0) {
+    if (Object.keys(state.fields.errors).length > 0) {
       dispatch({
         payload: {},
         type: actionTypes.SUBMIT_FAILURE
@@ -291,7 +313,7 @@ function useForm(options) {
       return;
     }
 
-    Promise.resolve(onSubmit(state.values, {
+    Promise.resolve(onSubmit(state.fields.values, {
       reset: reset
     })).then(function () {
       dispatch({
