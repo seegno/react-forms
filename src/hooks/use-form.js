@@ -123,7 +123,17 @@ const metaReducer = (state, action) => {
         [payload.field]: {
           ...state[payload.field],
           active: false,
+          dirty: true,
           touched: true
+        }
+      };
+
+    case actionTypes.SET_FIELD_VALUE:
+      return {
+        ...state,
+        [payload.field]: {
+          ...state[payload.field],
+          dirty: true
         }
       };
 
@@ -133,7 +143,7 @@ const metaReducer = (state, action) => {
         [payload.field]: {
           ...state[payload.field],
           active: true,
-          touched: true
+          dirty: true
         }
       };
 
@@ -152,6 +162,7 @@ const metaReducer = (state, action) => {
         ...result,
         [key]: {
           ...state?.[key],
+          dirty: true,
           touched: true
         }
       }), {});
@@ -162,6 +173,7 @@ const metaReducer = (state, action) => {
         [key]: {
           ...state?.[key],
           active: false,
+          dirty: false,
           touched: false
         }
       }), {});
