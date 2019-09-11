@@ -39,7 +39,7 @@ describe('useForm hook', () => {
   });
 
   describe('blurField', () => {
-    it('should set the field to inactive and touched', () => {
+    it('should set the field to inactive, touched and dirty', () => {
       const { result } = renderHook(() => useForm({
         jsonSchema: { type: 'object' },
         onSubmit: () => {}
@@ -51,6 +51,7 @@ describe('useForm hook', () => {
 
       expect(result.current.state.fields.meta.foo).toEqual({
         active: false,
+        dirty: true,
         touched: true
       });
     });
@@ -76,7 +77,7 @@ describe('useForm hook', () => {
   });
 
   describe('focusField', () => {
-    it('should set the field to active and touched', () => {
+    it('should set the field to active and dirty', () => {
       const { result } = renderHook(() => useForm({
         jsonSchema: { type: 'object' },
         onSubmit: () => {}
@@ -88,7 +89,7 @@ describe('useForm hook', () => {
 
       expect(result.current.state.fields.meta.foo).toEqual({
         active: true,
-        touched: true
+        dirty: true
       });
     });
 
@@ -213,7 +214,7 @@ describe('useForm hook', () => {
       expect(result.current.state.fields.errors).toEqual({});
     });
 
-    it('should set all fields to inactive and untouched', () => {
+    it('should set all fields to inactive, untouched and pristine', () => {
       const { result } = renderHook(() => useForm({
         jsonSchema: { type: 'object' },
         onSubmit: () => {}
@@ -228,6 +229,7 @@ describe('useForm hook', () => {
       expect(result.current.state.fields.meta).toEqual({
         foo: {
           active: false,
+          dirty: false,
           touched: false
         }
       });
@@ -349,7 +351,7 @@ describe('useForm hook', () => {
       expect(result.current.state.fields.values).toEqual({ foo: 'bar' });
     });
 
-    it('should set all fields to touched', async () => {
+    it('should set all fields to touched and dirty', async () => {
       const { result, waitForNextUpdate } = renderHook(() => useForm({
         jsonSchema: { type: 'object' },
         onSubmit: () => {}
@@ -364,6 +366,7 @@ describe('useForm hook', () => {
 
       expect(result.current.state.fields.meta).toEqual({
         foo: expect.objectContaining({
+          dirty: true,
           touched: true
         })
       });
