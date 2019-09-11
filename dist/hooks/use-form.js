@@ -77,13 +77,19 @@ var metaReducer = function metaReducer(state, action) {
     case actionTypes.BLUR:
       return _objectSpread({}, state, _defineProperty({}, payload.field, _objectSpread({}, state[payload.field], {
         active: false,
+        dirty: true,
         touched: true
+      })));
+
+    case actionTypes.SET_FIELD_VALUE:
+      return _objectSpread({}, state, _defineProperty({}, payload.field, _objectSpread({}, state[payload.field], {
+        dirty: true
       })));
 
     case actionTypes.FOCUS:
       return _objectSpread({}, state, _defineProperty({}, payload.field, _objectSpread({}, state[payload.field], {
         active: true,
-        touched: true
+        dirty: true
       })));
 
     case actionTypes.REGISTER_FIELD:
@@ -95,6 +101,7 @@ var metaReducer = function metaReducer(state, action) {
     case actionTypes.SUBMIT_START:
       return Object.keys(state).reduce(function (result, key) {
         return _objectSpread({}, result, _defineProperty({}, key, _objectSpread({}, state === null || state === void 0 ? void 0 : state[key], {
+          dirty: true,
           touched: true
         })));
       }, {});
@@ -103,6 +110,7 @@ var metaReducer = function metaReducer(state, action) {
       return Object.keys(state).reduce(function (result, key) {
         return _objectSpread({}, result, _defineProperty({}, key, _objectSpread({}, state === null || state === void 0 ? void 0 : state[key], {
           active: false,
+          dirty: false,
           touched: false
         })));
       }, {});

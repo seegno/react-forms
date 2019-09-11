@@ -1,5 +1,12 @@
 # Changelog
 
+## [v0.4.0](https://github.com/seegno/react-forms/tree/v0.4.0) (2019-09-11)
+[Full Changelog](https://github.com/seegno/react-forms/compare/v0.3.0...v0.4.0)
+
+**Merged pull requests:**
+
+- Add dirty field state [\#10](https://github.com/seegno/react-forms/pull/10) ([bsonntag](https://github.com/bsonntag))
+
 ## [v0.3.0](https://github.com/seegno/react-forms/tree/v0.3.0) (2019-09-05)
 [Full Changelog](https://github.com/seegno/react-forms/compare/v0.2.0...v0.3.0)
 
