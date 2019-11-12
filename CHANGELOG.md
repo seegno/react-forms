@@ -1,5 +1,13 @@
 # Changelog
 
+## [v0.5.0](https://github.com/seegno/react-forms/tree/v0.5.0) (2019-11-12)
+[Full Changelog](https://github.com/seegno/react-forms/compare/v0.4.0...v0.5.0)
+
+**Merged pull requests:**
+
+- Update validate utility [\#12](https://github.com/seegno/react-forms/pull/12) ([bsonntag](https://github.com/bsonntag))
+- Bump eslint-utils from 1.4.0 to 1.4.3 [\#11](https://github.com/seegno/react-forms/pull/11) ([dependabot[bot]](https://github.com/apps/dependabot))
+
 ## [v0.4.0](https://github.com/seegno/react-forms/tree/v0.4.0) (2019-09-11)
 [Full Changelog](https://github.com/seegno/react-forms/compare/v0.3.0...v0.4.0)
 

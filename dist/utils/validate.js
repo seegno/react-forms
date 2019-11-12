@@ -81,6 +81,7 @@ function parseValidationErrors(validationErrors) {
 
 function validate(schema, values) {
   var ajv = new _ajv["default"]({
+    $data: true,
     allErrors: true
   });
 
