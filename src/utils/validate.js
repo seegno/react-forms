@@ -76,7 +76,7 @@ function parseValidationErrors(validationErrors) {
  */
 
 export default function validate(schema: Object, values: Object) {
-  const ajv = new Ajv({ allErrors: true });
+  const ajv = new Ajv({ $data: true, allErrors: true });
 
   if (ajv.validate(schema, values)) {
     return {};
