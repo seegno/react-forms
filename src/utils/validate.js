@@ -40,9 +40,11 @@ function getPropertyName(error: Object): string {
 
 function getErrorArgs(error) {
   switch (error.keyword) {
+    case 'maxItems':
     case 'maxLength':
       return { max: error.params.limit };
 
+    case 'minItems':
     case 'minLength':
       return { min: error.params.limit };
 

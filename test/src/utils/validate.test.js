@@ -108,4 +108,44 @@ describe('validate', () => {
       }
     });
   });
+
+  it('should return errors with the `maxItems` rule and `max` argument when there are too many items', () => {
+    const result = validate({
+      properties: {
+        foo: {
+          maxItems: 1,
+          type: 'array'
+        }
+      }
+    }, {
+      foo: [1, 2]
+    });
+
+    expect(result).toEqual({
+      foo: {
+        args: { max: 1 },
+        rule: 'maxItems'
+      }
+    });
+  });
+
+  it('should return errors with the `minItems` rule and `min` argument when there are not enough items', () => {
+    const result = validate({
+      properties: {
+        foo: {
+          minItems: 2,
+          type: 'array'
+        }
+      }
+    }, {
+      foo: [1]
+    });
+
+    expect(result).toEqual({
+      foo: {
+        args: { min: 2 },
+        rule: 'minItems'
+      }
+    });
+  });
 });
