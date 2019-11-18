@@ -148,4 +148,49 @@ describe('validate', () => {
       }
     });
   });
+
+  it('should return errors with the `maxProperties` rule', () => {
+    const result = validate({
+      properties: {
+        foo: {
+          maxProperties: 1,
+          type: 'object'
+        }
+      }
+    }, {
+      foo: {
+        bar: 'qux',
+        baz: 'biz'
+      }
+    });
+
+    expect(result).toEqual({
+      foo: {
+        args: { max: 1 },
+        rule: 'maxProperties'
+      }
+    });
+  });
+
+  it('should return errors with the `minProperties` rule', () => {
+    const result = validate({
+      properties: {
+        foo: {
+          minProperties: 2,
+          type: 'string'
+        }
+      }
+    }, {
+      foo: {
+        bar: 'qux'
+      }
+    });
+
+    expect(result).toEqual({
+      foo: {
+        args: { min: 2 },
+        rule: 'minProperties'
+      }
+    });
+  });
 });

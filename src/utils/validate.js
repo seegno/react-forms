@@ -42,10 +42,12 @@ function getErrorArgs(error) {
   switch (error.keyword) {
     case 'maxItems':
     case 'maxLength':
+    case 'maxProperties':
       return { max: error.params.limit };
 
     case 'minItems':
     case 'minLength':
+    case 'minProperties':
       return { min: error.params.limit };
 
     default:
