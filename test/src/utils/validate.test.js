@@ -149,7 +149,7 @@ describe('validate', () => {
     });
   });
 
-  it('should return errors with the `maxProperties` rule', () => {
+  it('should return errors with the `maxProperties` rule and `max` argument when there are too many properties', () => {
     const result = validate({
       properties: {
         foo: {
@@ -172,7 +172,7 @@ describe('validate', () => {
     });
   });
 
-  it('should return errors with the `minProperties` rule', () => {
+  it('should return errors with the `minProperties` rule and `min` argument when there are not enough properties', () => {
     const result = validate({
       properties: {
         foo: {
@@ -190,6 +190,46 @@ describe('validate', () => {
       foo: {
         args: { min: 2 },
         rule: 'minProperties'
+      }
+    });
+  });
+
+  it('should return errors with the `maximum` rule and `max` argument when the value is too big', () => {
+    const result = validate({
+      properties: {
+        foo: {
+          maximum: 1,
+          type: 'number'
+        }
+      }
+    }, {
+      foo: 2
+    });
+
+    expect(result).toEqual({
+      foo: {
+        args: { max: 1 },
+        rule: 'maximum'
+      }
+    });
+  });
+
+  it('should return errors with the `minimum` rule and `min` argument when the value is too small', () => {
+    const result = validate({
+      properties: {
+        foo: {
+          minimum: 2,
+          type: 'number'
+        }
+      }
+    }, {
+      foo: 1
+    });
+
+    expect(result).toEqual({
+      foo: {
+        args: { min: 2 },
+        rule: 'minimum'
       }
     });
   });
