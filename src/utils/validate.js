@@ -43,11 +43,13 @@ function getErrorArgs(error) {
     case 'maxItems':
     case 'maxLength':
     case 'maxProperties':
+    case 'maximum':
       return { max: error.params.limit };
 
     case 'minItems':
     case 'minLength':
     case 'minProperties':
+    case 'minimum':
       return { min: error.params.limit };
 
     default:
