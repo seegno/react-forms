@@ -1,5 +1,15 @@
 # Changelog
 
+## [v0.6.0](https://github.com/seegno/react-forms/tree/v0.6.0) (2019-11-18)
+[Full Changelog](https://github.com/seegno/react-forms/compare/v0.5.0...v0.6.0)
+
+**Merged pull requests:**
+
+- Add validations for maximum and minimum [\#17](https://github.com/seegno/react-forms/pull/17) ([bsonntag](https://github.com/bsonntag))
+- Add validations for maxProperties and minProperties [\#16](https://github.com/seegno/react-forms/pull/16) ([bsonntag](https://github.com/bsonntag))
+- Add validations for maxItems and minItems [\#15](https://github.com/seegno/react-forms/pull/15) ([bsonntag](https://github.com/bsonntag))
+- Improve useFieldState with debug value [\#13](https://github.com/seegno/react-forms/pull/13) ([bsonntag](https://github.com/bsonntag))
+
 ## [v0.5.0](https://github.com/seegno/react-forms/tree/v0.5.0) (2019-11-12)
 [Full Changelog](https://github.com/seegno/react-forms/compare/v0.4.0...v0.5.0)
 

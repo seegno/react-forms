@@ -5,6 +5,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = useFieldState;
 
+var _react = require("react");
+
 var _formStateContext = require("../context/form-state-context");
 
 /**
@@ -25,9 +27,11 @@ function useFieldState(field) {
       meta = _ref.meta,
       values = _ref.values;
 
-  return {
+  var fieldState = {
     error: (_ref2 = errors === null || errors === void 0 ? void 0 : errors[field]) !== null && _ref2 !== void 0 ? _ref2 : null,
     meta: (_ref3 = meta === null || meta === void 0 ? void 0 : meta[field]) !== null && _ref3 !== void 0 ? _ref3 : {},
     value: values === null || values === void 0 ? void 0 : values[field]
   };
+  (0, _react.useDebugValue)(fieldState);
+  return fieldState;
 }
