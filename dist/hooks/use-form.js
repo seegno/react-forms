@@ -4,6 +4,9 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = useForm;
+exports.actionTypes = void 0;
+
+var _lodash = require("lodash");
 
 var _react = require("react");
 
@@ -15,7 +18,7 @@ function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArra
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
 
-function _iterableToArrayLimit(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
@@ -26,7 +29,7 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 /**
- * Action types.
+ * Export `actionTypes`.
  */
 var actionTypes = {
   BLUR: 'BLUR',
@@ -42,6 +45,8 @@ var actionTypes = {
 /**
  * Export `Submit` type.
  */
+
+exports.actionTypes = actionTypes;
 
 /**
  * Values reducer.
@@ -184,7 +189,7 @@ function isSubmittingReducer(state, action) {
  */
 
 
-var formReducer = function formReducer(jsonSchema) {
+var formReducer = function formReducer(jsonSchema, stateReducer) {
   return function (state, action) {
     var fieldsValues = valuesReducer(state.fields.values, action);
     var fieldsErrors = errorsReducer(state.fields.errors, action, jsonSchema, fieldsValues);
@@ -192,7 +197,7 @@ var formReducer = function formReducer(jsonSchema) {
     var isSubmitting = isSubmittingReducer(state.isSubmitting, action);
     var submitStatus = submitStatusReducer(state.submitStatus, action);
     var fieldsMetaValues = Object.values(fieldsMeta);
-    return {
+    return stateReducer({
       fields: {
         errors: fieldsErrors,
         meta: fieldsMeta,
@@ -211,7 +216,7 @@ var formReducer = function formReducer(jsonSchema) {
         })
       },
       submitStatus: submitStatus
-    };
+    }, action);
   };
 };
 /**
@@ -227,9 +232,11 @@ function useForm(options) {
       initialValues = _options$initialValue === void 0 ? {} : _options$initialValue,
       jsonSchema = options.jsonSchema,
       onSubmit = options.onSubmit,
-      onValuesChanged = options.onValuesChanged;
+      onValuesChanged = options.onValuesChanged,
+      _options$stateReducer = options.stateReducer,
+      stateReducer = _options$stateReducer === void 0 ? _lodash.identity : _options$stateReducer;
 
-  var _useReducer = (0, _react.useReducer)(formReducer(jsonSchema), {
+  var _useReducer = (0, _react.useReducer)(formReducer(jsonSchema, stateReducer), {
     fields: {
       errors: {},
       meta: {},

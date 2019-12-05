@@ -1,5 +1,14 @@
 # Changelog
 
+## [v0.7.0](https://github.com/seegno/react-forms/tree/v0.7.0) (2019-12-05)
+[Full Changelog](https://github.com/seegno/react-forms/compare/v0.6.0...v0.7.0)
+
+**Merged pull requests:**
+
+- Add inversion of control to form reducer [\#19](https://github.com/seegno/react-forms/pull/19) ([franciscomorais](https://github.com/franciscomorais))
+- Fix flow configuration [\#18](https://github.com/seegno/react-forms/pull/18) ([bsonntag](https://github.com/bsonntag))
+- Update dependencies [\#14](https://github.com/seegno/react-forms/pull/14) ([bsonntag](https://github.com/bsonntag))
+
 ## [v0.6.0](https://github.com/seegno/react-forms/tree/v0.6.0) (2019-11-18)
 [Full Changelog](https://github.com/seegno/react-forms/compare/v0.5.0...v0.6.0)
 
