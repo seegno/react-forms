@@ -8,7 +8,7 @@ import { FieldActionsContext } from 'context/field-actions-context';
 import { FormActionsContext } from 'context/form-actions-context';
 import { FormStateContext } from 'context/form-state-context';
 import React, { type Node } from 'react';
-import useForm, { type Submit } from 'hooks/use-form';
+import useForm, { type Action, type FormState, type Submit } from 'hooks/use-form';
 
 /**
  * `Props` type.
@@ -22,7 +22,8 @@ type Props = {
   initialValues?: Object,
   jsonSchema: Object,
   onFormValuesChanged?: (formState: Object) => void,
-  onSubmit: Submit
+  onSubmit: Submit,
+  stateReducer?: (state: FormState, action: Action) => FormState
 };
 
 /**
@@ -35,7 +36,8 @@ const FormProvider = (props: Props): Node => {
     initialValues,
     jsonSchema,
     onFormValuesChanged,
-    onSubmit
+    onSubmit,
+    stateReducer
   } = props;
 
   const {
@@ -46,7 +48,8 @@ const FormProvider = (props: Props): Node => {
     initialValues,
     jsonSchema,
     onSubmit,
-    onValuesChanged: onFormValuesChanged
+    onValuesChanged: onFormValuesChanged,
+    stateReducer
   });
 
   return (

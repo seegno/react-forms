@@ -4,14 +4,15 @@
  * Module dependencies.
  */
 
+import { identity } from 'lodash';
 import { useCallback, useEffect, useMemo, useReducer } from 'react';
 import validate, { type FieldErrorType } from 'utils/validate';
 
 /**
- * Action types.
+ * Export `actionTypes`.
  */
 
-const actionTypes = {
+export const actionTypes = {
   BLUR: 'BLUR',
   FOCUS: 'FOCUS',
   REGISTER_FIELD: 'REGISTER_FIELD',
@@ -35,10 +36,10 @@ export type Submit = (
 ) => Promise<any>;
 
 /**
- * `Action` type.
+ * Export `Action` type.
  */
 
-type Action = {
+export type Action = {
   payload: Object,
   type: $Values<typeof actionTypes>
 };
@@ -247,27 +248,29 @@ function isSubmittingReducer(state, action) {
  * Form reducer.
  */
 
-const formReducer = jsonSchema => (state: FormState, action: Action) => {
-  const fieldsValues = valuesReducer(state.fields.values, action);
-  const fieldsErrors = errorsReducer(state.fields.errors, action, jsonSchema, fieldsValues);
-  const fieldsMeta = metaReducer(state.fields.meta, action);
-  const isSubmitting = isSubmittingReducer(state.isSubmitting, action);
-  const submitStatus = submitStatusReducer(state.submitStatus, action);
-  const fieldsMetaValues: Array<Object> = Object.values(fieldsMeta);
+const formReducer = (jsonSchema: Object, stateReducer: (state: FormState, action: Action) => FormState) => {
+  return (state: FormState, action: Action) => {
+    const fieldsValues = valuesReducer(state.fields.values, action);
+    const fieldsErrors = errorsReducer(state.fields.errors, action, jsonSchema, fieldsValues);
+    const fieldsMeta = metaReducer(state.fields.meta, action);
+    const isSubmitting = isSubmittingReducer(state.isSubmitting, action);
+    const submitStatus = submitStatusReducer(state.submitStatus, action);
+    const fieldsMetaValues: Array<Object> = Object.values(fieldsMeta);
 
-  return {
-    fields: {
-      errors: fieldsErrors,
-      meta: fieldsMeta,
-      values: fieldsValues
-    },
-    isSubmitting,
-    meta: {
-      active: fieldsMetaValues.some(({ active }) => active),
-      hasErrors: Object.entries(fieldsErrors).length > 0,
-      touched: fieldsMetaValues.some(({ touched }) => touched)
-    },
-    submitStatus
+    return stateReducer({
+      fields: {
+        errors: fieldsErrors,
+        meta: fieldsMeta,
+        values: fieldsValues
+      },
+      isSubmitting,
+      meta: {
+        active: fieldsMetaValues.some(({ active }) => active),
+        hasErrors: Object.entries(fieldsErrors).length > 0,
+        touched: fieldsMetaValues.some(({ touched }) => touched)
+      },
+      submitStatus
+    }, action);
   };
 };
 
@@ -279,7 +282,8 @@ type Options = {|
   initialValues: Object,
   jsonSchema: Object,
   onSubmit: Submit,
-  onValuesChanged?: (formState: Object) => void
+  onValuesChanged?: (formState: Object) => void,
+  stateReducer?: (state: FormState, action: Action) => FormState
 |};
 
 /**
@@ -287,9 +291,16 @@ type Options = {|
  */
 
 export default function useForm(options: Options) {
-  const { initialValues = {}, jsonSchema, onSubmit, onValuesChanged } = options;
+  const {
+    initialValues = {},
+    jsonSchema,
+    onSubmit,
+    onValuesChanged,
+    stateReducer = identity
+  } = options;
+
   const [state, dispatch] = useReducer(
-    formReducer(jsonSchema),
+    formReducer(jsonSchema, stateReducer),
     {
       fields: {
         errors: {},
