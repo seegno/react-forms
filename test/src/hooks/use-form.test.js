@@ -4,7 +4,8 @@
  */
 
 import { act, renderHook } from '@testing-library/react-hooks';
-import useForm from 'hooks/use-form';
+import { merge } from 'lodash';
+import useForm, { actionTypes } from 'hooks/use-form';
 
 /**
  * `useForm` hook tests.
@@ -411,6 +412,47 @@ describe('useForm hook', () => {
       await waitForNextUpdate();
 
       expect(result.current.state.fields.values).toEqual({});
+    });
+
+    it('should change the foo value when set field value with any value', () => {
+      const stateReducer = (state, action) => {
+        const { type } = action;
+
+        switch (type) {
+          case actionTypes.SET_FIELD_VALUE:
+            return merge({}, state, {
+              fields: {
+                values: {
+                  foo: 'biz'
+                }
+              }
+            });
+
+          default:
+            return state;
+        }
+      };
+
+      const { result } = renderHook(() => useForm({
+        initialValues: { foo: 1 },
+        jsonSchema: {
+          properties: {
+            bar: { type: 'string' },
+            foo: { type: 'string' }
+          },
+          type: 'object'
+        },
+        onSubmit: () => {},
+        stateReducer
+      }));
+
+      act(() => {
+        result.current.fieldActions.setFieldValue('foo', 'foo');
+        result.current.fieldActions.setFieldValue('bar', 'bar');
+      });
+
+      expect(result.current.state.fields.values.foo).toEqual('biz');
+      expect(result.current.state.fields.values.bar).toEqual('bar');
     });
   });
 });
