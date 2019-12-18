@@ -4,7 +4,25 @@
  * Module dependencies.
  */
 
+import { merge } from 'lodash';
 import Ajv from 'ajv';
+
+/**
+ * Export `ValidationOptions` type.
+ */
+
+export type ValidationOptions = {
+  coerceTypes?: boolean | 'array',
+  format?: boolean | 'fast' | 'full',
+  formats?: Object,
+  logger?: Function,
+  nullable?: boolean,
+  removeAdditional?: boolean | 'all' | 'failing',
+  schemaId?: String,
+  uniqueItems?: boolean,
+  unknownFormats?: boolean | Array<string> | 'ignore' | Object,
+  useDefaults?: boolean | 'empty' | 'shared'
+};
 
 /**
  * Export `FieldErrorType` type.
@@ -81,8 +99,8 @@ function parseValidationErrors(validationErrors) {
  * Export `validate`.
  */
 
-export default function validate(schema: Object, values: Object) {
-  const ajv = new Ajv({ $data: true, allErrors: true });
+export default function validate(schema: Object, values: Object, validateOptions: ValidationOptions) {
+  const ajv = new Ajv(merge({}, validateOptions, { $data: true, allErrors: true }));
 
   if (ajv.validate(schema, values)) {
     return {};
