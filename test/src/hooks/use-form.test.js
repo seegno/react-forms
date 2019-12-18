@@ -454,5 +454,46 @@ describe('useForm hook', () => {
       expect(result.current.state.fields.values.foo).toEqual('biz');
       expect(result.current.state.fields.values.bar).toEqual('bar');
     });
+
+    it('should validate the field with custom format', () => {
+      const { result } = renderHook(() => useForm({
+        initialValues: {
+          bar: '123',
+          foo: '123'
+        },
+        jsonSchema: {
+          properties: {
+            bar: {
+              format: 'bar',
+              type: 'string'
+            },
+            foo: {
+              format: 'foo',
+              type: 'string'
+            }
+          },
+          type: 'object'
+        },
+        onSubmit: () => {},
+        validationOptions: {
+          formats: {
+            bar: value => !isNaN(Number(value)),
+            foo: () => false
+          }
+        }
+      }));
+
+      act(() => {
+        result.current.formActions.submit();
+      });
+
+      expect(result.current.state.fields.errors).toEqual(expect.objectContaining({
+        foo: expect.any(Object)
+      }));
+    });
+  });
+
+  describe('validation options', () => {
+
   });
 });
