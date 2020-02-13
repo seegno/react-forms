@@ -15,6 +15,7 @@ export type ValidationOptions = {
   coerceTypes?: boolean | 'array',
   format?: boolean | 'fast' | 'full',
   formats?: Object,
+  keywords?: Object,
   logger?: Function,
   nullable?: boolean,
   removeAdditional?: boolean | 'all' | 'failing',
@@ -99,8 +100,17 @@ function parseValidationErrors(validationErrors) {
  * Export `validate`.
  */
 
-export default function validate(schema: Object, values: Object, validateOptions: ValidationOptions) {
-  const ajv = new Ajv(merge({}, validateOptions, { $data: true, allErrors: true }));
+export default function validate(schema: Object, values: Object, validateOptions?: ValidationOptions) {
+  const { keywords, ...restOptions } = validateOptions ?? {};
+  const ajv = new Ajv(merge({}, restOptions, { $data: true, allErrors: true }));
+
+  // TODO: Remove this when ajv adds support for passing keywords in the contructor.
+  // https://github.com/epoberezkin/ajv/issues/1136
+  if (keywords) {
+    for (const [keyword, config] of Object.entries(keywords)) {
+      ajv.addKeyword(keyword, config);
+    }
+  }
 
   if (ajv.validate(schema, values)) {
     return {};
