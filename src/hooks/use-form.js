@@ -6,7 +6,10 @@
 
 import { identity } from 'lodash';
 import { useCallback, useEffect, useMemo, useReducer } from 'react';
-import validate, { type FieldErrorType } from 'utils/validate';
+import validate, {
+  type FieldErrorType,
+  type ValidationOptions
+} from 'utils/validate';
 
 /**
  * Export `actionTypes`.
@@ -185,16 +188,38 @@ const metaReducer = (state, action) => {
 };
 
 /**
+ * `ErrorOptions` type.
+ */
+
+type ErrorOptions = {
+  action: Action,
+  jsonSchema: Object,
+  state: {
+    [fieldName: string]: FieldErrorType
+  },
+  validationOptions: ValidationOptions,
+  values: Object
+};
+
+/**
  * Errors reducer.
  */
 
-function errorsReducer(state, action, jsonSchema, values) {
+function errorsReducer(options: ErrorOptions) {
+  const {
+    action,
+    jsonSchema,
+    state,
+    validationOptions,
+    values
+  } = options;
+
   switch (action.type) {
     case actionTypes.BLUR:
     case actionTypes.SET_FIELD_VALUE:
     case actionTypes.REGISTER_FIELD:
     case actionTypes.SUBMIT_START:
-      return validate(jsonSchema, values);
+      return validate(jsonSchema, values, validationOptions);
 
     case actionTypes.RESET:
       return {};
@@ -248,13 +273,20 @@ function isSubmittingReducer(state, action) {
  * Form reducer.
  */
 
-const formReducer = (jsonSchema: Object, stateReducer: (state: FormState, action: Action) => FormState) => {
+const formReducer = (jsonSchema: Object, validationOptions: ValidationOptions, stateReducer: (state: FormState, action: Action) => FormState) => {
   return (state: FormState, action: Action) => {
     const fieldsValues = valuesReducer(state.fields.values, action);
-    const fieldsErrors = errorsReducer(state.fields.errors, action, jsonSchema, fieldsValues);
     const fieldsMeta = metaReducer(state.fields.meta, action);
     const isSubmitting = isSubmittingReducer(state.isSubmitting, action);
     const submitStatus = submitStatusReducer(state.submitStatus, action);
+    const fieldsErrors = errorsReducer({
+      action,
+      jsonSchema,
+      state: state.fields.errors,
+      validationOptions,
+      values: fieldsValues
+    });
+
     const fieldsMetaValues: Array<Object> = Object.values(fieldsMeta);
 
     return stateReducer({
@@ -283,7 +315,8 @@ type Options = {|
   jsonSchema: Object,
   onSubmit: Submit,
   onValuesChanged?: (formState: Object) => void,
-  stateReducer?: (state: FormState, action: Action) => FormState
+  stateReducer?: (state: FormState, action: Action) => FormState,
+  validationOptions?: ValidationOptions
 |};
 
 /**
@@ -296,11 +329,12 @@ export default function useForm(options: Options) {
     jsonSchema,
     onSubmit,
     onValuesChanged,
-    stateReducer = identity
+    stateReducer = identity,
+    validationOptions = {}
   } = options;
 
   const [state, dispatch] = useReducer(
-    formReducer(jsonSchema, stateReducer),
+    formReducer(jsonSchema, validationOptions, stateReducer),
     {
       fields: {
         errors: {},
