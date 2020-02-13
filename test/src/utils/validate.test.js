@@ -233,4 +233,70 @@ describe('validate', () => {
       }
     });
   });
+
+  it('should validate with custom format', () => {
+    const result = validate({
+      properties: {
+        bar: {
+          format: 'bar',
+          type: 'string'
+        },
+        foo: {
+          format: 'foo',
+          type: 'string'
+        }
+      },
+      type: 'object'
+    }, {
+      bar: '123',
+      foo: '123'
+    }, {
+      formats: {
+        bar: () => true,
+        foo: () => false
+      }
+    });
+
+    expect(result).toEqual({
+      foo: {
+        rule: 'format'
+      }
+    });
+  });
+
+  it('should validate with custom keywords', () => {
+    const result = validate({
+      properties: {
+        bar: {
+          isBar: true,
+          type: 'string'
+        },
+        foo: {
+          isFoo: true,
+          type: 'string'
+        }
+      },
+      type: 'object'
+    }, {
+      bar: '123',
+      foo: '123'
+    }, {
+      keywords: {
+        isBar: {
+          type: 'string',
+          validate: () => true
+        },
+        isFoo: {
+          type: 'string',
+          validate: () => false
+        }
+      }
+    });
+
+    expect(result).toEqual({
+      foo: {
+        rule: 'isFoo'
+      }
+    });
+  });
 });

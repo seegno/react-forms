@@ -487,9 +487,56 @@ describe('useForm hook', () => {
         result.current.formActions.submit();
       });
 
-      expect(result.current.state.fields.errors).toEqual(expect.objectContaining({
-        foo: expect.any(Object)
+      expect(result.current.state.fields.errors).toEqual({
+        foo: {
+          rule: 'format'
+        }
+      });
+    });
+
+    it('should validate with custom keywords', () => {
+      const { result } = renderHook(() => useForm({
+        initialValues: {
+          bar: '123',
+          foo: '123'
+        },
+        jsonSchema: {
+          properties: {
+            bar: {
+              isBar: true,
+              type: 'string'
+            },
+            foo: {
+              isFoo: true,
+              type: 'string'
+            }
+          },
+          type: 'object'
+        },
+        onSubmit: () => {},
+        validationOptions: {
+          keywords: {
+            isBar: {
+              type: 'string',
+              validate: () => true
+            },
+            isFoo: {
+              type: 'string',
+              validate: () => false
+            }
+          }
+        }
       }));
+
+      act(() => {
+        result.current.formActions.submit();
+      });
+
+      expect(result.current.state.fields.errors).toEqual({
+        foo: {
+          rule: 'isFoo'
+        }
+      });
     });
   });
 });
