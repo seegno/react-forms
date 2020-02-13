@@ -125,17 +125,26 @@ var metaReducer = function metaReducer(state, action) {
   }
 };
 /**
- * Errors reducer.
+ * `ErrorOptions` type.
  */
 
 
-function errorsReducer(state, action, jsonSchema, values) {
+/**
+ * Errors reducer.
+ */
+function errorsReducer(options) {
+  var action = options.action,
+      jsonSchema = options.jsonSchema,
+      state = options.state,
+      validationOptions = options.validationOptions,
+      values = options.values;
+
   switch (action.type) {
     case actionTypes.BLUR:
     case actionTypes.SET_FIELD_VALUE:
     case actionTypes.REGISTER_FIELD:
     case actionTypes.SUBMIT_START:
-      return (0, _validate["default"])(jsonSchema, values);
+      return (0, _validate["default"])(jsonSchema, values, validationOptions);
 
     case actionTypes.RESET:
       return {};
@@ -189,13 +198,19 @@ function isSubmittingReducer(state, action) {
  */
 
 
-var formReducer = function formReducer(jsonSchema, stateReducer) {
+var formReducer = function formReducer(jsonSchema, validationOptions, stateReducer) {
   return function (state, action) {
     var fieldsValues = valuesReducer(state.fields.values, action);
-    var fieldsErrors = errorsReducer(state.fields.errors, action, jsonSchema, fieldsValues);
     var fieldsMeta = metaReducer(state.fields.meta, action);
     var isSubmitting = isSubmittingReducer(state.isSubmitting, action);
     var submitStatus = submitStatusReducer(state.submitStatus, action);
+    var fieldsErrors = errorsReducer({
+      action: action,
+      jsonSchema: jsonSchema,
+      state: state.fields.errors,
+      validationOptions: validationOptions,
+      values: fieldsValues
+    });
     var fieldsMetaValues = Object.values(fieldsMeta);
     return stateReducer({
       fields: {
@@ -234,9 +249,11 @@ function useForm(options) {
       onSubmit = options.onSubmit,
       onValuesChanged = options.onValuesChanged,
       _options$stateReducer = options.stateReducer,
-      stateReducer = _options$stateReducer === void 0 ? _lodash.identity : _options$stateReducer;
+      stateReducer = _options$stateReducer === void 0 ? _lodash.identity : _options$stateReducer,
+      _options$validationOp = options.validationOptions,
+      validationOptions = _options$validationOp === void 0 ? {} : _options$validationOp;
 
-  var _useReducer = (0, _react.useReducer)(formReducer(jsonSchema, stateReducer), {
+  var _useReducer = (0, _react.useReducer)(formReducer(jsonSchema, validationOptions, stateReducer), {
     fields: {
       errors: {},
       meta: {},

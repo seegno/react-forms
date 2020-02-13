@@ -1,5 +1,13 @@
 # Changelog
 
+## [v0.8.0](https://github.com/seegno/react-forms/tree/v0.8.0) (2020-02-13)
+[Full Changelog](https://github.com/seegno/react-forms/compare/v0.7.0...v0.8.0)
+
+**Merged pull requests:**
+
+- Update validation to support custom keywords [\#22](https://github.com/seegno/react-forms/pull/22) ([bsonntag](https://github.com/bsonntag))
+- Add validation options to validate custom formats [\#21](https://github.com/seegno/react-forms/pull/21) ([franciscomorais](https://github.com/franciscomorais))
+
 ## [v0.7.0](https://github.com/seegno/react-forms/tree/v0.7.0) (2019-12-05)
 [Full Changelog](https://github.com/seegno/react-forms/compare/v0.6.0...v0.7.0)
 
