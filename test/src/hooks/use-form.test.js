@@ -24,6 +24,20 @@ describe('useForm hook', () => {
     });
   });
 
+  it('should start as not active, not dirty, not touched and without errors', () => {
+    const { result } = renderHook(() => useForm({
+      jsonSchema: { type: 'object' },
+      onSubmit: () => {}
+    }));
+
+    expect(result.current.state.meta).toEqual({
+      active: false,
+      dirty: false,
+      hasErrors: false,
+      touched: false
+    });
+  });
+
   it('should call `onValuesChanged` when the form values change', () => {
     const onValuesChanged = jest.fn();
     const { result } = renderHook(() => useForm({
@@ -40,7 +54,7 @@ describe('useForm hook', () => {
   });
 
   describe('blurField', () => {
-    it('should set the field to inactive, touched and dirty', () => {
+    it('should set the field to inactive and touched', () => {
       const { result } = renderHook(() => useForm({
         jsonSchema: { type: 'object' },
         onSubmit: () => {}
@@ -52,7 +66,6 @@ describe('useForm hook', () => {
 
       expect(result.current.state.fields.meta.foo).toEqual({
         active: false,
-        dirty: true,
         touched: true
       });
     });
@@ -78,7 +91,7 @@ describe('useForm hook', () => {
   });
 
   describe('focusField', () => {
-    it('should set the field to active and dirty', () => {
+    it('should set the field to active', () => {
       const { result } = renderHook(() => useForm({
         jsonSchema: { type: 'object' },
         onSubmit: () => {}
@@ -89,8 +102,7 @@ describe('useForm hook', () => {
       });
 
       expect(result.current.state.fields.meta.foo).toEqual({
-        active: true,
-        dirty: true
+        active: true
       });
     });
 
@@ -223,6 +235,7 @@ describe('useForm hook', () => {
 
       act(() => {
         result.current.fieldActions.blurField('foo');
+        result.current.fieldActions.setFieldValue('foo', 'bar');
         result.current.fieldActions.focusField('foo');
         result.current.formActions.reset();
       });
@@ -249,6 +262,21 @@ describe('useForm hook', () => {
       });
 
       expect(result.current.state.fields.values).toEqual({ foo: 'bar' });
+    });
+
+    it('should set the field to dirty', () => {
+      const { result } = renderHook(() => useForm({
+        jsonSchema: { type: 'object' },
+        onSubmit: () => {}
+      }));
+
+      act(() => {
+        result.current.fieldActions.setFieldValue('foo', 'bar');
+      });
+
+      expect(result.current.state.fields.meta.foo).toEqual(expect.objectContaining({
+        dirty: true
+      }));
     });
 
     it('should validate the form', () => {
@@ -352,7 +380,7 @@ describe('useForm hook', () => {
       expect(result.current.state.fields.values).toEqual({ foo: 'bar' });
     });
 
-    it('should set all fields to touched and dirty', async () => {
+    it('should set all fields to touched', async () => {
       const { result, waitForNextUpdate } = renderHook(() => useForm({
         jsonSchema: { type: 'object' },
         onSubmit: () => {}
@@ -367,7 +395,6 @@ describe('useForm hook', () => {
 
       expect(result.current.state.fields.meta).toEqual({
         foo: expect.objectContaining({
-          dirty: true,
           touched: true
         })
       });
@@ -537,6 +564,47 @@ describe('useForm hook', () => {
           rule: 'isFoo'
         }
       });
+    });
+  });
+
+  describe('form meta', () => {
+    it('should set the form as active when a field is active', () => {
+      const { result } = renderHook(() => useForm({
+        jsonSchema: { type: 'object' },
+        onSubmit: () => {}
+      }));
+
+      act(() => {
+        result.current.fieldActions.focusField('foo');
+      });
+
+      expect(result.current.state.meta.active).toBe(true);
+    });
+
+    it('should set the form as dirty when a field is dirty', () => {
+      const { result } = renderHook(() => useForm({
+        jsonSchema: { type: 'object' },
+        onSubmit: () => {}
+      }));
+
+      act(() => {
+        result.current.fieldActions.setFieldValue('foo', 'bar');
+      });
+
+      expect(result.current.state.meta.dirty).toBe(true);
+    });
+
+    it('should set the form as touched when a field is touched', () => {
+      const { result } = renderHook(() => useForm({
+        jsonSchema: { type: 'object' },
+        onSubmit: () => {}
+      }));
+
+      act(() => {
+        result.current.fieldActions.blurField('foo');
+      });
+
+      expect(result.current.state.meta.touched).toBe(true);
     });
   });
 });

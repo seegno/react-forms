@@ -53,6 +53,7 @@ export type Action = {
 
 export type FieldMetaType = {
   active: boolean,
+  dirty: boolean,
   touched: boolean
 };
 
@@ -127,7 +128,6 @@ const metaReducer = (state, action) => {
         [payload.field]: {
           ...state[payload.field],
           active: false,
-          dirty: true,
           touched: true
         }
       };
@@ -146,8 +146,7 @@ const metaReducer = (state, action) => {
         ...state,
         [payload.field]: {
           ...state[payload.field],
-          active: true,
-          dirty: true
+          active: true
         }
       };
 
@@ -156,6 +155,7 @@ const metaReducer = (state, action) => {
         ...state,
         [payload.field]: {
           active: false,
+          dirty: false,
           touched: false,
           ...state[payload.field]
         }
@@ -166,7 +166,6 @@ const metaReducer = (state, action) => {
         ...result,
         [key]: {
           ...state?.[key],
-          dirty: true,
           touched: true
         }
       }), {});
@@ -298,6 +297,7 @@ const formReducer = (jsonSchema: Object, validationOptions: ValidationOptions, s
       isSubmitting,
       meta: {
         active: fieldsMetaValues.some(({ active }) => active),
+        dirty: fieldsMetaValues.some(({ dirty }) => dirty),
         hasErrors: Object.entries(fieldsErrors).length > 0,
         touched: fieldsMetaValues.some(({ touched }) => touched)
       },
@@ -344,6 +344,7 @@ export default function useForm(options: Options) {
       isSubmitting: false,
       meta: {
         active: false,
+        dirty: false,
         hasErrors: false,
         touched: false
       },
