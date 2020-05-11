@@ -1,5 +1,13 @@
 # Changelog
 
+## [v0.9.0](https://github.com/seegno/react-forms/tree/v0.9.0) (2020-05-11)
+[Full Changelog](https://github.com/seegno/react-forms/compare/v0.8.0...v0.9.0)
+
+**Merged pull requests:**
+
+- Update the dirty flag [\#24](https://github.com/seegno/react-forms/pull/24) ([bsonntag](https://github.com/bsonntag))
+- Bump acorn from 5.7.3 to 5.7.4 [\#23](https://github.com/seegno/react-forms/pull/23) ([dependabot[bot]](https://github.com/apps/dependabot))
+
 ## [v0.8.0](https://github.com/seegno/react-forms/tree/v0.8.0) (2020-02-13)
 [Full Changelog](https://github.com/seegno/react-forms/compare/v0.7.0...v0.8.0)
 

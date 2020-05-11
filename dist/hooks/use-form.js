@@ -82,7 +82,6 @@ var metaReducer = function metaReducer(state, action) {
     case actionTypes.BLUR:
       return _objectSpread({}, state, _defineProperty({}, payload.field, _objectSpread({}, state[payload.field], {
         active: false,
-        dirty: true,
         touched: true
       })));
 
@@ -93,20 +92,19 @@ var metaReducer = function metaReducer(state, action) {
 
     case actionTypes.FOCUS:
       return _objectSpread({}, state, _defineProperty({}, payload.field, _objectSpread({}, state[payload.field], {
-        active: true,
-        dirty: true
+        active: true
       })));
 
     case actionTypes.REGISTER_FIELD:
       return _objectSpread({}, state, _defineProperty({}, payload.field, _objectSpread({
         active: false,
+        dirty: false,
         touched: false
       }, state[payload.field])));
 
     case actionTypes.SUBMIT_START:
       return Object.keys(state).reduce(function (result, key) {
         return _objectSpread({}, result, _defineProperty({}, key, _objectSpread({}, state === null || state === void 0 ? void 0 : state[key], {
-          dirty: true,
           touched: true
         })));
       }, {});
@@ -224,9 +222,13 @@ var formReducer = function formReducer(jsonSchema, validationOptions, stateReduc
           var active = _ref.active;
           return active;
         }),
+        dirty: fieldsMetaValues.some(function (_ref2) {
+          var dirty = _ref2.dirty;
+          return dirty;
+        }),
         hasErrors: Object.entries(fieldsErrors).length > 0,
-        touched: fieldsMetaValues.some(function (_ref2) {
-          var touched = _ref2.touched;
+        touched: fieldsMetaValues.some(function (_ref3) {
+          var touched = _ref3.touched;
           return touched;
         })
       },
@@ -262,6 +264,7 @@ function useForm(options) {
     isSubmitting: false,
     meta: {
       active: false,
+      dirty: false,
       hasErrors: false,
       touched: false
     },
