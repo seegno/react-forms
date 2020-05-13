@@ -11,6 +11,18 @@ Object.defineProperty(exports, "FormProvider", {
     return _formProvider["default"];
   }
 });
+Object.defineProperty(exports, "getErrorPath", {
+  enumerable: true,
+  get: function get() {
+    return _validate.getErrorPath;
+  }
+});
+Object.defineProperty(exports, "parseValidationErrors", {
+  enumerable: true,
+  get: function get() {
+    return _validate.parseValidationErrors;
+  }
+});
 Object.defineProperty(exports, "useField", {
   enumerable: true,
   get: function get() {
@@ -55,6 +67,8 @@ Object.defineProperty(exports, "useFormState", {
 });
 
 var _formProvider = _interopRequireDefault(require("./components/form-provider"));
+
+var _validate = require("./utils/validate");
 
 var _useField = _interopRequireDefault(require("./hooks/use-field"));
 

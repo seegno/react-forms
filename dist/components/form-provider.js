@@ -31,6 +31,7 @@ var FormProvider = function FormProvider(props) {
       onFormValuesChanged = props.onFormValuesChanged,
       onSubmit = props.onSubmit,
       stateReducer = props.stateReducer,
+      validate = props.validate,
       validationOptions = props.validationOptions;
 
   var _useForm = (0, _useForm2["default"])({
@@ -39,6 +40,7 @@ var FormProvider = function FormProvider(props) {
     onSubmit: onSubmit,
     onValuesChanged: onFormValuesChanged,
     stateReducer: stateReducer,
+    validate: validate,
     validationOptions: validationOptions
   }),
       fieldActions = _useForm.fieldActions,

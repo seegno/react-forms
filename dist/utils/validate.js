@@ -3,6 +3,8 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.getErrorPath = getErrorPath;
+exports.parseValidationErrors = parseValidationErrors;
 exports["default"] = validate;
 
 var _lodash = require("lodash");
@@ -30,9 +32,9 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 /**
- * Get property name.
+ * Export `getErrorPath`.
  */
-function getPropertyName(error) {
+function getErrorPath(error) {
   var key = error.dataPath.substring(1);
 
   switch (error.keyword) {
@@ -91,18 +93,21 @@ var getError = function getError(error) {
 
 function parseValidationErrors(validationErrors) {
   return validationErrors.reduce(function (errors, error) {
-    return _objectSpread({}, errors, _defineProperty({}, getPropertyName(error), getError(error)));
+    return _objectSpread({}, errors, _defineProperty({}, getErrorPath(error), getError(error)));
   }, {});
 }
 /**
- * Export `validate`.
+ * `Validate` type.
  */
 
 
-function validate(schema, values, validateOptions) {
-  var _validateOptions;
+/**
+ * Export `validate`.
+ */
+function validate(schema, values, options) {
+  var _options;
 
-  var _ref = (_validateOptions = validateOptions) !== null && _validateOptions !== void 0 ? _validateOptions : {},
+  var _ref = (_options = options) !== null && _options !== void 0 ? _options : {},
       keywords = _ref.keywords,
       restOptions = _objectWithoutProperties(_ref, ["keywords"]);
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [v0.10.0](https://github.com/seegno/react-forms/tree/v0.10.0) (2020-05-13)
+[Full Changelog](https://github.com/seegno/react-forms/compare/v0.9.0...v0.10.0)
+
+**Merged pull requests:**
+
+- Add validate option [\#25](https://github.com/seegno/react-forms/pull/25) ([bsonntag](https://github.com/bsonntag))
+
 ## [v0.9.0](https://github.com/seegno/react-forms/tree/v0.9.0) (2020-05-11)
 [Full Changelog](https://github.com/seegno/react-forms/compare/v0.8.0...v0.9.0)
 

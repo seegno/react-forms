@@ -132,9 +132,8 @@ var metaReducer = function metaReducer(state, action) {
  */
 function errorsReducer(options) {
   var action = options.action,
-      jsonSchema = options.jsonSchema,
       state = options.state,
-      validationOptions = options.validationOptions,
+      validate = options.validate,
       values = options.values;
 
   switch (action.type) {
@@ -142,7 +141,7 @@ function errorsReducer(options) {
     case actionTypes.SET_FIELD_VALUE:
     case actionTypes.REGISTER_FIELD:
     case actionTypes.SUBMIT_START:
-      return (0, _validate["default"])(jsonSchema, values, validationOptions);
+      return validate(values);
 
     case actionTypes.RESET:
       return {};
@@ -196,7 +195,7 @@ function isSubmittingReducer(state, action) {
  */
 
 
-var formReducer = function formReducer(jsonSchema, validationOptions, stateReducer) {
+var formReducer = function formReducer(validate, stateReducer) {
   return function (state, action) {
     var fieldsValues = valuesReducer(state.fields.values, action);
     var fieldsMeta = metaReducer(state.fields.meta, action);
@@ -204,9 +203,8 @@ var formReducer = function formReducer(jsonSchema, validationOptions, stateReduc
     var submitStatus = submitStatusReducer(state.submitStatus, action);
     var fieldsErrors = errorsReducer({
       action: action,
-      jsonSchema: jsonSchema,
       state: state.fields.errors,
-      validationOptions: validationOptions,
+      validate: validate,
       values: fieldsValues
     });
     var fieldsMetaValues = Object.values(fieldsMeta);
@@ -252,10 +250,15 @@ function useForm(options) {
       onValuesChanged = options.onValuesChanged,
       _options$stateReducer = options.stateReducer,
       stateReducer = _options$stateReducer === void 0 ? _lodash.identity : _options$stateReducer,
-      _options$validationOp = options.validationOptions,
-      validationOptions = _options$validationOp === void 0 ? {} : _options$validationOp;
+      _options$validate = options.validate,
+      validate = _options$validate === void 0 ? _validate["default"] : _options$validate,
+      validationOptions = options.validationOptions;
 
-  var _useReducer = (0, _react.useReducer)(formReducer(jsonSchema, validationOptions, stateReducer), {
+  var validateValues = function validateValues(values) {
+    return validate(jsonSchema, values, validationOptions);
+  };
+
+  var _useReducer = (0, _react.useReducer)(formReducer(validateValues, stateReducer), {
     fields: {
       errors: {},
       meta: {},
