@@ -7,7 +7,7 @@
 import { FieldActionsContext } from 'context/field-actions-context';
 import { FormActionsContext } from 'context/form-actions-context';
 import { FormStateContext } from 'context/form-state-context';
-import type { ValidationOptions } from 'utils/validate';
+import type { Validate, ValidationOptions } from 'utils/validate';
 import React, { type Node } from 'react';
 import useForm, { type Action, type FormState, type Submit } from 'hooks/use-form';
 
@@ -25,6 +25,7 @@ type Props = {
   onFormValuesChanged?: (formState: Object) => void,
   onSubmit: Submit,
   stateReducer?: (state: FormState, action: Action) => FormState,
+  validate?: Validate,
   validationOptions?: ValidationOptions
 };
 
@@ -40,6 +41,7 @@ const FormProvider = (props: Props): Node => {
     onFormValuesChanged,
     onSubmit,
     stateReducer,
+    validate,
     validationOptions
   } = props;
 
@@ -53,6 +55,7 @@ const FormProvider = (props: Props): Node => {
     onSubmit,
     onValuesChanged: onFormValuesChanged,
     stateReducer,
+    validate,
     validationOptions
   });
 

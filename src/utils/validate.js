@@ -26,19 +26,37 @@ export type ValidationOptions = {
 };
 
 /**
- * Export `FieldErrorType` type.
+ * `ValidationError` type.
  */
 
-export type FieldErrorType = {|
+type ValidationError = {|
+  dataPath: string,
+  keyword: string,
+  params: Object
+|};
+
+/**
+ * Export `FieldError` type.
+ */
+
+export type FieldError = {|
   args?: Object,
   rule: string
 |};
 
 /**
- * Get property name.
+ * Export `FieldErrors` type.
  */
 
-function getPropertyName(error: Object): string {
+export type FieldErrors = {
+  [fieldName: string]: FieldError
+};
+
+/**
+ * Export `getErrorPath`.
+ */
+
+export function getErrorPath(error: ValidationError): string {
   const key = error.dataPath.substring(1);
 
   switch (error.keyword) {
@@ -57,7 +75,7 @@ function getPropertyName(error: Object): string {
  * Get error args.
  */
 
-function getErrorArgs(error) {
+function getErrorArgs(error: ValidationError) {
   switch (error.keyword) {
     case 'maxItems':
     case 'maxLength':
@@ -80,7 +98,7 @@ function getErrorArgs(error) {
  * Get error.
  */
 
-const getError = (error): FieldErrorType => ({
+const getError = (error: ValidationError): FieldError => ({
   args: getErrorArgs(error),
   rule: error.keyword
 });
@@ -89,19 +107,25 @@ const getError = (error): FieldErrorType => ({
  * Parse validation errors.
  */
 
-function parseValidationErrors(validationErrors) {
+export function parseValidationErrors(validationErrors: Array<ValidationError>): FieldErrors {
   return validationErrors.reduce((errors, error) => ({
     ...errors,
-    [getPropertyName(error)]: getError(error)
+    [getErrorPath(error)]: getError(error)
   }), {});
 }
+
+/**
+ * `Validate` type.
+ */
+
+export type Validate = (schema: Object, values: Object, options?: ValidationOptions) => FieldErrors;
 
 /**
  * Export `validate`.
  */
 
-export default function validate(schema: Object, values: Object, validateOptions?: ValidationOptions) {
-  const { keywords, ...restOptions } = validateOptions ?? {};
+export default function validate(schema: Object, values: Object, options?: ValidationOptions): FieldErrors {
+  const { keywords, ...restOptions } = options ?? {};
   const ajv = new Ajv(merge({}, restOptions, { $data: true, allErrors: true }));
 
   // TODO: Remove this when ajv adds support for passing keywords in the contructor.

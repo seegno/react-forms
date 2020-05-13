@@ -5,6 +5,7 @@
  */
 
 export { default as FormProvider } from './components/form-provider';
+export { getErrorPath, parseValidationErrors } from './utils/validate';
 export { default as useField } from './hooks/use-field';
 export { useFieldActions } from './context/field-actions-context';
 export { default as useFieldState } from './hooks/use-field-state';

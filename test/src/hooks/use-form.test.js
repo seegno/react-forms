@@ -607,4 +607,23 @@ describe('useForm hook', () => {
       expect(result.current.state.meta.touched).toBe(true);
     });
   });
+
+  describe('custom validate', () => {
+    it('should be called when a field value changes', () => {
+      const validate = jest.fn(() => ({}));
+      const jsonSchema = { type: 'object' };
+      const { result } = renderHook(() => useForm({
+        jsonSchema,
+        onSubmit: () => {},
+        validate,
+        validationOptions: 'qux'
+      }));
+
+      act(() => {
+        result.current.fieldActions.setFieldValue('foo', 'bar');
+      });
+
+      expect(validate).toHaveBeenCalledWith(jsonSchema, { foo: 'bar' }, 'qux');
+    });
+  });
 });
