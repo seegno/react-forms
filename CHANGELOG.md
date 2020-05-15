@@ -1,5 +1,12 @@
 # Changelog
 
+## [v0.10.1](https://github.com/seegno/react-forms/tree/v0.10.1) (2020-05-15)
+[Full Changelog](https://github.com/seegno/react-forms/compare/v0.10.0...v0.10.1)
+
+**Merged pull requests:**
+
+- Fix validate util with kebab properties [\#26](https://github.com/seegno/react-forms/pull/26) ([franciscomorais](https://github.com/franciscomorais))
+
 ## [v0.10.0](https://github.com/seegno/react-forms/tree/v0.10.0) (2020-05-13)
 [Full Changelog](https://github.com/seegno/react-forms/compare/v0.9.0...v0.10.0)
 

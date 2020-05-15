@@ -35,7 +35,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
  * Export `getErrorPath`.
  */
 function getErrorPath(error) {
-  var key = error.dataPath.substring(1);
+  var key; // TODO: Handle nested properties.
+
+  if (error.dataPath.startsWith('.')) {
+    key = error.dataPath.substring(1);
+  } else {
+    key = error.dataPath.substring(2, error.dataPath.length - 2);
+  }
 
   switch (error.keyword) {
     case 'required':
