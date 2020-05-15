@@ -19,15 +19,20 @@ describe('validate', () => {
   it('should return errors with the `type` rule when a value does not match the type', () => {
     const result = validate({
       properties: {
-        foo: { type: 'string' }
+        foo: { type: 'string' },
+        'foo-bar': { type: 'string' }
       },
       type: 'object'
     }, {
-      foo: 1
+      foo: 1,
+      'foo-bar': 1
     });
 
     expect(result).toEqual({
       foo: {
+        rule: 'type'
+      },
+      'foo-bar': {
         rule: 'type'
       }
     });

@@ -57,7 +57,14 @@ export type FieldErrors = {
  */
 
 export function getErrorPath(error: ValidationError): string {
-  const key = error.dataPath.substring(1);
+  let key;
+
+  // TODO: Handle nested properties.
+  if (error.dataPath.startsWith('.')) {
+    key = error.dataPath.substring(1);
+  } else {
+    key = error.dataPath.substring(2, error.dataPath.length - 2);
+  }
 
   switch (error.keyword) {
     case 'required':
