@@ -213,7 +213,7 @@ function errorsReducer(options: ErrorOptions) {
     case actionTypes.SET_FIELD_VALUE:
     case actionTypes.REGISTER_FIELD:
     case actionTypes.SUBMIT_START:
-      return validate(values);
+      return validate(values) ?? {};
 
     case actionTypes.RESET:
       return {};
