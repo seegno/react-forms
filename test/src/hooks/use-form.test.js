@@ -625,5 +625,19 @@ describe('useForm hook', () => {
 
       expect(validate).toHaveBeenCalledWith(jsonSchema, { foo: 'bar' }, 'qux');
     });
+
+    it('should set errors to an empty object when validate returns undefined', () => {
+      const { result } = renderHook(() => useForm({
+        jsonSchema: { type: 'object' },
+        onSubmit: () => {},
+        validate: () => {}
+      }));
+
+      act(() => {
+        result.current.fieldActions.setFieldValue('foo', 'bar');
+      });
+
+      expect(result.current.state.fields.errors).toEqual({});
+    });
   });
 });
