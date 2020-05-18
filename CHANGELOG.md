@@ -1,5 +1,12 @@
 # Changelog
 
+## [v0.10.2](https://github.com/seegno/react-forms/tree/v0.10.2) (2020-05-18)
+[Full Changelog](https://github.com/seegno/react-forms/compare/v0.10.1...v0.10.2)
+
+**Merged pull requests:**
+
+- Fix form errors reducer [\#27](https://github.com/seegno/react-forms/pull/27) ([bsonntag](https://github.com/bsonntag))
+
 ## [v0.10.1](https://github.com/seegno/react-forms/tree/v0.10.1) (2020-05-15)
 [Full Changelog](https://github.com/seegno/react-forms/compare/v0.10.0...v0.10.1)
 

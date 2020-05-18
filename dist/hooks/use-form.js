@@ -10,7 +10,7 @@ var _lodash = require("lodash");
 
 var _react = require("react");
 
-var _validate = _interopRequireDefault(require("../utils/validate"));
+var _validate2 = _interopRequireDefault(require("../utils/validate"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -131,6 +131,8 @@ var metaReducer = function metaReducer(state, action) {
  * Errors reducer.
  */
 function errorsReducer(options) {
+  var _validate;
+
   var action = options.action,
       state = options.state,
       validate = options.validate,
@@ -141,7 +143,7 @@ function errorsReducer(options) {
     case actionTypes.SET_FIELD_VALUE:
     case actionTypes.REGISTER_FIELD:
     case actionTypes.SUBMIT_START:
-      return validate(values);
+      return (_validate = validate(values)) !== null && _validate !== void 0 ? _validate : {};
 
     case actionTypes.RESET:
       return {};
@@ -251,7 +253,7 @@ function useForm(options) {
       _options$stateReducer = options.stateReducer,
       stateReducer = _options$stateReducer === void 0 ? _lodash.identity : _options$stateReducer,
       _options$validate = options.validate,
-      validate = _options$validate === void 0 ? _validate["default"] : _options$validate,
+      validate = _options$validate === void 0 ? _validate2["default"] : _options$validate,
       validationOptions = options.validationOptions;
 
   var validateValues = function validateValues(values) {
