@@ -45,6 +45,30 @@ describe('useField', () => {
     expect(result.current.value).toBe('bar');
   });
 
+  it('should return the nested field value', () => {
+    const state = {
+      fields: {
+        values: {
+          foo: {
+            bar: 'baz'
+          }
+        }
+      }
+    };
+
+    const Wrapper = ({ children }) => (
+      <FieldActionsContext.Provider value={actions}>
+        <FormStateContext.Provider value={state}>
+          {children}
+        </FormStateContext.Provider>
+      </FieldActionsContext.Provider>
+    );
+
+    const { result } = renderHook(() => useField('foo.bar'), { wrapper: Wrapper });
+
+    expect(result.current.value).toBe('baz');
+  });
+
   it('should return the field error', () => {
     const state = {
       fields: {
@@ -63,6 +87,32 @@ describe('useField', () => {
     const { result } = renderHook(() => useField('foo'), { wrapper: Wrapper });
 
     expect(result.current.error).toBe('bar');
+  });
+
+  it('should return the nested field error', () => {
+    const state = {
+      fields: {
+        errors: {
+          foo: {
+            bar: 'baz'
+          }
+        }
+      }
+    };
+
+    const Wrapper = ({ children }) => (
+      <FieldActionsContext.Provider value={actions}>
+        <FormStateContext.Provider value={state}>
+          {children}
+        </FormStateContext.Provider>
+      </FieldActionsContext.Provider>
+    );
+
+    const { result } = renderHook(() => useField('foo.bar'), {
+      wrapper: Wrapper
+    });
+
+    expect(result.current.error).toBe('baz');
   });
 
   it('should return the field meta state', () => {
@@ -85,6 +135,30 @@ describe('useField', () => {
     expect(result.current.meta).toBe('bar');
   });
 
+  it('should return the nested field meta state', () => {
+    const state = {
+      fields: {
+        meta: {
+          foo: {
+            bar: 'baz'
+          }
+        }
+      }
+    };
+
+    const Wrapper = ({ children }) => (
+      <FieldActionsContext.Provider value={actions}>
+        <FormStateContext.Provider value={state}>
+          {children}
+        </FormStateContext.Provider>
+      </FieldActionsContext.Provider>
+    );
+
+    const { result } = renderHook(() => useField('foo.bar'), { wrapper: Wrapper });
+
+    expect(result.current.meta).toBe('baz');
+  });
+
   it('should return an `onBlur` action that calls the `blurField` form action with the field name', () => {
     const Wrapper = ({ children }) => (
       <FieldActionsContext.Provider value={actions}>
@@ -100,6 +174,25 @@ describe('useField', () => {
 
     expect(actions.blurField).toHaveBeenCalledTimes(1);
     expect(actions.blurField).toHaveBeenCalledWith('foo');
+  });
+
+  it('should return an `onBlur` action that calls the `blurField` form action with the nested field name', () => {
+    const Wrapper = ({ children }) => (
+      <FieldActionsContext.Provider value={actions}>
+        <FormStateContext.Provider value={{}}>
+          {children}
+        </FormStateContext.Provider>
+      </FieldActionsContext.Provider>
+    );
+
+    const { result } = renderHook(() => useField('foo.bar'), {
+      wrapper: Wrapper
+    });
+
+    result.current.onBlur();
+
+    expect(actions.blurField).toHaveBeenCalledTimes(1);
+    expect(actions.blurField).toHaveBeenCalledWith('foo.bar');
   });
 
   it('should return an `onFocus` action that calls the `focusField` form action with the field name', () => {
@@ -119,6 +212,25 @@ describe('useField', () => {
     expect(actions.focusField).toHaveBeenCalledWith('foo');
   });
 
+  it('should return an `onFocus` action that calls the `focusField` form action with the nested field name', () => {
+    const Wrapper = ({ children }) => (
+      <FieldActionsContext.Provider value={actions}>
+        <FormStateContext.Provider value={{}}>
+          {children}
+        </FormStateContext.Provider>
+      </FieldActionsContext.Provider>
+    );
+
+    const { result } = renderHook(() => useField('foo.bar'), {
+      wrapper: Wrapper
+    });
+
+    result.current.onFocus();
+
+    expect(actions.focusField).toHaveBeenCalledTimes(1);
+    expect(actions.focusField).toHaveBeenCalledWith('foo.bar');
+  });
+
   it('should return an `onChange` action that calls the `setFieldValue` form action with the field name and the provided value', () => {
     const Wrapper = ({ children }) => (
       <FieldActionsContext.Provider value={actions}>
@@ -134,5 +246,24 @@ describe('useField', () => {
 
     expect(actions.setFieldValue).toHaveBeenCalledTimes(1);
     expect(actions.setFieldValue).toHaveBeenCalledWith('foo', 'bar');
+  });
+
+  it('should return an `onChange` action that calls the `setFieldValue` form action with the nested field name and the provided value', () => {
+    const Wrapper = ({ children }) => (
+      <FieldActionsContext.Provider value={actions}>
+        <FormStateContext.Provider value={{}}>
+          {children}
+        </FormStateContext.Provider>
+      </FieldActionsContext.Provider>
+    );
+
+    const { result } = renderHook(() => useField('foo.bar'), {
+      wrapper: Wrapper
+    });
+
+    result.current.onChange('baz');
+
+    expect(actions.setFieldValue).toHaveBeenCalledTimes(1);
+    expect(actions.setFieldValue).toHaveBeenCalledWith('foo.bar', 'baz');
   });
 });
