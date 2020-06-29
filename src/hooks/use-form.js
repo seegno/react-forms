@@ -4,7 +4,7 @@
  * Module dependencies.
  */
 
-import { identity } from 'lodash';
+import { get, identity, isEmpty, set } from 'lodash';
 import { useCallback, useEffect, useMemo, useReducer } from 'react';
 import baseValidate, {
   type FieldError,
@@ -99,13 +99,13 @@ const valuesReducer = (state, action) => {
     case actionTypes.SET_FIELD_VALUE:
       return {
         ...state,
-        [payload.field]: payload.value
+        ...set({}, payload.field, payload.value)
       };
 
     case actionTypes.REGISTER_FIELD:
       return {
         ...state,
-        [payload.field]: state[payload.field]
+        ...set({}, payload.field, get(state, payload.field))
       };
 
     case actionTypes.RESET:
@@ -115,6 +115,28 @@ const valuesReducer = (state, action) => {
       return state;
   }
 };
+
+/**
+ * Field meta keys.
+ */
+
+const fieldMetaKeys = ['active', 'dirty', 'touched'];
+
+/**
+ * Get nested keys.
+ */
+
+function getNestedKeys(state: Object, allKeys: Array<string>): Array<string> {
+  return Object.keys(state).reduce((acc, key) => {
+    if (fieldMetaKeys.includes(key)) {
+      return acc;
+    }
+
+    acc.push(key);
+
+    return getNestedKeys(state[key], acc);
+  }, allKeys);
+}
 
 /**
  * Meta reducer.
@@ -127,61 +149,67 @@ const metaReducer = (state, action) => {
     case actionTypes.BLUR:
       return {
         ...state,
-        [payload.field]: {
-          ...state[payload.field],
+        ...set({}, payload.field, {
+          ...get(state, payload.field),
           active: false,
           touched: true
-        }
+        })
       };
 
     case actionTypes.SET_FIELD_VALUE:
       return {
         ...state,
-        [payload.field]: {
-          ...state[payload.field],
+        ...set({}, payload.field, {
+          ...get(state, payload.field),
           dirty: true
-        }
+        })
       };
 
     case actionTypes.FOCUS:
       return {
         ...state,
-        [payload.field]: {
-          ...state[payload.field],
+        ...set({}, payload.field, {
+          ...get(state, payload.field),
           active: true
-        }
+        })
       };
 
     case actionTypes.REGISTER_FIELD:
       return {
         ...state,
-        [payload.field]: {
-          active: false,
-          dirty: false,
-          touched: false,
-          ...state[payload.field]
-        }
-      };
-
-    case actionTypes.SUBMIT_START:
-      return Object.keys(state).reduce((result, key) => ({
-        ...result,
-        [key]: {
-          ...state?.[key],
-          touched: true
-        }
-      }), {});
-
-    case actionTypes.RESET:
-      return Object.keys(state).reduce((result, key) => ({
-        ...result,
-        [key]: {
-          ...state?.[key],
+        ...set({}, payload.field, {
+          ...get(state, payload.field),
           active: false,
           dirty: false,
           touched: false
-        }
-      }), {});
+        })
+      };
+
+    case actionTypes.SUBMIT_START: {
+      const path = getNestedKeys(state, []).join('.');
+
+      return {
+        ...set({}, path, {
+          ...get(state, path),
+          active: false,
+          dirty: false,
+          touched: true
+        })
+      };
+    }
+
+    case actionTypes.RESET: {
+      const path = getNestedKeys(state, []).join('.');
+
+      return {
+        ...set({}, path, {
+          ...get(state, path),
+          active: false,
+          dirty: false,
+          touched: false
+        })
+      };
+    }
 
     default:
       return state;
@@ -290,10 +318,40 @@ const formReducer = (validate: Object => FieldErrors, stateReducer: (state: Form
       },
       isSubmitting,
       meta: {
-        active: fieldsMetaValues.some(({ active }) => active),
-        dirty: fieldsMetaValues.some(({ dirty }) => dirty),
+        active: fieldsMetaValues.some(element => {
+          const nestedKeys = getNestedKeys(element, []);
+
+          if (!isEmpty(nestedKeys)) {
+            const path = nestedKeys.join('.');
+
+            return get(element, path).active;
+          }
+
+          return element.active;
+        }),
+        dirty: fieldsMetaValues.some(element => {
+          const nestedKeys = getNestedKeys(element, []);
+
+          if (!isEmpty(nestedKeys)) {
+            const path = nestedKeys.join('.');
+
+            return get(element, path).dirty;
+          }
+
+          return element.dirty;
+        }),
         hasErrors: Object.entries(fieldsErrors).length > 0,
-        touched: fieldsMetaValues.some(({ touched }) => touched)
+        touched: fieldsMetaValues.some(element => {
+          const nestedKeys = getNestedKeys(element, []);
+
+          if (!isEmpty(nestedKeys)) {
+            const path = nestedKeys.join('.');
+
+            return get(element, path).touched;
+          }
+
+          return element.touched;
+        })
       },
       submitStatus
     }, action);

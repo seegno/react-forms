@@ -4,7 +4,7 @@
  * Module dependencies.
  */
 
-import { merge } from 'lodash';
+import { merge, set } from 'lodash';
 import Ajv from 'ajv';
 
 /**
@@ -115,10 +115,12 @@ const getError = (error: ValidationError): FieldError => ({
  */
 
 export function parseValidationErrors(validationErrors: Array<ValidationError>): FieldErrors {
-  return validationErrors.reduce((errors, error) => ({
-    ...errors,
-    [getErrorPath(error)]: getError(error)
-  }), {});
+  return validationErrors.reduce((errors, error) => {
+    return {
+      ...errors,
+      ...set({}, getErrorPath(error), getError(error))
+    };
+  }, {});
 }
 
 /**
