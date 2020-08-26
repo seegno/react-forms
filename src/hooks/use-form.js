@@ -301,6 +301,32 @@ const formReducer = (validate: Object => FieldErrors, stateReducer: (state: Form
 };
 
 /**
+ * Initialize state.
+ */
+
+function initializeState(validate: Validate) {
+  return (initialValues: Object): FormState => {
+    const errors = validate(initialValues) ?? {};
+
+    return {
+      fields: {
+        errors,
+        meta: {},
+        values: initialValues
+      },
+      isSubmitting: false,
+      meta: {
+        active: false,
+        dirty: false,
+        hasErrors: Object.entries(errors).length > 0,
+        touched: false
+      },
+      submitStatus: 'idle'
+    };
+  };
+}
+
+/**
  * `Options` type.
  */
 
@@ -332,21 +358,8 @@ export default function useForm(options: Options) {
   const validateValues = values => validate(jsonSchema, values, validationOptions);
   const [state, dispatch] = useReducer(
     formReducer(validateValues, stateReducer),
-    {
-      fields: {
-        errors: {},
-        meta: {},
-        values: initialValues
-      },
-      isSubmitting: false,
-      meta: {
-        active: false,
-        dirty: false,
-        hasErrors: false,
-        touched: false
-      },
-      submitStatus: 'idle'
-    }
+    initialValues,
+    initializeState(validateValues)
   );
 
   const setFieldValue = useCallback((field: string, value: any) => {
