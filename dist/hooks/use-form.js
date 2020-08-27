@@ -10,7 +10,7 @@ var _lodash = require("lodash");
 
 var _react = require("react");
 
-var _validate2 = _interopRequireDefault(require("../utils/validate"));
+var _validate3 = _interopRequireDefault(require("../utils/validate"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -237,6 +237,33 @@ var formReducer = function formReducer(validate, stateReducer) {
   };
 };
 /**
+ * Initialize state.
+ */
+
+
+function initializeState(validate) {
+  return function (initialValues) {
+    var _validate2;
+
+    var errors = (_validate2 = validate(initialValues)) !== null && _validate2 !== void 0 ? _validate2 : {};
+    return {
+      fields: {
+        errors: errors,
+        meta: {},
+        values: initialValues
+      },
+      isSubmitting: false,
+      meta: {
+        active: false,
+        dirty: false,
+        hasErrors: Object.entries(errors).length > 0,
+        touched: false
+      },
+      submitStatus: 'idle'
+    };
+  };
+}
+/**
  * `Options` type.
  */
 
@@ -253,28 +280,14 @@ function useForm(options) {
       _options$stateReducer = options.stateReducer,
       stateReducer = _options$stateReducer === void 0 ? _lodash.identity : _options$stateReducer,
       _options$validate = options.validate,
-      validate = _options$validate === void 0 ? _validate2["default"] : _options$validate,
+      validate = _options$validate === void 0 ? _validate3["default"] : _options$validate,
       validationOptions = options.validationOptions;
 
   var validateValues = function validateValues(values) {
     return validate(jsonSchema, values, validationOptions);
   };
 
-  var _useReducer = (0, _react.useReducer)(formReducer(validateValues, stateReducer), {
-    fields: {
-      errors: {},
-      meta: {},
-      values: initialValues
-    },
-    isSubmitting: false,
-    meta: {
-      active: false,
-      dirty: false,
-      hasErrors: false,
-      touched: false
-    },
-    submitStatus: 'idle'
-  }),
+  var _useReducer = (0, _react.useReducer)(formReducer(validateValues, stateReducer), initialValues, initializeState(validateValues)),
       _useReducer2 = _slicedToArray(_useReducer, 2),
       state = _useReducer2[0],
       dispatch = _useReducer2[1];
