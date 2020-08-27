@@ -6,6 +6,7 @@
 import { act, renderHook } from '@testing-library/react-hooks';
 import { merge } from 'lodash';
 import useForm, { actionTypes } from 'hooks/use-form';
+import validate from 'utils/validate';
 
 /**
  * `useForm` hook tests.
@@ -34,6 +35,22 @@ describe('useForm hook', () => {
       active: false,
       dirty: false,
       hasErrors: false,
+      touched: false
+    });
+  });
+
+  it('should validate the initial values', () => {
+    const { result } = renderHook(() => useForm({
+      initialValues: {},
+      jsonSchema: { required: ['foo'] },
+      onSubmit: () => {}
+    }));
+
+    expect(result.current.state.fields.errors).toHaveProperty('foo');
+    expect(result.current.state.meta).toEqual({
+      active: false,
+      dirty: false,
+      hasErrors: true,
       touched: false
     });
   });
@@ -107,6 +124,7 @@ describe('useForm hook', () => {
     });
 
     it('should not validate the form', () => {
+      const mockValidate = jest.fn(validate);
       const { result } = renderHook(() => useForm({
         initialValues: { foo: 1 },
         jsonSchema: {
@@ -115,14 +133,18 @@ describe('useForm hook', () => {
           },
           type: 'object'
         },
-        onSubmit: () => {}
+        onSubmit: () => {},
+        validate: mockValidate
       }));
+
+      // Reset mock calls, because initialization calls `validate`.
+      mockValidate.mockReset();
 
       act(() => {
         result.current.fieldActions.focusField('foo');
       });
 
-      expect(result.current.state.fields.errors).toEqual({});
+      expect(mockValidate).not.toHaveBeenCalled();
     });
   });
 
