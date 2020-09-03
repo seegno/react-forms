@@ -230,6 +230,25 @@ describe('useForm hook', () => {
       expect(result.current.state.fields.values).toEqual({ foo: 'bar' });
     });
 
+    it('should set the received values as initial values', () => {
+      const { result } = renderHook(() => useForm({
+        jsonSchema: { type: 'object' },
+        onSubmit: () => {}
+      }));
+
+      act(() => {
+        result.current.formActions.reset({
+          baz: 'qux',
+          foo: 'bar'
+        });
+      });
+
+      expect(result.current.state.fields.values).toEqual({
+        baz: 'qux',
+        foo: 'bar'
+      });
+    });
+
     it('should clear the form errors', () => {
       const { result } = renderHook(() => useForm({
         jsonSchema: {
