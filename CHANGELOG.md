@@ -1,5 +1,12 @@
 # Changelog
 
+## [v0.11.0](https://github.com/seegno/react-forms/tree/v0.11.0) (2020-09-03)
+[Full Changelog](https://github.com/seegno/react-forms/compare/v0.10.3...v0.11.0)
+
+**Merged pull requests:**
+
+- Update reset action to optionally receive new initial values [\#33](https://github.com/seegno/react-forms/pull/33) ([Joanata](https://github.com/Joanata))
+
 ## [v0.10.3](https://github.com/seegno/react-forms/tree/v0.10.3) (2020-08-27)
 [Full Changelog](https://github.com/seegno/react-forms/compare/v0.10.2...v0.10.3)
 
@@ -62,6 +69,7 @@
 - Add validations for maximum and minimum [\#17](https://github.com/seegno/react-forms/pull/17) ([bsonntag](https://github.com/bsonntag))
 - Add validations for maxProperties and minProperties [\#16](https://github.com/seegno/react-forms/pull/16) ([bsonntag](https://github.com/bsonntag))
 - Add validations for maxItems and minItems [\#15](https://github.com/seegno/react-forms/pull/15) ([bsonntag](https://github.com/bsonntag))
+- Improve useFieldState with debug value [\#13](https://github.com/seegno/react-forms/pull/13) ([bsonntag](https://github.com/bsonntag))
 
 ## [v0.5.0](https://github.com/seegno/react-forms/tree/v0.5.0) (2019-11-12)
 [Full Changelog](https://github.com/seegno/react-forms/compare/v0.4.0...v0.5.0)
@@ -73,6 +81,10 @@
 
 ## [v0.4.0](https://github.com/seegno/react-forms/tree/v0.4.0) (2019-09-11)
 [Full Changelog](https://github.com/seegno/react-forms/compare/v0.3.0...v0.4.0)
+
+**Merged pull requests:**
+
+- Add dirty field state [\#10](https://github.com/seegno/react-forms/pull/10) ([bsonntag](https://github.com/bsonntag))
 
 ## [v0.3.0](https://github.com/seegno/react-forms/tree/v0.3.0) (2019-09-05)
 [Full Changelog](https://github.com/seegno/react-forms/compare/v0.2.0...v0.3.0)
@@ -86,8 +98,6 @@
 
 **Merged pull requests:**
 
-- Improve useFieldState with debug value [\#13](https://github.com/seegno/react-forms/pull/13) ([bsonntag](https://github.com/bsonntag))
-- Add dirty field state [\#10](https://github.com/seegno/react-forms/pull/10) ([bsonntag](https://github.com/bsonntag))
 - Update form onSubmit to be a function [\#8](https://github.com/seegno/react-forms/pull/8) ([flaviocastro](https://github.com/flaviocastro))
 - Fix useForm touched state not triggered by focus [\#7](https://github.com/seegno/react-forms/pull/7) ([flaviocastro](https://github.com/flaviocastro))
 - Fix unhandled promise rejection on useForm hook [\#6](https://github.com/seegno/react-forms/pull/6) ([bsonntag](https://github.com/bsonntag))

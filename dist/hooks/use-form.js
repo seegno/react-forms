@@ -325,8 +325,17 @@ function useForm(options) {
       type: actionTypes.REGISTER_FIELD
     });
   }, []);
-  var reset = (0, _react.useCallback)(function () {
-    dispatch({
+  var reset = (0, _react.useCallback)(function (formValues) {
+    if (formValues) {
+      return dispatch({
+        payload: {
+          initialValues: formValues
+        },
+        type: actionTypes.RESET
+      });
+    }
+
+    return dispatch({
       payload: {
         initialValues: initialValues
       },
