@@ -390,8 +390,15 @@ export default function useForm(options: Options) {
     });
   }, []);
 
-  const reset = useCallback(() => {
-    dispatch({
+  const reset = useCallback((formValues?: Object) => {
+    if (formValues) {
+      return dispatch({
+        payload: { initialValues: formValues },
+        type: actionTypes.RESET
+      });
+    }
+
+    return dispatch({
       payload: { initialValues },
       type: actionTypes.RESET
     });
