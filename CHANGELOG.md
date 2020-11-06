@@ -1,5 +1,15 @@
 # Changelog
 
+## [v0.12.0](https://github.com/seegno/react-forms/tree/v0.12.0) (2020-11-06)
+[Full Changelog](https://github.com/seegno/react-forms/compare/v0.11.0...v0.12.0)
+
+**Merged pull requests:**
+
+- Add lodash dependency [\#37](https://github.com/seegno/react-forms/pull/37) ([catarinapeixoto](https://github.com/catarinapeixoto))
+- Update setFieldValue with update function [\#36](https://github.com/seegno/react-forms/pull/36) ([bsonntag](https://github.com/bsonntag))
+- Bump node-fetch from 2.6.0 to 2.6.1 [\#35](https://github.com/seegno/react-forms/pull/35) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump handlebars from 4.5.2 to 4.7.6 [\#34](https://github.com/seegno/react-forms/pull/34) ([dependabot[bot]](https://github.com/apps/dependabot))
+
 ## [v0.11.0](https://github.com/seegno/react-forms/tree/v0.11.0) (2020-09-03)
 [Full Changelog](https://github.com/seegno/react-forms/compare/v0.10.3...v0.11.0)
 
@@ -35,6 +45,7 @@
 **Merged pull requests:**
 
 - Add validate option [\#25](https://github.com/seegno/react-forms/pull/25) ([bsonntag](https://github.com/bsonntag))
+- Add validation options to validate custom formats [\#21](https://github.com/seegno/react-forms/pull/21) ([franciscomorais](https://github.com/franciscomorais))
 
 ## [v0.9.0](https://github.com/seegno/react-forms/tree/v0.9.0) (2020-05-11)
 [Full Changelog](https://github.com/seegno/react-forms/compare/v0.8.0...v0.9.0)
@@ -50,7 +61,6 @@
 **Merged pull requests:**
 
 - Update validation to support custom keywords [\#22](https://github.com/seegno/react-forms/pull/22) ([bsonntag](https://github.com/bsonntag))
-- Add validation options to validate custom formats [\#21](https://github.com/seegno/react-forms/pull/21) ([franciscomorais](https://github.com/franciscomorais))
 
 ## [v0.7.0](https://github.com/seegno/react-forms/tree/v0.7.0) (2019-12-05)
 [Full Changelog](https://github.com/seegno/react-forms/compare/v0.6.0...v0.7.0)

@@ -57,7 +57,17 @@ var valuesReducer = function valuesReducer(state, action) {
 
   switch (type) {
     case actionTypes.SET_FIELD_VALUE:
-      return _objectSpread({}, state, _defineProperty({}, payload.field, payload.value));
+      {
+        var newValue;
+
+        if (typeof payload.value === 'function') {
+          newValue = payload.value(state[payload.field]);
+        } else {
+          newValue = payload.value;
+        }
+
+        return _objectSpread({}, state, _defineProperty({}, payload.field, newValue));
+      }
 
     case actionTypes.REGISTER_FIELD:
       return _objectSpread({}, state, _defineProperty({}, payload.field, state[payload.field]));
