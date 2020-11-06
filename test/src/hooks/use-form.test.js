@@ -337,6 +337,27 @@ describe('useForm hook', () => {
 
       expect(result.current.state.fields.errors).toHaveProperty('foo');
     });
+
+    it('should call the passed callback with the current field value and update it to the returned value', () => {
+      const callback = jest.fn(() => 'qux');
+      const { result } = renderHook(() => useForm({
+        initialValues: { foo: 'bar' },
+        jsonSchema: {
+          properties: {
+            foo: { type: 'string' }
+          },
+          type: 'object'
+        },
+        onSubmit: () => {}
+      }));
+
+      act(() => {
+        result.current.fieldActions.setFieldValue('foo', callback);
+      });
+
+      expect(callback).toHaveBeenCalledWith('bar');
+      expect(result.current.state.fields.values).toEqual({ foo: 'qux' });
+    });
   });
 
   describe('submit', () => {

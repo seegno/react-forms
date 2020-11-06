@@ -96,11 +96,20 @@ const valuesReducer = (state, action) => {
   const { payload, type } = action;
 
   switch (type) {
-    case actionTypes.SET_FIELD_VALUE:
+    case actionTypes.SET_FIELD_VALUE: {
+      let newValue;
+
+      if (typeof payload.value === 'function') {
+        newValue = payload.value(state[payload.field]);
+      } else {
+        newValue = payload.value;
+      }
+
       return {
         ...state,
-        [payload.field]: payload.value
+        [payload.field]: newValue
       };
+    }
 
     case actionTypes.REGISTER_FIELD:
       return {
