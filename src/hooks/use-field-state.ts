@@ -1,11 +1,9 @@
-// @flow
-
 /**
  * Module dependencies.
  */
 
 import { useDebugValue } from 'react';
-import { useFormState } from 'context/form-state-context';
+import { useFormState } from '../context/form-state-context';
 
 /**
  * Export `useFieldState`.

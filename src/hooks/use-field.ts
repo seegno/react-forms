@@ -1,12 +1,10 @@
-// @flow
-
 /**
  * Module dependencies.
  */
 
-import { useCallback, useEffect } from 'react';
-import { useFieldActions } from 'context/field-actions-context';
-import useFieldState from './use-field-state';
+import { useCallback, useEffect } from "react";
+import { useFieldActions } from '@seegno/react-forms/context/field-actions-context";
+import useFieldState from "./use-field-state";
 
 /**
  * Export `useField`.
@@ -25,9 +23,12 @@ export default function useField(field: string) {
     registerField(field);
   }, [field, registerField]);
 
-  const onChange = useCallback((value: any) => {
-    setFieldValue(field, value);
-  }, [field, setFieldValue]);
+  const onChange = useCallback(
+    (value: any) => {
+      setFieldValue(field, value);
+    },
+    [field, setFieldValue]
+  );
 
   const onBlur = useCallback(() => {
     blurField(field);
