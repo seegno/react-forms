@@ -1,25 +1,23 @@
-// @flow
-
 /**
  * Module dependencies.
  */
 
-import { type Context, createContext, useContext } from 'react';
+import { createContext, useContext, SyntheticEvent } from "react";
 
 /**
  * `FormActionsContextType` type.
  */
 
 type FormActionsContextType = {
-  reset: () => void,
-  submit: (event?: SyntheticInputEvent<any>) => void
+  reset: () => void;
+  submit: (event?: SyntheticEvent<any>) => void;
 };
 
 /**
  * Export `FormActionsContext`.
  */
 
-export const FormActionsContext: Context<FormActionsContextType> = createContext({
+export const FormActionsContext = createContext<FormActionsContextType>({
   reset: () => {},
   submit: () => {}
 });

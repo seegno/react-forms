@@ -1,48 +1,32 @@
-// @flow
-
 /**
  * Module dependencies.
  */
 
 import { merge } from 'lodash';
-import Ajv from 'ajv';
+import Ajv, {
+  AdditionalPropertiesParams,
+  ErrorObject,
+  LimitParams,
+  Options,
+  RequiredParams
+} from 'ajv';
 
 /**
  * Export `ValidationOptions` type.
  */
 
-export type ValidationOptions = {
-  coerceTypes?: boolean | 'array',
-  format?: boolean | 'fast' | 'full',
-  formats?: Object,
-  keywords?: Object,
-  logger?: Function,
-  nullable?: boolean,
-  removeAdditional?: boolean | 'all' | 'failing',
-  schemaId?: String,
-  uniqueItems?: boolean,
-  unknownFormats?: boolean | Array<string> | 'ignore' | Object,
-  useDefaults?: boolean | 'empty' | 'shared'
+export interface ValidationOptions extends Options {
+  keywords?: object
 };
-
-/**
- * `ValidationError` type.
- */
-
-type ValidationError = {|
-  dataPath: string,
-  keyword: string,
-  params: Object
-|};
 
 /**
  * Export `FieldError` type.
  */
 
-export type FieldError = {|
-  args?: Object,
+export type FieldError = {
+  args?: object,
   rule: string
-|};
+};
 
 /**
  * Export `FieldErrors` type.
@@ -56,7 +40,7 @@ export type FieldErrors = {
  * Export `getErrorPath`.
  */
 
-export function getErrorPath(error: ValidationError): string {
+export function getErrorPath(error: ErrorObject): string {
   let key;
 
   // TODO: Handle nested properties.
@@ -68,10 +52,10 @@ export function getErrorPath(error: ValidationError): string {
 
   switch (error.keyword) {
     case 'required':
-      return `${key ? `${key}.` : ''}${error.params.missingProperty}`;
+      return `${key ? `${key}.` : ''}${(error.params as RequiredParams).missingProperty}`;
 
     case 'additionalProperties':
-      return `${key ? `${key}.` : ''}${error.params.additionalProperty}`;
+      return `${key ? `${key}.` : ''}${(error.params as AdditionalPropertiesParams).additionalProperty}`;
 
     default:
       return key;
@@ -82,19 +66,21 @@ export function getErrorPath(error: ValidationError): string {
  * Get error args.
  */
 
-function getErrorArgs(error: ValidationError) {
+function getErrorArgs(error: ErrorObject) {
+  const { params } = error;
+
   switch (error.keyword) {
     case 'maxItems':
     case 'maxLength':
     case 'maxProperties':
     case 'maximum':
-      return { max: error.params.limit };
+      return { max: (params as LimitParams).limit };
 
     case 'minItems':
     case 'minLength':
     case 'minProperties':
     case 'minimum':
-      return { min: error.params.limit };
+      return { min: (params as LimitParams).limit };
 
     default:
       return;
@@ -105,7 +91,7 @@ function getErrorArgs(error: ValidationError) {
  * Get error.
  */
 
-const getError = (error: ValidationError): FieldError => ({
+const getError = (error: ErrorObject): FieldError => ({
   args: getErrorArgs(error),
   rule: error.keyword
 });
@@ -114,7 +100,7 @@ const getError = (error: ValidationError): FieldError => ({
  * Parse validation errors.
  */
 
-export function parseValidationErrors(validationErrors: Array<ValidationError>): FieldErrors {
+export function parseValidationErrors(validationErrors: Array<ErrorObject>): FieldErrors {
   return validationErrors.reduce((errors, error) => ({
     ...errors,
     [getErrorPath(error)]: getError(error)
@@ -125,13 +111,13 @@ export function parseValidationErrors(validationErrors: Array<ValidationError>):
  * `Validate` type.
  */
 
-export type Validate = (schema: Object, values: Object, options?: ValidationOptions) => FieldErrors;
+export type Validate = (schema: object, values: object, options?: ValidationOptions) => FieldErrors;
 
 /**
  * Export `validate`.
  */
 
-export default function validate(schema: Object, values: Object, options?: ValidationOptions): FieldErrors {
+export default function validate(schema: object, values: object, options?: ValidationOptions): FieldErrors {
   const { keywords, ...restOptions } = options ?? {};
   const ajv = new Ajv(merge({}, restOptions, { $data: true, allErrors: true }));
 

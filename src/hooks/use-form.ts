@@ -1,17 +1,15 @@
-// @flow
-
 /**
  * Module dependencies.
  */
 
 import { identity } from 'lodash';
-import { useCallback, useEffect, useMemo, useReducer } from 'react';
+import { useCallback, useEffect, useMemo, useReducer, SyntheticEvent } from 'react';
 import baseValidate, {
-  type FieldError,
-  type FieldErrors,
-  type Validate,
-  type ValidationOptions
-} from 'utils/validate';
+  FieldError,
+  FieldErrors,
+  Validate,
+  ValidationOptions
+} from 'src/utils/validate';
 
 /**
  * Export `actionTypes`.
@@ -29,12 +27,16 @@ export const actionTypes = {
   SUBMITTING: 'SUBMITTING'
 };
 
+type DefaultFormModel = {
+  [field: string]: any
+}
+
 /**
  * Export `Submit` type.
  */
 
-export type Submit = (
-  values: Object,
+export type Submit<M = DefaultFormModel> = (
+  values: M,
   actions: {
     reset: () => void
   }
@@ -45,8 +47,12 @@ export type Submit = (
  */
 
 export type Action = {
-  payload: Object,
-  type: $Values<typeof actionTypes>
+  payload: {
+    field: string,
+    initialValues: object,
+    value: any
+  },
+  type: keyof typeof actionTypes
 };
 
 /**
@@ -71,7 +77,7 @@ export type FormMetaType = FieldMetaType & {
  * Export `FormState` type.
  */
 
-export type FormState = {
+export type FormState<M = DefaultFormModel> = {
   fields: {
     errors: {
       [fieldName: string]: FieldError
@@ -79,9 +85,7 @@ export type FormState = {
     meta: {
       [fieldName: string]: FieldMetaType
     },
-    values: {
-      [fieldName: string]: any
-    }
+    values: M
   },
   isSubmitting: boolean,
   meta: FormMetaType,
@@ -92,7 +96,7 @@ export type FormState = {
  * Values reducer.
  */
 
-const valuesReducer = (state, action) => {
+const valuesReducer = (state: any, action: Action) => {
   const { payload, type } = action;
 
   switch (type) {
@@ -129,7 +133,7 @@ const valuesReducer = (state, action) => {
  * Meta reducer.
  */
 
-const metaReducer = (state, action) => {
+const metaReducer = (state: any, action: Action) => {
   const { payload, type } = action;
 
   switch (type) {
@@ -201,14 +205,14 @@ const metaReducer = (state, action) => {
  * `ErrorOptions` type.
  */
 
-type ErrorOptions = {|
+type ErrorOptions = {
   action: Action,
   state: {
     [fieldName: string]: FieldError
   },
-  validate: (values: Object) => FieldErrors,
-  values: Object
-|};
+  validate: (values: object) => FieldErrors,
+  values: object
+};
 
 /**
  * Errors reducer.
@@ -236,7 +240,7 @@ function errorsReducer(options: ErrorOptions) {
  * Submit status reducer.
  */
 
-function submitStatusReducer(state, action) {
+function submitStatusReducer(state: any, action: Action) {
   switch (action.type) {
     case actionTypes.SUBMIT_START:
       return 'submitStart';
@@ -257,7 +261,7 @@ function submitStatusReducer(state, action) {
  * Is submitting reducer.
  */
 
-function isSubmittingReducer(state, action) {
+function isSubmittingReducer(state: any, action: Action) {
   switch (action.type) {
     case actionTypes.SUBMIT_START:
     case actionTypes.SUBMITTING:
@@ -276,7 +280,7 @@ function isSubmittingReducer(state, action) {
  * Form reducer.
  */
 
-const formReducer = (validate: Object => FieldErrors, stateReducer: (state: FormState, action: Action) => FormState) => {
+const formReducer = (validate: (o: object) => FieldErrors, stateReducer: (state: FormState, action: Action) => FormState) => {
   return (state: FormState, action: Action) => {
     const fieldsValues = valuesReducer(state.fields.values, action);
     const fieldsMeta = metaReducer(state.fields.meta, action);
@@ -289,7 +293,7 @@ const formReducer = (validate: Object => FieldErrors, stateReducer: (state: Form
       values: fieldsValues
     });
 
-    const fieldsMetaValues: Array<Object> = Object.values(fieldsMeta);
+    const fieldsMetaValues: Array<FieldMetaType> = Object.values(fieldsMeta);
 
     return stateReducer({
       fields: {
@@ -314,7 +318,7 @@ const formReducer = (validate: Object => FieldErrors, stateReducer: (state: Form
  */
 
 function initializeState(validate: Validate) {
-  return (initialValues: Object): FormState => {
+  return (initialValues: object): FormState => {
     const errors = validate(initialValues) ?? {};
 
     return {
@@ -339,15 +343,15 @@ function initializeState(validate: Validate) {
  * `Options` type.
  */
 
-type Options = {|
-  initialValues: Object,
-  jsonSchema: Object,
+type Options = {
+  initialValues: object,
+  jsonSchema: object,
   onSubmit: Submit,
-  onValuesChanged?: (formState: Object) => void,
+  onValuesChanged?: (formState: object) => void,
   stateReducer?: (state: FormState, action: Action) => FormState,
   validate?: Validate,
   validationOptions?: ValidationOptions
-|};
+};
 
 /**
  * Export `useForm`.
@@ -399,7 +403,7 @@ export default function useForm(options: Options) {
     });
   }, []);
 
-  const reset = useCallback((formValues?: Object) => {
+  const reset = useCallback((formValues?: object) => {
     if (formValues) {
       return dispatch({
         payload: { initialValues: formValues },
@@ -413,7 +417,7 @@ export default function useForm(options: Options) {
     });
   }, [initialValues]);
 
-  const submit = useCallback((event: ?SyntheticEvent<any>) => {
+  const submit = useCallback((event: undefined | SyntheticEvent<any>) => {
     if (event && typeof event.preventDefault === 'function') {
       event.preventDefault();
     }

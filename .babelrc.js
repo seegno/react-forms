@@ -18,10 +18,17 @@ module.exports = {
     '@babel/plugin-proposal-optional-chaining',
     ['module-resolver', {
       alias: {
-        test: './test'
+        test: './test',
+        app: "./src"
       },
-      root: ['./src']
+      extensions: ['.js', '.ts'],
+      root: ['.']
     }]
   ],
-  presets: ['@babel/preset-env', '@babel/preset-react', '@babel/preset-flow']
+  presets: [
+    '@babel/preset-env',
+    '@babel/preset-react',
+    '@babel/preset-flow',
+    '@babel/typescript'
+  ]
 };
