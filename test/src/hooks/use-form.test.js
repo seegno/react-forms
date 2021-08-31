@@ -42,7 +42,10 @@ describe('useForm hook', () => {
   it('should validate the initial values', () => {
     const { result } = renderHook(() => useForm({
       initialValues: {},
-      jsonSchema: { required: ['foo'] },
+      jsonSchema: {
+        required: ['foo'],
+        type: 'object'
+      },
       onSubmit: () => {}
     }));
 
@@ -604,16 +607,15 @@ describe('useForm hook', () => {
         },
         onSubmit: () => {},
         validationOptions: {
-          keywords: {
-            isBar: {
-              type: 'string',
-              validate: () => true
-            },
-            isFoo: {
-              type: 'string',
-              validate: () => false
-            }
-          }
+          keywords: [{
+            keyword: 'isBar',
+            type: 'string',
+            validate: () => true
+          }, {
+            keyword: 'isFoo',
+            type: 'string',
+            validate: () => false
+          }]
         }
       }));
 
