@@ -167,7 +167,7 @@ describe('validate', () => {
         bar: 'qux',
         baz: 'biz'
       }
-    });
+    }, { strict: false });
 
     expect(result).toEqual({
       foo: {
@@ -189,7 +189,7 @@ describe('validate', () => {
       foo: {
         bar: 'qux'
       }
-    });
+    }, { strict: false });
 
     expect(result).toEqual({
       foo: {
