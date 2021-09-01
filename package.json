@@ -62,7 +62,7 @@
     "testRegex": "(test/.*\\.test.js)$"
   },
   "dependencies": {
-    "ajv": "^6.10.2",
+    "ajv": "^8.6.2",
     "lodash": "^4.17.20"
   },
   "devDependencies": {

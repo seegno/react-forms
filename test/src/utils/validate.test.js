@@ -121,7 +121,8 @@ describe('validate', () => {
           maxItems: 1,
           type: 'array'
         }
-      }
+      },
+      type: 'object'
     }, {
       foo: [1, 2]
     });
@@ -141,7 +142,8 @@ describe('validate', () => {
           minItems: 2,
           type: 'array'
         }
-      }
+      },
+      type: 'object'
     }, {
       foo: [1]
     });
@@ -161,7 +163,8 @@ describe('validate', () => {
           maxProperties: 1,
           type: 'object'
         }
-      }
+      },
+      type: 'object'
     }, {
       foo: {
         bar: 'qux',
@@ -182,9 +185,10 @@ describe('validate', () => {
       properties: {
         foo: {
           minProperties: 2,
-          type: 'string'
+          type: 'object'
         }
-      }
+      },
+      type: 'object'
     }, {
       foo: {
         bar: 'qux'
@@ -206,7 +210,8 @@ describe('validate', () => {
           maximum: 1,
           type: 'number'
         }
-      }
+      },
+      type: 'object'
     }, {
       foo: 2
     });
@@ -226,7 +231,8 @@ describe('validate', () => {
           minimum: 2,
           type: 'number'
         }
-      }
+      },
+      type: 'object'
     }, {
       foo: 1
     });
@@ -286,16 +292,15 @@ describe('validate', () => {
       bar: '123',
       foo: '123'
     }, {
-      keywords: {
-        isBar: {
-          type: 'string',
-          validate: () => true
-        },
-        isFoo: {
-          type: 'string',
-          validate: () => false
-        }
-      }
+      keywords: [{
+        keyword: 'isBar',
+        type: 'string',
+        validate: () => true
+      }, {
+        keyword: 'isFoo',
+        type: 'string',
+        validate: () => false
+      }]
     });
 
     expect(result).toEqual({

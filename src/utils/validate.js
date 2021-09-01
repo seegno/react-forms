@@ -30,7 +30,7 @@ export type ValidationOptions = {
  */
 
 type ValidationError = {|
-  dataPath: string,
+  instancePath: string,
   keyword: string,
   params: Object
 |};
@@ -60,10 +60,10 @@ export function getErrorPath(error: ValidationError): string {
   let key;
 
   // TODO: Handle nested properties.
-  if (error.dataPath.startsWith('.')) {
-    key = error.dataPath.substring(1);
+  if (error.instancePath.startsWith('/')) {
+    key = error.instancePath.substring(1);
   } else {
-    key = error.dataPath.substring(2, error.dataPath.length - 2);
+    key = error.instancePath.substring(2, error.instancePath.length - 2);
   }
 
   switch (error.keyword) {
@@ -131,17 +131,8 @@ export type Validate = (schema: Object, values: Object, options?: ValidationOpti
  * Export `validate`.
  */
 
-export default function validate(schema: Object, values: Object, options?: ValidationOptions): FieldErrors {
-  const { keywords, ...restOptions } = options ?? {};
-  const ajv = new Ajv(merge({}, restOptions, { $data: true, allErrors: true }));
-
-  // TODO: Remove this when ajv adds support for passing keywords in the contructor.
-  // https://github.com/epoberezkin/ajv/issues/1136
-  if (keywords) {
-    for (const [keyword, config] of Object.entries(keywords)) {
-      ajv.addKeyword(keyword, config);
-    }
-  }
+export default function validate(schema: Object, values: Object, options?: ValidationOptions = {}): FieldErrors {
+  const ajv = new Ajv(merge({}, options, { $data: true, allErrors: true }));
 
   if (ajv.validate(schema, values)) {
     return {};
