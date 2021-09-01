@@ -1,5 +1,21 @@
 # Changelog
 
+## [v0.13.0](https://github.com/seegno/react-forms/tree/v0.13.0) (2021-09-01)
+[Full Changelog](https://github.com/seegno/react-forms/compare/v0.12.0...v0.13.0)
+
+**Merged pull requests:**
+
+- Update ajv dependency [\#50](https://github.com/seegno/react-forms/pull/50) ([catarinapeixoto](https://github.com/catarinapeixoto))
+- Bump path-parse from 1.0.6 to 1.0.7 [\#49](https://github.com/seegno/react-forms/pull/49) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump ws from 5.2.2 to 5.2.3 [\#48](https://github.com/seegno/react-forms/pull/48) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump tar from 4.4.10 to 4.4.15 [\#47](https://github.com/seegno/react-forms/pull/47) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump browserslist from 4.6.6 to 4.16.6 [\#46](https://github.com/seegno/react-forms/pull/46) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump hosted-git-info from 2.7.1 to 2.8.9 [\#45](https://github.com/seegno/react-forms/pull/45) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump lodash from 4.17.20 to 4.17.21 [\#44](https://github.com/seegno/react-forms/pull/44) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump handlebars from 4.7.6 to 4.7.7 [\#43](https://github.com/seegno/react-forms/pull/43) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump ini from 1.3.5 to 1.3.8 [\#42](https://github.com/seegno/react-forms/pull/42) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Update react peer version to support v17 [\#41](https://github.com/seegno/react-forms/pull/41) ([bsonntag](https://github.com/bsonntag))
+
 ## [v0.12.0](https://github.com/seegno/react-forms/tree/v0.12.0) (2020-11-06)
 [Full Changelog](https://github.com/seegno/react-forms/compare/v0.11.0...v0.12.0)
 
@@ -45,7 +61,6 @@
 **Merged pull requests:**
 
 - Add validate option [\#25](https://github.com/seegno/react-forms/pull/25) ([bsonntag](https://github.com/bsonntag))
-- Add validation options to validate custom formats [\#21](https://github.com/seegno/react-forms/pull/21) ([franciscomorais](https://github.com/franciscomorais))
 
 ## [v0.9.0](https://github.com/seegno/react-forms/tree/v0.9.0) (2020-05-11)
 [Full Changelog](https://github.com/seegno/react-forms/compare/v0.8.0...v0.9.0)
@@ -61,6 +76,7 @@
 **Merged pull requests:**
 
 - Update validation to support custom keywords [\#22](https://github.com/seegno/react-forms/pull/22) ([bsonntag](https://github.com/bsonntag))
+- Add validation options to validate custom formats [\#21](https://github.com/seegno/react-forms/pull/21) ([franciscomorais](https://github.com/franciscomorais))
 
 ## [v0.7.0](https://github.com/seegno/react-forms/tree/v0.7.0) (2019-12-05)
 [Full Changelog](https://github.com/seegno/react-forms/compare/v0.6.0...v0.7.0)
