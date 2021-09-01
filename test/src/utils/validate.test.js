@@ -245,6 +245,88 @@ describe('validate', () => {
     });
   });
 
+  it('should validate nested properties', () => {
+    const result = validate({
+      properties: {
+        foo: {
+          properties: {
+            bar: {
+              properties: {
+                qux: { type: 'string' }
+              },
+              type: 'object'
+            }
+          },
+          type: 'object'
+        }
+      },
+      type: 'object'
+    }, {
+      foo: {
+        bar: { qux: 1 }
+      }
+    });
+
+    expect(result).toEqual({
+      'foo.bar.qux': {
+        rule: 'type'
+      }
+    });
+  });
+
+  it('should validate arrays', () => {
+    const result = validate({
+      properties: {
+        foo: {
+          items: {
+            properties: {
+              bar: {
+                items: { type: 'string' },
+                type: 'array'
+              }
+            },
+            type: 'object'
+          },
+          type: 'array'
+        }
+      },
+      type: 'object'
+    }, {
+      foo: [{
+        bar: [1]
+      }]
+    });
+
+    expect(result).toEqual({
+      'foo[0].bar[0]': {
+        rule: 'type'
+      }
+    });
+  });
+
+  it('should validate arrays with arrays', () => {
+    const result = validate({
+      properties: {
+        foo: {
+          items: {
+            items: { type: 'string' },
+            type: 'array'
+          },
+          type: 'array'
+        }
+      },
+      type: 'object'
+    }, {
+      foo: [[1]]
+    });
+
+    expect(result).toEqual({
+      'foo[0][0]': {
+        rule: 'type'
+      }
+    });
+  });
+
   it('should validate with custom format', () => {
     const result = validate({
       properties: {

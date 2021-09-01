@@ -66,6 +66,10 @@ export function getErrorPath(error: ValidationError): string {
     key = error.instancePath.substring(2, error.instancePath.length - 2);
   }
 
+  key = key
+    .replace(/\/(\d+)(?=\/|$)/g, '[$1]')
+    .replace(/\//g, '.');
+
   switch (error.keyword) {
     case 'required':
       return `${key ? `${key}.` : ''}${error.params.missingProperty}`;
