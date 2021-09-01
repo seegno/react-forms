@@ -1,5 +1,13 @@
 # Changelog
 
+## [v0.13.1](https://github.com/seegno/react-forms/tree/v0.13.1) (2021-09-01)
+[Full Changelog](https://github.com/seegno/react-forms/compare/v0.13.0...v0.13.1)
+
+**Merged pull requests:**
+
+- Fix error paths of nested properties [\#52](https://github.com/seegno/react-forms/pull/52) ([bsonntag](https://github.com/bsonntag))
+- Bump tar from 4.4.15 to 4.4.19 [\#51](https://github.com/seegno/react-forms/pull/51) ([dependabot[bot]](https://github.com/apps/dependabot))
+
 ## [v0.13.0](https://github.com/seegno/react-forms/tree/v0.13.0) (2021-09-01)
 [Full Changelog](https://github.com/seegno/react-forms/compare/v0.12.0...v0.13.0)
 
@@ -96,6 +104,7 @@
 - Add validations for maxProperties and minProperties [\#16](https://github.com/seegno/react-forms/pull/16) ([bsonntag](https://github.com/bsonntag))
 - Add validations for maxItems and minItems [\#15](https://github.com/seegno/react-forms/pull/15) ([bsonntag](https://github.com/bsonntag))
 - Improve useFieldState with debug value [\#13](https://github.com/seegno/react-forms/pull/13) ([bsonntag](https://github.com/bsonntag))
+- Fix React warnings in tests [\#5](https://github.com/seegno/react-forms/pull/5) ([bsonntag](https://github.com/bsonntag))
 
 ## [v0.5.0](https://github.com/seegno/react-forms/tree/v0.5.0) (2019-11-12)
 [Full Changelog](https://github.com/seegno/react-forms/compare/v0.4.0...v0.5.0)
@@ -127,7 +136,6 @@
 - Update form onSubmit to be a function [\#8](https://github.com/seegno/react-forms/pull/8) ([flaviocastro](https://github.com/flaviocastro))
 - Fix useForm touched state not triggered by focus [\#7](https://github.com/seegno/react-forms/pull/7) ([flaviocastro](https://github.com/flaviocastro))
 - Fix unhandled promise rejection on useForm hook [\#6](https://github.com/seegno/react-forms/pull/6) ([bsonntag](https://github.com/bsonntag))
-- Fix React warnings in tests [\#5](https://github.com/seegno/react-forms/pull/5) ([bsonntag](https://github.com/bsonntag))
 - Add useFieldState hook [\#4](https://github.com/seegno/react-forms/pull/4) ([bsonntag](https://github.com/bsonntag))
 
 ## [v0.1.2](https://github.com/seegno/react-forms/tree/v0.1.2) (2019-07-30)
