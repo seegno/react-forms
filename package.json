@@ -24,6 +24,7 @@
     "coverage": "jest --coverage",
     "lint": "eslint --ext .js,.ts,.tsx .",
     "lint-staged": "lint-staged",
+    "start-example": "parcel --dist-dir=.parcel-dist example/index.html",
     "test": "jest",
     "test-watch": "jest --watch --notify --onlyChanged",
     "version": "NODE_ENV=production npm run bundle && npm run changelog --future-release=$npm_package_version && git add -A CHANGELOG.md dist"
