@@ -3,7 +3,7 @@
  * Module dependencies.
  */
 
-import validate from 'utils/validate';
+import { validate } from 'utils/validate';
 
 /**
  * Validate utility tests.

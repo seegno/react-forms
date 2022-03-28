@@ -3,9 +3,8 @@
  * Module dependencies.
  */
 
+import { FormProvider } from 'components/form-provider';
 import { render } from '@testing-library/react';
-import FormProvider from 'components/form-provider';
-import React from 'react';
 
 /**
  * `FormProvider` component tests.

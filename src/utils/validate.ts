@@ -1,63 +1,49 @@
-// @flow
 
 /**
  * Module dependencies.
  */
 
-import { merge } from 'lodash';
-import Ajv from 'ajv';
+import Ajv, { ErrorObject, Options, Schema } from 'ajv';
 
 /**
  * Export `ValidationOptions` type.
  */
 
-export type ValidationOptions = {
-  coerceTypes?: boolean | 'array',
-  format?: boolean | 'fast' | 'full',
-  formats?: Object,
-  keywords?: Object,
-  logger?: Function,
-  nullable?: boolean,
-  removeAdditional?: boolean | 'all' | 'failing',
-  schemaId?: String,
-  uniqueItems?: boolean,
-  unknownFormats?: boolean | Array<string> | 'ignore' | Object,
-  useDefaults?: boolean | 'empty' | 'shared'
-};
-
-/**
- * `ValidationError` type.
- */
-
-type ValidationError = {|
-  instancePath: string,
-  keyword: string,
-  params: Object
-|};
+export type ValidationOptions = Options;
 
 /**
  * Export `FieldError` type.
  */
 
-export type FieldError = {|
-  args?: Object,
-  rule: string
-|};
+export type FieldError = {
+  args?: Record<string, unknown>;
+  rule: string;
+};
 
 /**
  * Export `FieldErrors` type.
  */
 
 export type FieldErrors = {
-  [fieldName: string]: FieldError
+  [fieldName: string]: FieldError;
 };
+
+/**
+ * Export `Validate` type.
+ */
+
+export type Validate = (
+  schema: Schema,
+  values: Record<string, unknown>,
+  options?: Options
+) => FieldErrors;
 
 /**
  * Export `getErrorPath`.
  */
 
-export function getErrorPath(error: ValidationError): string {
-  let key;
+export function getErrorPath(error: ErrorObject): string {
+  let key: string;
 
   // TODO: Handle nested properties.
   if (error.instancePath.startsWith('/')) {
@@ -86,7 +72,7 @@ export function getErrorPath(error: ValidationError): string {
  * Get error args.
  */
 
-function getErrorArgs(error: ValidationError) {
+function getErrorArgs(error: ErrorObject) {
   switch (error.keyword) {
     case 'maxItems':
     case 'maxLength':
@@ -109,7 +95,7 @@ function getErrorArgs(error: ValidationError) {
  * Get error.
  */
 
-const getError = (error: ValidationError): FieldError => ({
+const getError = (error: ErrorObject): FieldError => ({
   args: getErrorArgs(error),
   rule: error.keyword
 });
@@ -118,7 +104,7 @@ const getError = (error: ValidationError): FieldError => ({
  * Parse validation errors.
  */
 
-export function parseValidationErrors(validationErrors: Array<ValidationError>): FieldErrors {
+export function parseValidationErrors(validationErrors: Array<ErrorObject>): FieldErrors {
   return validationErrors.reduce((errors, error) => ({
     ...errors,
     [getErrorPath(error)]: getError(error)
@@ -126,21 +112,19 @@ export function parseValidationErrors(validationErrors: Array<ValidationError>):
 }
 
 /**
- * `Validate` type.
- */
-
-export type Validate = (schema: Object, values: Object, options?: ValidationOptions) => FieldErrors;
-
-/**
  * Export `validate`.
  */
 
-export default function validate(schema: Object, values: Object, options?: ValidationOptions = {}): FieldErrors {
-  const ajv = new Ajv(merge({}, options, { $data: true, allErrors: true }));
+export function validate(schema: Schema, values: Record<string, unknown>, options: Options = {}): FieldErrors {
+  const ajv = new Ajv({
+    ...options,
+    $data: true,
+    allErrors: true
+  });
 
   if (ajv.validate(schema, values)) {
     return {};
   }
 
-  return parseValidationErrors(ajv.errors);
+  return parseValidationErrors(ajv.errors as Array<ErrorObject>);
 }
