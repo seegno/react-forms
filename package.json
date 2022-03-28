@@ -22,7 +22,7 @@
     "bundle": "rm -rf dist && babel src --out-dir dist",
     "changelog": "github_changelog_generator --no-issues --header-label='# Changelog' --future-release=v$npm_config_future_release && sed -i '' -e :a -e '$d;N;2,4ba' -e 'P;D' CHANGELOG.md",
     "coverage": "jest --coverage",
-    "lint": "eslint .",
+    "lint": "eslint --ext .js,.ts,.tsx .",
     "lint-staged": "lint-staged",
     "test": "jest",
     "test-watch": "jest --watch --notify --onlyChanged",
@@ -56,38 +56,40 @@
     "modulePaths": [
       "<rootDir>/src/"
     ],
+    "preset": "ts-jest",
     "setupFilesAfterEnv": [
-      "./test/utils/setup.js"
+      "./test/utils/setup.ts"
     ],
-    "testRegex": "(test/.*\\.test.js)$"
+    "testEnvironment": "jsdom",
+    "testRegex": "(test/.*\\.test.(ts|tsx))$"
   },
   "dependencies": {
     "ajv": "^8.6.2",
-    "lodash": "^4.17.20"
+    "lodash": "^4.17.20",
+    "use-subscription": "^1.5.1"
   },
   "devDependencies": {
-    "@babel/cli": "^7.7.0",
-    "@babel/core": "^7.7.2",
-    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.4.4",
-    "@babel/plugin-proposal-optional-chaining": "^7.6.0",
-    "@babel/preset-env": "^7.7.1",
-    "@babel/preset-flow": "^7.0.0",
-    "@babel/preset-react": "^7.7.0",
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.3.2",
-    "@testing-library/react-hooks": "^3.2.1",
-    "babel-plugin-module-resolver": "^3.2.0",
-    "eslint": "^5.16.0",
-    "eslint-config-seegno": "^15.0.0",
-    "flow-bin": "^0.112.0",
-    "flow-typed": "^2.6.2",
-    "jest": "^24.9.0",
+    "@testing-library/jest-dom": "^5.16.3",
+    "@testing-library/react": "^12.1.4",
+    "@testing-library/react-hooks": "^7.0.2",
+    "@types/jest": "^27.4.1",
+    "@types/react": "^17.0.43",
+    "@types/use-subscription": "^1.0.0",
+    "@typescript-eslint/eslint-plugin": "^5.16.0",
+    "@typescript-eslint/parser": "^5.16.0",
+    "eslint": "^7.14.0",
+    "eslint-config-seegno": "^16.0.0",
+    "eslint-plugin-typescript-sort-keys": "^2.1.0",
+    "jest": "^27.5.1",
     "lint-staged": "^9.4.3",
+    "parcel": "^2.4.0",
     "pre-commit": "^1.2.2",
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1",
-    "react-test-renderer": "^16.12.0",
-    "sort-package-json": "^1.23.1"
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-test-renderer": "^17.0.2",
+    "sort-package-json": "^1.55.0",
+    "ts-jest": "^27.1.4",
+    "typescript": "^4.6.3"
   },
   "peerDependencies": {
     "react": "^16.8.0 || ^17.0.0"
