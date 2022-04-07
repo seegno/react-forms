@@ -1,6 +1,7 @@
 [ignore]
 <PROJECT_ROOT>/coverage/.*
 <PROJECT_ROOT>/dist/.*
+<PROJECT_ROOT>/node_modules/rechoir/node_modules/resolve/test/.*
 
 [options]
 esproposal.class_instance_fields=enable

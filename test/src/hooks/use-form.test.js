@@ -169,6 +169,25 @@ describe('useForm hook', () => {
       expect(result.current.state.fields.meta).toHaveProperty('foo');
     });
 
+    it('should not re-register the field', () => {
+      const { result } = renderHook(() => useForm({
+        jsonSchema: { type: 'object' },
+        onSubmit: () => {}
+      }));
+
+      act(() => {
+        result.current.fieldActions.registerField('foo');
+      });
+
+      const state = result.current.state;
+
+      act(() => {
+        result.current.fieldActions.registerField('foo');
+      });
+
+      expect(result.current.state).toBe(state);
+    });
+
     it('should keep initial values', () => {
       const { result } = renderHook(() => useForm({
         initialValues: { foo: 'bar' },
