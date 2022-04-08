@@ -49,8 +49,16 @@ var actionTypes = {
 exports.actionTypes = actionTypes;
 
 /**
+ * Is field registered.
+ */
+function isFieldRegistered(action, state) {
+  return action.type === actionTypes.REGISTER_FIELD && state.fields.meta[action.payload.field];
+}
+/**
  * Values reducer.
  */
+
+
 var valuesReducer = function valuesReducer(state, action) {
   var payload = action.payload,
       type = action.type;
@@ -64,6 +72,10 @@ var valuesReducer = function valuesReducer(state, action) {
           newValue = payload.value(state[payload.field]);
         } else {
           newValue = payload.value;
+        }
+
+        if (newValue === state[payload.field]) {
+          return state;
         }
 
         return _objectSpread({}, state, _defineProperty({}, payload.field, newValue));
@@ -85,6 +97,8 @@ var valuesReducer = function valuesReducer(state, action) {
 
 
 var metaReducer = function metaReducer(state, action) {
+  var _state$payload$field;
+
   var payload = action.payload,
       type = action.type;
 
@@ -96,6 +110,10 @@ var metaReducer = function metaReducer(state, action) {
       })));
 
     case actionTypes.SET_FIELD_VALUE:
+      if ((_state$payload$field = state[payload.field]) === null || _state$payload$field === void 0 ? void 0 : _state$payload$field.dirty) {
+        return state;
+      }
+
       return _objectSpread({}, state, _defineProperty({}, payload.field, _objectSpread({}, state[payload.field], {
         dirty: true
       })));
@@ -209,11 +227,15 @@ function isSubmittingReducer(state, action) {
 
 var formReducer = function formReducer(validate, stateReducer) {
   return function (state, action) {
+    if (isFieldRegistered(action, state)) {
+      return state;
+    }
+
     var fieldsValues = valuesReducer(state.fields.values, action);
     var fieldsMeta = metaReducer(state.fields.meta, action);
     var isSubmitting = isSubmittingReducer(state.isSubmitting, action);
     var submitStatus = submitStatusReducer(state.submitStatus, action);
-    var fieldsErrors = errorsReducer({
+    var fieldsErrors = fieldsValues === state.fields.values ? state.fields.errors : errorsReducer({
       action: action,
       state: state.fields.errors,
       validate: validate,
