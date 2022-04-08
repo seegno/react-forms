@@ -1,5 +1,14 @@
 # Changelog
 
+## [v0.14.0](https://github.com/seegno/react-forms/tree/v0.14.0) (2022-04-08)
+[Full Changelog](https://github.com/seegno/react-forms/compare/v0.13.1...v0.14.0)
+
+**Merged pull requests:**
+
+- Improve register field action [\#57](https://github.com/seegno/react-forms/pull/57) ([MicaelRodrigues](https://github.com/MicaelRodrigues))
+- Bump shelljs from 0.8.3 to 0.8.5 [\#54](https://github.com/seegno/react-forms/pull/54) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump tmpl from 1.0.4 to 1.0.5 [\#53](https://github.com/seegno/react-forms/pull/53) ([dependabot[bot]](https://github.com/apps/dependabot))
+
 ## [v0.13.1](https://github.com/seegno/react-forms/tree/v0.13.1) (2021-09-01)
 [Full Changelog](https://github.com/seegno/react-forms/compare/v0.13.0...v0.13.1)
 
@@ -75,7 +84,6 @@
 
 **Merged pull requests:**
 
-- Update the dirty flag [\#24](https://github.com/seegno/react-forms/pull/24) ([bsonntag](https://github.com/bsonntag))
 - Bump acorn from 5.7.3 to 5.7.4 [\#23](https://github.com/seegno/react-forms/pull/23) ([dependabot[bot]](https://github.com/apps/dependabot))
 
 ## [v0.8.0](https://github.com/seegno/react-forms/tree/v0.8.0) (2020-02-13)
@@ -91,6 +99,7 @@
 
 **Merged pull requests:**
 
+- Update the dirty flag [\#24](https://github.com/seegno/react-forms/pull/24) ([bsonntag](https://github.com/bsonntag))
 - Add inversion of control to form reducer [\#19](https://github.com/seegno/react-forms/pull/19) ([franciscomorais](https://github.com/franciscomorais))
 - Fix flow configuration [\#18](https://github.com/seegno/react-forms/pull/18) ([bsonntag](https://github.com/bsonntag))
 - Update dependencies [\#14](https://github.com/seegno/react-forms/pull/14) ([bsonntag](https://github.com/bsonntag))
@@ -104,7 +113,6 @@
 - Add validations for maxProperties and minProperties [\#16](https://github.com/seegno/react-forms/pull/16) ([bsonntag](https://github.com/bsonntag))
 - Add validations for maxItems and minItems [\#15](https://github.com/seegno/react-forms/pull/15) ([bsonntag](https://github.com/bsonntag))
 - Improve useFieldState with debug value [\#13](https://github.com/seegno/react-forms/pull/13) ([bsonntag](https://github.com/bsonntag))
-- Fix React warnings in tests [\#5](https://github.com/seegno/react-forms/pull/5) ([bsonntag](https://github.com/bsonntag))
 
 ## [v0.5.0](https://github.com/seegno/react-forms/tree/v0.5.0) (2019-11-12)
 [Full Changelog](https://github.com/seegno/react-forms/compare/v0.4.0...v0.5.0)
@@ -136,6 +144,7 @@
 - Update form onSubmit to be a function [\#8](https://github.com/seegno/react-forms/pull/8) ([flaviocastro](https://github.com/flaviocastro))
 - Fix useForm touched state not triggered by focus [\#7](https://github.com/seegno/react-forms/pull/7) ([flaviocastro](https://github.com/flaviocastro))
 - Fix unhandled promise rejection on useForm hook [\#6](https://github.com/seegno/react-forms/pull/6) ([bsonntag](https://github.com/bsonntag))
+- Fix React warnings in tests [\#5](https://github.com/seegno/react-forms/pull/5) ([bsonntag](https://github.com/bsonntag))
 - Add useFieldState hook [\#4](https://github.com/seegno/react-forms/pull/4) ([bsonntag](https://github.com/bsonntag))
 
 ## [v0.1.2](https://github.com/seegno/react-forms/tree/v0.1.2) (2019-07-30)

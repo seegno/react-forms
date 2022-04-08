@@ -49,8 +49,16 @@ var actionTypes = {
 exports.actionTypes = actionTypes;
 
 /**
+ * Is field registered.
+ */
+function isFieldRegistered(action, state) {
+  return action.type === actionTypes.REGISTER_FIELD && state.fields.meta[action.payload.field];
+}
+/**
  * Values reducer.
  */
+
+
 var valuesReducer = function valuesReducer(state, action) {
   var payload = action.payload,
       type = action.type;
@@ -209,6 +217,10 @@ function isSubmittingReducer(state, action) {
 
 var formReducer = function formReducer(validate, stateReducer) {
   return function (state, action) {
+    if (isFieldRegistered(action, state)) {
+      return state;
+    }
+
     var fieldsValues = valuesReducer(state.fields.values, action);
     var fieldsMeta = metaReducer(state.fields.meta, action);
     var isSubmitting = isSubmittingReducer(state.isSubmitting, action);
