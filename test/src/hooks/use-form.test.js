@@ -600,6 +600,7 @@ describe('useForm hook', () => {
 
       expect(result.current.state.fields.errors).toEqual({
         foo: {
+          args: { format: 'foo' },
           rule: 'format'
         }
       });
@@ -644,6 +645,7 @@ describe('useForm hook', () => {
 
       expect(result.current.state.fields.errors).toEqual({
         foo: {
+          args: {},
           rule: 'isFoo'
         }
       });
