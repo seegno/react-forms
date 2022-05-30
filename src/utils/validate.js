@@ -101,7 +101,7 @@ function getErrorArgs(error: ValidationError) {
       return { min: error.params.limit };
 
     default:
-      return;
+      return error.params;
   }
 }
 

@@ -30,9 +30,11 @@ describe('validate', () => {
 
     expect(result).toEqual({
       foo: {
+        args: { type: 'string' },
         rule: 'type'
       },
       'foo-bar': {
+        args: { type: 'string' },
         rule: 'type'
       }
     });
@@ -49,6 +51,7 @@ describe('validate', () => {
 
     expect(result).toEqual({
       foo: {
+        args: { missingProperty: 'foo' },
         rule: 'required'
       }
     });
@@ -65,6 +68,7 @@ describe('validate', () => {
 
     expect(result).toEqual({
       foo: {
+        args: { additionalProperty: 'foo' },
         rule: 'additionalProperties'
       }
     });
@@ -269,6 +273,7 @@ describe('validate', () => {
 
     expect(result).toEqual({
       'foo.bar.qux': {
+        args: { type: 'string' },
         rule: 'type'
       }
     });
@@ -299,6 +304,7 @@ describe('validate', () => {
 
     expect(result).toEqual({
       'foo[0].bar[0]': {
+        args: { type: 'string' },
         rule: 'type'
       }
     });
@@ -322,6 +328,7 @@ describe('validate', () => {
 
     expect(result).toEqual({
       'foo[0][0]': {
+        args: { type: 'string' },
         rule: 'type'
       }
     });
@@ -352,6 +359,7 @@ describe('validate', () => {
 
     expect(result).toEqual({
       foo: {
+        args: { format: 'foo' },
         rule: 'format'
       }
     });
@@ -387,6 +395,7 @@ describe('validate', () => {
 
     expect(result).toEqual({
       foo: {
+        args: {},
         rule: 'isFoo'
       }
     });
