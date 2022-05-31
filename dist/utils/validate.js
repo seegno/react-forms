@@ -68,7 +68,7 @@ function getErrorArgs(error) {
       };
 
     default:
-      return;
+      return error.params;
   }
 }
 /**

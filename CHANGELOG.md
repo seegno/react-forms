@@ -1,11 +1,18 @@
 # Changelog
 
+## [v0.15.0](https://github.com/seegno/react-forms/tree/v0.15.0) (2022-05-31)
+[Full Changelog](https://github.com/seegno/react-forms/compare/v0.14.0...v0.15.0)
+
+**Merged pull requests:**
+
+- Update validation to always return error arguments [\#60](https://github.com/seegno/react-forms/pull/60) ([bsonntag](https://github.com/bsonntag))
+- Bump node-fetch from 2.6.1 to 2.6.7 [\#59](https://github.com/seegno/react-forms/pull/59) ([dependabot[bot]](https://github.com/apps/dependabot))
+
 ## [v0.14.0](https://github.com/seegno/react-forms/tree/v0.14.0) (2022-04-08)
 [Full Changelog](https://github.com/seegno/react-forms/compare/v0.13.1...v0.14.0)
 
 **Merged pull requests:**
 
-- Improve register field action [\#57](https://github.com/seegno/react-forms/pull/57) ([MicaelRodrigues](https://github.com/MicaelRodrigues))
 - Bump shelljs from 0.8.3 to 0.8.5 [\#54](https://github.com/seegno/react-forms/pull/54) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump tmpl from 1.0.4 to 1.0.5 [\#53](https://github.com/seegno/react-forms/pull/53) ([dependabot[bot]](https://github.com/apps/dependabot))
 
@@ -22,6 +29,7 @@
 
 **Merged pull requests:**
 
+- Improve register field action [\#57](https://github.com/seegno/react-forms/pull/57) ([MicaelRodrigues](https://github.com/MicaelRodrigues))
 - Update ajv dependency [\#50](https://github.com/seegno/react-forms/pull/50) ([catarinapeixoto](https://github.com/catarinapeixoto))
 - Bump path-parse from 1.0.6 to 1.0.7 [\#49](https://github.com/seegno/react-forms/pull/49) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump ws from 5.2.2 to 5.2.3 [\#48](https://github.com/seegno/react-forms/pull/48) ([dependabot[bot]](https://github.com/apps/dependabot))
@@ -84,6 +92,7 @@
 
 **Merged pull requests:**
 
+- Update the dirty flag [\#24](https://github.com/seegno/react-forms/pull/24) ([bsonntag](https://github.com/bsonntag))
 - Bump acorn from 5.7.3 to 5.7.4 [\#23](https://github.com/seegno/react-forms/pull/23) ([dependabot[bot]](https://github.com/apps/dependabot))
 
 ## [v0.8.0](https://github.com/seegno/react-forms/tree/v0.8.0) (2020-02-13)
@@ -99,7 +108,6 @@
 
 **Merged pull requests:**
 
-- Update the dirty flag [\#24](https://github.com/seegno/react-forms/pull/24) ([bsonntag](https://github.com/bsonntag))
 - Add inversion of control to form reducer [\#19](https://github.com/seegno/react-forms/pull/19) ([franciscomorais](https://github.com/franciscomorais))
 - Fix flow configuration [\#18](https://github.com/seegno/react-forms/pull/18) ([bsonntag](https://github.com/bsonntag))
 - Update dependencies [\#14](https://github.com/seegno/react-forms/pull/14) ([bsonntag](https://github.com/bsonntag))
