@@ -113,6 +113,10 @@ const valuesReducer = (state, action) => {
         newValue = payload.value;
       }
 
+      if (newValue === state[payload.field]) {
+        return state;
+      }
+
       return {
         ...state,
         [payload.field]: newValue
@@ -152,6 +156,10 @@ const metaReducer = (state, action) => {
       };
 
     case actionTypes.SET_FIELD_VALUE:
+      if (state[payload.field]?.dirty) {
+        return state;
+      }
+
       return {
         ...state,
         [payload.field]: {
@@ -294,7 +302,7 @@ const formReducer = (validate: Object => FieldErrors, stateReducer: (state: Form
     const fieldsMeta = metaReducer(state.fields.meta, action);
     const isSubmitting = isSubmittingReducer(state.isSubmitting, action);
     const submitStatus = submitStatusReducer(state.submitStatus, action);
-    const fieldsErrors = errorsReducer({
+    const fieldsErrors = fieldsValues === state.fields.values ? state.fields.errors : errorsReducer({
       action,
       state: state.fields.errors,
       validate,
