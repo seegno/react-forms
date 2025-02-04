@@ -152,6 +152,10 @@ const metaReducer = (state, action) => {
       };
 
     case actionTypes.SET_FIELD_VALUE:
+      if (payload.value === undefined) {
+        return state;
+      }
+
       return {
         ...state,
         [payload.field]: {
@@ -185,6 +189,7 @@ const metaReducer = (state, action) => {
         ...result,
         [key]: {
           ...state?.[key],
+          dirty: true,
           touched: true
         }
       }), {});
@@ -281,6 +286,21 @@ function isSubmittingReducer(state, action) {
 }
 
 /**
+ * Already submitted reducer.
+ */
+
+function alreadySubmittedReducer(state, action) {
+  switch (action.type) {
+    case actionTypes.SUBMIT_START:
+    case actionTypes.SUBMITTING:
+      return true;
+
+    default:
+      return state === undefined ? false : state;
+  }
+}
+
+/**
  * Form reducer.
  */
 
@@ -294,6 +314,7 @@ const formReducer = (validate: Object => FieldErrors, stateReducer: (state: Form
     const fieldsMeta = metaReducer(state.fields.meta, action);
     const isSubmitting = isSubmittingReducer(state.isSubmitting, action);
     const submitStatus = submitStatusReducer(state.submitStatus, action);
+    const alreadySubmitted = alreadySubmittedReducer(state.submitStatus, action);
     const fieldsErrors = errorsReducer({
       action,
       state: state.fields.errors,
@@ -304,6 +325,7 @@ const formReducer = (validate: Object => FieldErrors, stateReducer: (state: Form
     const fieldsMetaValues: Array<Object> = Object.values(fieldsMeta);
 
     return stateReducer({
+      alreadySubmitted,
       fields: {
         errors: fieldsErrors,
         meta: fieldsMeta,
