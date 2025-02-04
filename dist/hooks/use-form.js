@@ -233,7 +233,7 @@ var formReducer = function formReducer(validate, stateReducer) {
     var fieldsMeta = metaReducer(state.fields.meta, action);
     var isSubmitting = isSubmittingReducer(state.isSubmitting, action);
     var submitStatus = submitStatusReducer(state.submitStatus, action);
-    var alreadySubmitted = alreadySubmittedReducer(state.submitStatus, action);
+    var alreadySubmitted = alreadySubmittedReducer(state.alreadySubmitted, action);
     var fieldsErrors = errorsReducer({
       action: action,
       state: state.fields.errors,
@@ -278,6 +278,7 @@ function initializeState(validate) {
     var _validate2;
     var errors = (_validate2 = validate(initialValues)) !== null && _validate2 !== void 0 ? _validate2 : {};
     return {
+      alreadySubmitted: false,
       fields: {
         errors: errors,
         meta: {},
