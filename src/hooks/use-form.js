@@ -72,6 +72,7 @@ export type FormMetaType = FieldMetaType & {
  */
 
 export type FormState = {
+  alreadySubmitted: boolean,
   fields: {
     errors: {
       [fieldName: string]: FieldError
@@ -314,7 +315,7 @@ const formReducer = (validate: Object => FieldErrors, stateReducer: (state: Form
     const fieldsMeta = metaReducer(state.fields.meta, action);
     const isSubmitting = isSubmittingReducer(state.isSubmitting, action);
     const submitStatus = submitStatusReducer(state.submitStatus, action);
-    const alreadySubmitted = alreadySubmittedReducer(state.submitStatus, action);
+    const alreadySubmitted = alreadySubmittedReducer(state.alreadySubmitted, action);
     const fieldsErrors = errorsReducer({
       action,
       state: state.fields.errors,
@@ -352,6 +353,7 @@ function initializeState(validate: Validate) {
     const errors = validate(initialValues) ?? {};
 
     return {
+      alreadySubmitted: false,
       fields: {
         errors,
         meta: {},
