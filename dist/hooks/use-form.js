@@ -3,35 +3,31 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports["default"] = useForm;
 exports.actionTypes = void 0;
-
+exports["default"] = useForm;
 var _lodash = require("lodash");
-
 var _react = require("react");
-
 var _validate3 = _interopRequireDefault(require("../utils/validate"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
-
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
-
-function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
+function _interopRequireDefault(e) { return e && e.__esModule ? e : { "default": e }; }
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function _slicedToArray(r, e) { return _arrayWithHoles(r) || _iterableToArrayLimit(r, e) || _unsupportedIterableToArray(r, e) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
+function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
+function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
+function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
+function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); } /**
+ * Module dependencies.
+ */
 /**
  * Export `actionTypes`.
  */
-var actionTypes = {
+
+var actionTypes = exports.actionTypes = {
   BLUR: 'BLUR',
   FOCUS: 'FOCUS',
   REGISTER_FIELD: 'REGISTER_FIELD',
@@ -42,189 +38,202 @@ var actionTypes = {
   SUBMIT_SUCCESS: 'SUBMIT_SUCCESS',
   SUBMITTING: 'SUBMITTING'
 };
+
 /**
  * Export `Submit` type.
  */
 
-exports.actionTypes = actionTypes;
+/**
+ * Export `Action` type.
+ */
+
+/**
+ * Export `FieldMetaType` type.
+ */
+
+/**
+ * Export `FormMetaType` type.
+ */
+
+/**
+ * Export `FormState` type.
+ */
 
 /**
  * Is field registered.
  */
+
 function isFieldRegistered(action, state) {
   return action.type === actionTypes.REGISTER_FIELD && state.fields.meta[action.payload.field];
 }
+
 /**
  * Values reducer.
  */
 
-
 var valuesReducer = function valuesReducer(state, action) {
   var payload = action.payload,
-      type = action.type;
-
+    type = action.type;
   switch (type) {
     case actionTypes.SET_FIELD_VALUE:
       {
         var newValue;
-
         if (typeof payload.value === 'function') {
           newValue = payload.value(state[payload.field]);
         } else {
           newValue = payload.value;
         }
-
-        return _objectSpread({}, state, _defineProperty({}, payload.field, newValue));
+        return _objectSpread(_objectSpread({}, state), {}, _defineProperty({}, payload.field, newValue));
       }
-
     case actionTypes.REGISTER_FIELD:
-      return _objectSpread({}, state, _defineProperty({}, payload.field, state[payload.field]));
-
+      return _objectSpread(_objectSpread({}, state), {}, _defineProperty({}, payload.field, state[payload.field]));
     case actionTypes.RESET:
       return payload.initialValues;
-
     default:
       return state;
   }
 };
+
 /**
  * Meta reducer.
  */
 
-
 var metaReducer = function metaReducer(state, action) {
   var payload = action.payload,
-      type = action.type;
-
+    type = action.type;
   switch (type) {
     case actionTypes.BLUR:
-      return _objectSpread({}, state, _defineProperty({}, payload.field, _objectSpread({}, state[payload.field], {
+      return _objectSpread(_objectSpread({}, state), {}, _defineProperty({}, payload.field, _objectSpread(_objectSpread({}, state[payload.field]), {}, {
         active: false,
         touched: true
       })));
-
     case actionTypes.SET_FIELD_VALUE:
-      return _objectSpread({}, state, _defineProperty({}, payload.field, _objectSpread({}, state[payload.field], {
+      if (payload.value === undefined) {
+        return state;
+      }
+      return _objectSpread(_objectSpread({}, state), {}, _defineProperty({}, payload.field, _objectSpread(_objectSpread({}, state[payload.field]), {}, {
         dirty: true
       })));
-
     case actionTypes.FOCUS:
-      return _objectSpread({}, state, _defineProperty({}, payload.field, _objectSpread({}, state[payload.field], {
+      return _objectSpread(_objectSpread({}, state), {}, _defineProperty({}, payload.field, _objectSpread(_objectSpread({}, state[payload.field]), {}, {
         active: true
       })));
-
     case actionTypes.REGISTER_FIELD:
-      return _objectSpread({}, state, _defineProperty({}, payload.field, _objectSpread({
+      return _objectSpread(_objectSpread({}, state), {}, _defineProperty({}, payload.field, _objectSpread({
         active: false,
         dirty: false,
         touched: false
       }, state[payload.field])));
-
     case actionTypes.SUBMIT_START:
       return Object.keys(state).reduce(function (result, key) {
-        return _objectSpread({}, result, _defineProperty({}, key, _objectSpread({}, state === null || state === void 0 ? void 0 : state[key], {
+        return _objectSpread(_objectSpread({}, result), {}, _defineProperty({}, key, _objectSpread(_objectSpread({}, state === null || state === void 0 ? void 0 : state[key]), {}, {
+          dirty: true,
           touched: true
         })));
       }, {});
-
     case actionTypes.RESET:
       return Object.keys(state).reduce(function (result, key) {
-        return _objectSpread({}, result, _defineProperty({}, key, _objectSpread({}, state === null || state === void 0 ? void 0 : state[key], {
+        return _objectSpread(_objectSpread({}, result), {}, _defineProperty({}, key, _objectSpread(_objectSpread({}, state === null || state === void 0 ? void 0 : state[key]), {}, {
           active: false,
           dirty: false,
           touched: false
         })));
       }, {});
-
     default:
       return state;
   }
 };
+
 /**
  * `ErrorOptions` type.
  */
 
-
 /**
  * Errors reducer.
  */
+
 function errorsReducer(options) {
   var _validate;
-
   var action = options.action,
-      state = options.state,
-      validate = options.validate,
-      values = options.values;
-
+    state = options.state,
+    validate = options.validate,
+    values = options.values;
   switch (action.type) {
     case actionTypes.BLUR:
     case actionTypes.SET_FIELD_VALUE:
     case actionTypes.REGISTER_FIELD:
     case actionTypes.SUBMIT_START:
       return (_validate = validate(values)) !== null && _validate !== void 0 ? _validate : {};
-
     case actionTypes.RESET:
       return {};
-
     default:
       return state;
   }
 }
+
 /**
  * Submit status reducer.
  */
-
 
 function submitStatusReducer(state, action) {
   switch (action.type) {
     case actionTypes.SUBMIT_START:
       return 'submitStart';
-
     case actionTypes.SUBMITTING:
       return 'submitting';
-
     case actionTypes.SUBMIT_FAILURE:
     case actionTypes.SUBMIT_SUCCESS:
       return 'idle';
-
     default:
       return state;
   }
 }
+
 /**
  * Is submitting reducer.
  */
-
 
 function isSubmittingReducer(state, action) {
   switch (action.type) {
     case actionTypes.SUBMIT_START:
     case actionTypes.SUBMITTING:
       return true;
-
     case actionTypes.SUBMIT_FAILURE:
     case actionTypes.SUBMIT_SUCCESS:
       return false;
-
     default:
       return state;
   }
 }
+
+/**
+ * Already submitted reducer.
+ */
+
+function alreadySubmittedReducer(state, action) {
+  switch (action.type) {
+    case actionTypes.SUBMIT_START:
+    case actionTypes.SUBMITTING:
+      return true;
+    default:
+      return state === undefined ? false : state;
+  }
+}
+
 /**
  * Form reducer.
  */
-
 
 var formReducer = function formReducer(validate, stateReducer) {
   return function (state, action) {
     if (isFieldRegistered(action, state)) {
       return state;
     }
-
     var fieldsValues = valuesReducer(state.fields.values, action);
     var fieldsMeta = metaReducer(state.fields.meta, action);
     var isSubmitting = isSubmittingReducer(state.isSubmitting, action);
     var submitStatus = submitStatusReducer(state.submitStatus, action);
+    var alreadySubmitted = alreadySubmittedReducer(state.submitStatus, action);
     var fieldsErrors = errorsReducer({
       action: action,
       state: state.fields.errors,
@@ -233,6 +242,7 @@ var formReducer = function formReducer(validate, stateReducer) {
     });
     var fieldsMetaValues = Object.values(fieldsMeta);
     return stateReducer({
+      alreadySubmitted: alreadySubmitted,
       fields: {
         errors: fieldsErrors,
         meta: fieldsMeta,
@@ -258,15 +268,14 @@ var formReducer = function formReducer(validate, stateReducer) {
     }, action);
   };
 };
+
 /**
  * Initialize state.
  */
 
-
 function initializeState(validate) {
   return function (initialValues) {
     var _validate2;
-
     var errors = (_validate2 = validate(initialValues)) !== null && _validate2 !== void 0 ? _validate2 : {};
     return {
       fields: {
@@ -285,35 +294,33 @@ function initializeState(validate) {
     };
   };
 }
+
 /**
  * `Options` type.
  */
 
-
 /**
  * Export `useForm`.
  */
+
 function useForm(options) {
   var _options$initialValue = options.initialValues,
-      initialValues = _options$initialValue === void 0 ? {} : _options$initialValue,
-      jsonSchema = options.jsonSchema,
-      onSubmit = options.onSubmit,
-      onValuesChanged = options.onValuesChanged,
-      _options$stateReducer = options.stateReducer,
-      stateReducer = _options$stateReducer === void 0 ? _lodash.identity : _options$stateReducer,
-      _options$validate = options.validate,
-      validate = _options$validate === void 0 ? _validate3["default"] : _options$validate,
-      validationOptions = options.validationOptions;
-
+    initialValues = _options$initialValue === void 0 ? {} : _options$initialValue,
+    jsonSchema = options.jsonSchema,
+    onSubmit = options.onSubmit,
+    onValuesChanged = options.onValuesChanged,
+    _options$stateReducer = options.stateReducer,
+    stateReducer = _options$stateReducer === void 0 ? _lodash.identity : _options$stateReducer,
+    _options$validate = options.validate,
+    validate = _options$validate === void 0 ? _validate3["default"] : _options$validate,
+    validationOptions = options.validationOptions;
   var validateValues = function validateValues(values) {
     return validate(jsonSchema, values, validationOptions);
   };
-
   var _useReducer = (0, _react.useReducer)(formReducer(validateValues, stateReducer), initialValues, initializeState(validateValues)),
-      _useReducer2 = _slicedToArray(_useReducer, 2),
-      state = _useReducer2[0],
-      dispatch = _useReducer2[1];
-
+    _useReducer2 = _slicedToArray(_useReducer, 2),
+    state = _useReducer2[0],
+    dispatch = _useReducer2[1];
   var setFieldValue = (0, _react.useCallback)(function (field, value) {
     dispatch({
       payload: {
@@ -356,7 +363,6 @@ function useForm(options) {
         type: actionTypes.RESET
       });
     }
-
     return dispatch({
       payload: {
         initialValues: initialValues
@@ -368,7 +374,6 @@ function useForm(options) {
     if (event && typeof event.preventDefault === 'function') {
       event.preventDefault();
     }
-
     dispatch({
       payload: {},
       type: actionTypes.SUBMIT_START
@@ -383,12 +388,10 @@ function useForm(options) {
     if (state.submitStatus !== 'submitStart') {
       return;
     }
-
     dispatch({
       payload: {},
       type: actionTypes.SUBMITTING
     });
-
     if (Object.keys(state.fields.errors).length > 0) {
       dispatch({
         payload: {},
@@ -396,7 +399,6 @@ function useForm(options) {
       });
       return;
     }
-
     Promise.resolve(onSubmit(state.fields.values, {
       reset: reset
     })).then(function () {

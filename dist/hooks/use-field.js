@@ -4,34 +4,26 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = useField;
-
 var _react = require("react");
-
 var _fieldActionsContext = require("../context/field-actions-context");
-
 var _useFieldState2 = _interopRequireDefault(require("./use-field-state"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
+function _interopRequireDefault(e) { return e && e.__esModule ? e : { "default": e }; }
 /**
  * Module dependencies.
  */
-
 /**
  * Export `useField`.
  */
 function useField(field) {
   var _useFieldState = (0, _useFieldState2["default"])(field),
-      error = _useFieldState.error,
-      meta = _useFieldState.meta,
-      value = _useFieldState.value;
-
+    error = _useFieldState.error,
+    meta = _useFieldState.meta,
+    value = _useFieldState.value;
   var _useFieldActions = (0, _fieldActionsContext.useFieldActions)(),
-      blurField = _useFieldActions.blurField,
-      focusField = _useFieldActions.focusField,
-      registerField = _useFieldActions.registerField,
-      setFieldValue = _useFieldActions.setFieldValue;
-
+    blurField = _useFieldActions.blurField,
+    focusField = _useFieldActions.focusField,
+    registerField = _useFieldActions.registerField,
+    setFieldValue = _useFieldActions.setFieldValue;
   (0, _react.useEffect)(function () {
     registerField(field);
   }, [field, registerField]);
