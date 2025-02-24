@@ -13,12 +13,16 @@ import validate from 'utils/validate';
  */
 
 describe('useForm hook', () => {
-  it('should set the initial values', () => {
-    const { result } = renderHook(() => useForm({
+  it('should set the initial values', async () => {
+    const { result, waitFor } = renderHook(() => useForm({
       initialValues: { foo: 'bar' },
       jsonSchema: { type: 'object' },
       onSubmit: () => {}
     }));
+
+    await waitFor(() => {
+      expect(result.current.state.isFormReady).toEqual(true);
+    });
 
     expect(result.current.state.fields.values).toEqual({
       foo: 'bar'
@@ -39,8 +43,8 @@ describe('useForm hook', () => {
     });
   });
 
-  it('should validate the initial values', () => {
-    const { result } = renderHook(() => useForm({
+  it('should validate the initial values', async () => {
+    const { result, waitFor } = renderHook(() => useForm({
       initialValues: {},
       jsonSchema: {
         required: ['foo'],
@@ -48,6 +52,10 @@ describe('useForm hook', () => {
       },
       onSubmit: () => {}
     }));
+
+    await waitFor(() => {
+      expect(result.current.state.isFormReady).toEqual(true);
+    });
 
     expect(result.current.state.fields.errors).toHaveProperty('foo');
     expect(result.current.state.meta).toEqual({
@@ -74,11 +82,15 @@ describe('useForm hook', () => {
   });
 
   describe('blurField', () => {
-    it('should set the field to inactive and touched', () => {
-      const { result } = renderHook(() => useForm({
+    it('should set the field to inactive and touched', async () => {
+      const { result, waitFor } = renderHook(() => useForm({
         jsonSchema: { type: 'object' },
         onSubmit: () => {}
       }));
+
+      await waitFor(() => {
+        expect(result.current.state.isFormReady).toEqual(true);
+      });
 
       act(() => {
         result.current.fieldActions.blurField('foo');
@@ -90,8 +102,8 @@ describe('useForm hook', () => {
       });
     });
 
-    it('should validate the field value', () => {
-      const { result } = renderHook(() => useForm({
+    it('should validate the field value', async () => {
+      const { result, waitFor } = renderHook(() => useForm({
         initialValues: { foo: 1 },
         jsonSchema: {
           properties: {
@@ -101,6 +113,10 @@ describe('useForm hook', () => {
         },
         onSubmit: () => {}
       }));
+
+      await waitFor(() => {
+        expect(result.current.state.isFormReady).toEqual(true);
+      });
 
       act(() => {
         result.current.fieldActions.blurField('foo');
@@ -111,11 +127,15 @@ describe('useForm hook', () => {
   });
 
   describe('focusField', () => {
-    it('should set the field to active', () => {
-      const { result } = renderHook(() => useForm({
+    it('should set the field to active', async () => {
+      const { result, waitFor } = renderHook(() => useForm({
         jsonSchema: { type: 'object' },
         onSubmit: () => {}
       }));
+
+      await waitFor(() => {
+        expect(result.current.state.isFormReady).toEqual(true);
+      });
 
       act(() => {
         result.current.fieldActions.focusField('foo');
@@ -126,9 +146,9 @@ describe('useForm hook', () => {
       });
     });
 
-    it('should not validate the form', () => {
+    it('should not validate the form', async () => {
       const mockValidate = jest.fn(validate);
-      const { result } = renderHook(() => useForm({
+      const { result, waitFor } = renderHook(() => useForm({
         initialValues: { foo: 1 },
         jsonSchema: {
           properties: {
@@ -139,6 +159,10 @@ describe('useForm hook', () => {
         onSubmit: () => {},
         validate: mockValidate
       }));
+
+      await waitFor(() => {
+        expect(result.current.state.isFormReady).toEqual(true);
+      });
 
       // Reset mock calls, because initialization calls `validate`.
       mockValidate.mockReset();
@@ -152,11 +176,15 @@ describe('useForm hook', () => {
   });
 
   describe('registerField', () => {
-    it('should register the field', () => {
-      const { result } = renderHook(() => useForm({
+    it('should register the field', async () => {
+      const { result, waitFor } = renderHook(() => useForm({
         jsonSchema: { type: 'object' },
         onSubmit: () => {}
       }));
+
+      await waitFor(() => {
+        expect(result.current.state.isFormReady).toEqual(true);
+      });
 
       expect(result.current.state.fields.values).not.toHaveProperty('foo');
       expect(result.current.state.fields.meta).not.toHaveProperty('foo');
@@ -169,11 +197,15 @@ describe('useForm hook', () => {
       expect(result.current.state.fields.meta).toHaveProperty('foo');
     });
 
-    it('should not re-register the field', () => {
-      const { result } = renderHook(() => useForm({
+    it('should not re-register the field', async () => {
+      const { result, waitFor } = renderHook(() => useForm({
         jsonSchema: { type: 'object' },
         onSubmit: () => {}
       }));
+
+      await waitFor(() => {
+        expect(result.current.state.isFormReady).toEqual(true);
+      });
 
       act(() => {
         result.current.fieldActions.registerField('foo');
@@ -188,12 +220,16 @@ describe('useForm hook', () => {
       expect(result.current.state).toBe(state);
     });
 
-    it('should keep initial values', () => {
-      const { result } = renderHook(() => useForm({
+    it('should keep initial values', async () => {
+      const { result, waitFor } = renderHook(() => useForm({
         initialValues: { foo: 'bar' },
         jsonSchema: { type: 'object' },
         onSubmit: () => {}
       }));
+
+      await waitFor(() => {
+        expect(result.current.state.isFormReady).toEqual(true);
+      });
 
       act(() => {
         result.current.fieldActions.registerField('foo');
@@ -202,17 +238,25 @@ describe('useForm hook', () => {
       expect(result.current.state.fields.values).toEqual({ foo: 'bar' });
     });
 
-    it('should validate the form', () => {
-      const { result } = renderHook(() => useForm({
-        initialValues: { foo: 1 },
-        jsonSchema: {
-          properties: {
-            foo: { type: 'string' }
+    it('should validate the form', async () => {
+      const { result, waitFor, waitForNextUpdate } = renderHook(() => {
+        return useForm({
+          initialValues: { foo: 1 },
+          jsonSchema: {
+            properties: {
+              foo: { type: 'string' }
+            },
+            type: 'object'
           },
-          type: 'object'
-        },
-        onSubmit: () => {}
-      }));
+          onSubmit: () => {}
+        });
+      });
+
+      await waitFor(() => {
+        expect(result.current.state.isFormReady).toEqual(true);
+      });
+
+      await waitForNextUpdate();
 
       act(() => {
         result.current.fieldActions.registerField('foo');
@@ -220,14 +264,18 @@ describe('useForm hook', () => {
 
       expect(result.current.state.fields.errors).toHaveProperty('foo');
     });
-  });
+  }, 60000);
 
   describe('reset', () => {
-    it('should clear the form values', () => {
-      const { result } = renderHook(() => useForm({
+    it('should clear the form values', async () => {
+      const { result, waitFor } = renderHook(() => useForm({
         jsonSchema: { type: 'object' },
         onSubmit: () => {}
       }));
+
+      await waitFor(() => {
+        expect(result.current.state.isFormReady).toEqual(true);
+      });
 
       act(() => {
         result.current.fieldActions.setFieldValue('foo', 'bar');
@@ -237,12 +285,16 @@ describe('useForm hook', () => {
       expect(result.current.state.fields.values).toEqual({});
     });
 
-    it('should set the initial values', () => {
-      const { result } = renderHook(() => useForm({
+    it('should set the initial values', async () => {
+      const { result, waitFor } = renderHook(() => useForm({
         initialValues: { foo: 'bar' },
         jsonSchema: { type: 'object' },
         onSubmit: () => {}
       }));
+
+      await waitFor(() => {
+        expect(result.current.state.isFormReady).toEqual(true);
+      });
 
       act(() => {
         result.current.fieldActions.setFieldValue('foo', 'baz');
@@ -252,11 +304,15 @@ describe('useForm hook', () => {
       expect(result.current.state.fields.values).toEqual({ foo: 'bar' });
     });
 
-    it('should set the received values as initial values', () => {
-      const { result } = renderHook(() => useForm({
+    it('should set the received values as initial values', async () => {
+      const { result, waitFor } = renderHook(() => useForm({
         jsonSchema: { type: 'object' },
         onSubmit: () => {}
       }));
+
+      await waitFor(() => {
+        expect(result.current.state.isFormReady).toEqual(true);
+      });
 
       act(() => {
         result.current.formActions.reset({
@@ -271,8 +327,8 @@ describe('useForm hook', () => {
       });
     });
 
-    it('should clear the form errors', () => {
-      const { result } = renderHook(() => useForm({
+    it('should clear the form errors', async () => {
+      const { result, waitFor } = renderHook(() => useForm({
         jsonSchema: {
           properties: {
             foo: { type: 'string' }
@@ -282,6 +338,10 @@ describe('useForm hook', () => {
         onSubmit: () => {}
       }));
 
+      await waitFor(() => {
+        expect(result.current.state.isFormReady).toEqual(true);
+      });
+
       act(() => {
         result.current.fieldActions.setFieldValue('foo', 1);
         result.current.formActions.reset();
@@ -290,11 +350,15 @@ describe('useForm hook', () => {
       expect(result.current.state.fields.errors).toEqual({});
     });
 
-    it('should set all fields to inactive, untouched and pristine', () => {
-      const { result } = renderHook(() => useForm({
+    it('should set all fields to inactive, untouched and pristine', async () => {
+      const { result, waitFor } = renderHook(() => useForm({
         jsonSchema: { type: 'object' },
         onSubmit: () => {}
       }));
+
+      await waitFor(() => {
+        expect(result.current.state.isFormReady).toEqual(true);
+      });
 
       act(() => {
         result.current.fieldActions.blurField('foo');
@@ -314,11 +378,15 @@ describe('useForm hook', () => {
   });
 
   describe('setFieldValue', () => {
-    it('should set the field value', () => {
-      const { result } = renderHook(() => useForm({
+    it('should set the field value', async () => {
+      const { result, waitFor } = renderHook(() => useForm({
         jsonSchema: { type: 'object' },
         onSubmit: () => {}
       }));
+
+      await waitFor(() => {
+        expect(result.current.state.isFormReady).toEqual(true);
+      });
 
       act(() => {
         result.current.fieldActions.setFieldValue('foo', 'bar');
@@ -327,11 +395,15 @@ describe('useForm hook', () => {
       expect(result.current.state.fields.values).toEqual({ foo: 'bar' });
     });
 
-    it('should set the field to dirty', () => {
-      const { result } = renderHook(() => useForm({
+    it('should set the field to dirty', async () => {
+      const { result, waitFor } = renderHook(() => useForm({
         jsonSchema: { type: 'object' },
         onSubmit: () => {}
       }));
+
+      await waitFor(() => {
+        expect(result.current.state.isFormReady).toEqual(true);
+      });
 
       act(() => {
         result.current.fieldActions.setFieldValue('foo', 'bar');
@@ -342,8 +414,8 @@ describe('useForm hook', () => {
       }));
     });
 
-    it('should validate the form', () => {
-      const { result } = renderHook(() => useForm({
+    it('should validate the form', async () => {
+      const { result, waitFor } = renderHook(() => useForm({
         jsonSchema: {
           properties: {
             foo: { type: 'string' }
@@ -353,6 +425,10 @@ describe('useForm hook', () => {
         onSubmit: () => {}
       }));
 
+      await waitFor(() => {
+        expect(result.current.state.isFormReady).toEqual(true);
+      });
+
       act(() => {
         result.current.fieldActions.setFieldValue('foo', 1);
       });
@@ -360,9 +436,9 @@ describe('useForm hook', () => {
       expect(result.current.state.fields.errors).toHaveProperty('foo');
     });
 
-    it('should call the passed callback with the current field value and update it to the returned value', () => {
+    it('should call the passed callback with the current field value and update it to the returned value', async () => {
       const callback = jest.fn(() => 'qux');
-      const { result } = renderHook(() => useForm({
+      const { result, waitFor } = renderHook(() => useForm({
         initialValues: { foo: 'bar' },
         jsonSchema: {
           properties: {
@@ -372,6 +448,10 @@ describe('useForm hook', () => {
         },
         onSubmit: () => {}
       }));
+
+      await waitFor(() => {
+        expect(result.current.state.isFormReady).toEqual(true);
+      });
 
       act(() => {
         result.current.fieldActions.setFieldValue('foo', callback);
@@ -385,11 +465,15 @@ describe('useForm hook', () => {
   describe('submit', () => {
     it('should call the `onSubmit` option with the form values and actions', async () => {
       const onSubmit = jest.fn();
-      const { result, waitForNextUpdate } = renderHook(() => useForm({
+      const { result, waitFor, waitForNextUpdate } = renderHook(() => useForm({
         initialValues: { foo: 'bar' },
         jsonSchema: { type: 'object' },
         onSubmit
       }));
+
+      await waitFor(() => {
+        expect(result.current.state.isFormReady).toEqual(true);
+      });
 
       act(() => {
         result.current.formActions.submit();
@@ -403,9 +487,9 @@ describe('useForm hook', () => {
       });
     });
 
-    it('should not call `onSubmit` when the form has errors', () => {
+    it('should not call `onSubmit` when the form has errors', async () => {
       const onSubmit = jest.fn();
-      const { rerender, result } = renderHook(() => useForm({
+      const { rerender, result, waitFor } = renderHook(() => useForm({
         initialValues: { foo: 1 },
         jsonSchema: {
           properties: {
@@ -415,6 +499,10 @@ describe('useForm hook', () => {
         },
         onSubmit
       }));
+
+      await waitFor(() => {
+        expect(result.current.state.isFormReady).toEqual(true);
+      });
 
       act(() => {
         result.current.fieldActions.blurField('foo');
@@ -428,13 +516,17 @@ describe('useForm hook', () => {
     });
 
     it('should set the `isSubmitting` flag', async () => {
-      expect.assertions(2);
+      expect.assertions(4);
 
       const onSubmit = jest.fn();
-      const { result, waitForNextUpdate } = renderHook(() => useForm({
+      const { result, waitFor, waitForNextUpdate } = renderHook(() => useForm({
         jsonSchema: { type: 'object' },
         onSubmit
       }));
+
+      await waitFor(() => {
+        expect(result.current.state.isFormReady).toEqual(true);
+      });
 
       act(() => {
         result.current.formActions.submit();
@@ -449,33 +541,41 @@ describe('useForm hook', () => {
 
     it('should not reset the form values', async () => {
       const onSubmit = jest.fn();
-      const { result, waitForNextUpdate } = renderHook(() => useForm({
+      const { result, waitFor, waitForNextUpdate } = renderHook(() => useForm({
         jsonSchema: { type: 'object' },
         onSubmit
       }));
+
+      await waitForNextUpdate();
+      await waitFor(() => {
+        expect(result.current.state.isFormReady).toEqual(true);
+      });
+
+      await waitForNextUpdate();
 
       act(() => {
         result.current.fieldActions.setFieldValue('foo', 'bar');
         result.current.formActions.submit();
       });
 
-      await waitForNextUpdate();
-
       expect(result.current.state.fields.values).toEqual({ foo: 'bar' });
     });
 
     it('should set all fields to touched', async () => {
-      const { result, waitForNextUpdate } = renderHook(() => useForm({
+      const { result, waitFor, waitForNextUpdate } = renderHook(() => useForm({
         jsonSchema: { type: 'object' },
         onSubmit: () => {}
       }));
+
+      await waitForNextUpdate();
+      await waitFor(() => {
+        expect(result.current.state.isFormReady).toEqual(true);
+      });
 
       act(() => {
         result.current.fieldActions.registerField('foo');
         result.current.formActions.submit();
       });
-
-      await waitForNextUpdate();
 
       expect(result.current.state.fields.meta).toEqual({
         foo: expect.objectContaining({
@@ -484,8 +584,8 @@ describe('useForm hook', () => {
       });
     });
 
-    it('should validate the form', () => {
-      const { result } = renderHook(() => useForm({
+    it('should validate the form', async () => {
+      const { result, waitFor, waitForNextUpdate } = renderHook(() => useForm({
         initialValues: { foo: 1 },
         jsonSchema: {
           properties: {
@@ -496,12 +596,18 @@ describe('useForm hook', () => {
         onSubmit: () => {}
       }));
 
+      await waitFor(() => {
+        expect(result.current.state.isFormReady).toEqual(true);
+      });
+
       act(() => {
         result.current.formActions.submit();
       });
 
+      await waitForNextUpdate();
+
       expect(result.current.state.fields.errors).toHaveProperty('foo');
-    });
+    }, 60000);
 
     it('should reset the form if the passed `reset` action is called', async () => {
       const onSubmit = jest.fn((values, { reset }) => {
@@ -510,10 +616,14 @@ describe('useForm hook', () => {
         return Promise.resolve();
       });
 
-      const { result, waitForNextUpdate } = renderHook(() => useForm({
+      const { result, waitFor, waitForNextUpdate } = renderHook(() => useForm({
         jsonSchema: { type: 'object' },
         onSubmit
       }));
+
+      await waitFor(() => {
+        expect(result.current.state.isFormReady).toEqual(true);
+      });
 
       act(() => {
         result.current.fieldActions.setFieldValue('foo', 'bar');
@@ -525,7 +635,7 @@ describe('useForm hook', () => {
       expect(result.current.state.fields.values).toEqual({});
     });
 
-    it('should change the foo value when set field value with any value', () => {
+    it('should change the foo value when set field value with any value', async () => {
       const stateReducer = (state, action) => {
         const { type } = action;
 
@@ -544,7 +654,7 @@ describe('useForm hook', () => {
         }
       };
 
-      const { result } = renderHook(() => useForm({
+      const { result, waitFor } = renderHook(() => useForm({
         initialValues: { foo: 1 },
         jsonSchema: {
           properties: {
@@ -557,6 +667,10 @@ describe('useForm hook', () => {
         stateReducer
       }));
 
+      await waitFor(() => {
+        expect(result.current.state.isFormReady).toEqual(true);
+      });
+
       act(() => {
         result.current.fieldActions.setFieldValue('foo', 'foo');
         result.current.fieldActions.setFieldValue('bar', 'bar');
@@ -566,8 +680,8 @@ describe('useForm hook', () => {
       expect(result.current.state.fields.values.bar).toEqual('bar');
     });
 
-    it('should validate the field with custom format', () => {
-      const { result } = renderHook(() => useForm({
+    it('should validate the field with custom format', async () => {
+      const { result, waitFor } = renderHook(() => useForm({
         initialValues: {
           bar: '123',
           foo: '123'
@@ -594,6 +708,10 @@ describe('useForm hook', () => {
         }
       }));
 
+      await waitFor(() => {
+        expect(result.current.state.isFormReady).toEqual(true);
+      });
+
       act(() => {
         result.current.formActions.submit();
       });
@@ -606,8 +724,8 @@ describe('useForm hook', () => {
       });
     });
 
-    it('should validate with custom keywords', () => {
-      const { result } = renderHook(() => useForm({
+    it('should validate with custom keywords', async () => {
+      const { result, waitFor } = renderHook(() => useForm({
         initialValues: {
           bar: '123',
           foo: '123'
@@ -639,6 +757,10 @@ describe('useForm hook', () => {
         }
       }));
 
+      await waitFor(() => {
+        expect(result.current.state.isFormReady).toEqual(true);
+      });
+
       act(() => {
         result.current.formActions.submit();
       });
@@ -653,11 +775,15 @@ describe('useForm hook', () => {
   });
 
   describe('form meta', () => {
-    it('should set the form as active when a field is active', () => {
-      const { result } = renderHook(() => useForm({
+    it('should set the form as active when a field is active', async () => {
+      const { result, waitFor } = renderHook(() => useForm({
         jsonSchema: { type: 'object' },
         onSubmit: () => {}
       }));
+
+      await waitFor(() => {
+        expect(result.current.state.isFormReady).toEqual(true);
+      });
 
       act(() => {
         result.current.fieldActions.focusField('foo');
@@ -666,11 +792,15 @@ describe('useForm hook', () => {
       expect(result.current.state.meta.active).toBe(true);
     });
 
-    it('should set the form as dirty when a field is dirty', () => {
-      const { result } = renderHook(() => useForm({
+    it('should set the form as dirty when a field is dirty', async () => {
+      const { result, waitFor } = renderHook(() => useForm({
         jsonSchema: { type: 'object' },
         onSubmit: () => {}
       }));
+
+      await waitFor(() => {
+        expect(result.current.state.isFormReady).toEqual(true);
+      });
 
       act(() => {
         result.current.fieldActions.setFieldValue('foo', 'bar');
@@ -679,11 +809,15 @@ describe('useForm hook', () => {
       expect(result.current.state.meta.dirty).toBe(true);
     });
 
-    it('should set the form as touched when a field is touched', () => {
-      const { result } = renderHook(() => useForm({
+    it('should set the form as touched when a field is touched', async () => {
+      const { result, waitFor } = renderHook(() => useForm({
         jsonSchema: { type: 'object' },
         onSubmit: () => {}
       }));
+
+      await waitFor(() => {
+        expect(result.current.state.isFormReady).toEqual(true);
+      });
 
       act(() => {
         result.current.fieldActions.blurField('foo');
@@ -694,15 +828,19 @@ describe('useForm hook', () => {
   });
 
   describe('custom validate', () => {
-    it('should be called when a field value changes', () => {
+    it('should be called when a field value changes', async () => {
       const validate = jest.fn(() => ({}));
       const jsonSchema = { type: 'object' };
-      const { result } = renderHook(() => useForm({
+      const { result, waitFor } = renderHook(() => useForm({
         jsonSchema,
         onSubmit: () => {},
         validate,
         validationOptions: 'qux'
       }));
+
+      await waitFor(() => {
+        expect(result.current.state.isFormReady).toEqual(true);
+      });
 
       act(() => {
         result.current.fieldActions.setFieldValue('foo', 'bar');
@@ -711,12 +849,16 @@ describe('useForm hook', () => {
       expect(validate).toHaveBeenCalledWith(jsonSchema, { foo: 'bar' }, 'qux');
     });
 
-    it('should set errors to an empty object when validate returns undefined', () => {
-      const { result } = renderHook(() => useForm({
+    it('should set errors to an empty object when validate returns undefined', async () => {
+      const { result, waitFor } = renderHook(() => useForm({
         jsonSchema: { type: 'object' },
         onSubmit: () => {},
         validate: () => {}
       }));
+
+      await waitFor(() => {
+        expect(result.current.state.isFormReady).toEqual(true);
+      });
 
       act(() => {
         result.current.fieldActions.setFieldValue('foo', 'bar');
