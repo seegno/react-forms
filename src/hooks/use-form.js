@@ -20,6 +20,7 @@ import baseValidate, {
 export const actionTypes = {
   BLUR: 'BLUR',
   FOCUS: 'FOCUS',
+  INIT: 'INIT',
   REGISTER_FIELD: 'REGISTER_FIELD',
   RESET: 'RESET',
   SET_FIELD_VALUE: 'SET_FIELD_VALUE',
@@ -311,6 +312,10 @@ const formReducer = (validate: Object => FieldErrors, stateReducer: (state: Form
       return state;
     }
 
+    if (action.type === actionTypes.INIT) {
+      return action.payload;
+    }
+
     const fieldsValues = valuesReducer(state.fields.values, action);
     const fieldsMeta = metaReducer(state.fields.meta, action);
     const isSubmitting = isSubmittingReducer(state.isSubmitting, action);
@@ -345,6 +350,28 @@ const formReducer = (validate: Object => FieldErrors, stateReducer: (state: Form
 };
 
 /**
+ * First state.
+ */
+
+const firstState = () => ({
+  alreadySubmitted: false,
+  fields: {
+    errors: {},
+    meta: {},
+    values: {}
+  },
+  isFormReady: false,
+  isSubmitting: false,
+  meta: {
+    active: false,
+    dirty: false,
+    hasErrors: false,
+    touched: false
+  },
+  submitStatus: 'idle'
+});
+
+/**
  * Initialize state.
  */
 
@@ -359,6 +386,7 @@ function initializeState(validate: Validate) {
         meta: {},
         values: initialValues
       },
+      isFormReady: true,
       isSubmitting: false,
       meta: {
         active: false,
@@ -400,40 +428,55 @@ export default function useForm(options: Options) {
     validationOptions
   } = options;
 
-  const validateValues = values => validate(jsonSchema, values, validationOptions);
+  const validateValues = useCallback(values => {
+    return validate(jsonSchema, values, validationOptions);
+  }, [jsonSchema, validate, validationOptions]);
+
   const [state, dispatch] = useReducer(
     formReducer(validateValues, stateReducer),
     initialValues,
-    initializeState(validateValues)
+    firstState
   );
+
+  useEffect(() => {
+    const defaultState = initializeState(validateValues);
+
+    const timer = setTimeout(() => {
+      clearTimeout(timer);
+      dispatch({
+        payload: defaultState(initialValues),
+        type: actionTypes.INIT
+      });
+    }, 10);
+  }, [dispatch, initialValues, validateValues]);
 
   const setFieldValue = useCallback((field: string, value: any) => {
     dispatch({
       payload: { field, value },
       type: actionTypes.SET_FIELD_VALUE
     });
-  }, []);
+  }, [dispatch]);
 
   const blurField = useCallback((field: string) => {
     dispatch({
       payload: { field },
       type: actionTypes.BLUR
     });
-  }, []);
+  }, [dispatch]);
 
   const focusField = useCallback((field: string) => {
     dispatch({
       payload: { field },
       type: actionTypes.FOCUS
     });
-  }, []);
+  }, [dispatch]);
 
   const registerField = useCallback((field: string) => {
     dispatch({
       payload: { field },
       type: actionTypes.REGISTER_FIELD
     });
-  }, []);
+  }, [dispatch]);
 
   const reset = useCallback((formValues?: Object) => {
     if (formValues) {
@@ -447,7 +490,7 @@ export default function useForm(options: Options) {
       payload: { initialValues },
       type: actionTypes.RESET
     });
-  }, [initialValues]);
+  }, [initialValues, dispatch]);
 
   const submit = useCallback((event: ?SyntheticEvent<any>) => {
     if (event && typeof event.preventDefault === 'function') {
@@ -458,7 +501,7 @@ export default function useForm(options: Options) {
       payload: {},
       type: actionTypes.SUBMIT_START
     });
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     if (onValuesChanged) {
@@ -499,7 +542,7 @@ export default function useForm(options: Options) {
         });
       }
     );
-  }, [state, jsonSchema, onSubmit, reset]);
+  }, [dispatch, state, jsonSchema, onSubmit, reset]);
 
   const formActions = useMemo(() => ({ reset, submit }), [reset, submit]);
   const fieldActions = useMemo(() => ({

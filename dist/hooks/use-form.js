@@ -30,6 +30,7 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
 var actionTypes = exports.actionTypes = {
   BLUR: 'BLUR',
   FOCUS: 'FOCUS',
+  INIT: 'INIT',
   REGISTER_FIELD: 'REGISTER_FIELD',
   RESET: 'RESET',
   SET_FIELD_VALUE: 'SET_FIELD_VALUE',
@@ -229,6 +230,9 @@ var formReducer = function formReducer(validate, stateReducer) {
     if (isFieldRegistered(action, state)) {
       return state;
     }
+    if (action.type === actionTypes.INIT) {
+      return action.payload;
+    }
     var fieldsValues = valuesReducer(state.fields.values, action);
     var fieldsMeta = metaReducer(state.fields.meta, action);
     var isSubmitting = isSubmittingReducer(state.isSubmitting, action);
@@ -270,6 +274,30 @@ var formReducer = function formReducer(validate, stateReducer) {
 };
 
 /**
+ * First state.
+ */
+
+var firstState = function firstState() {
+  return {
+    alreadySubmitted: false,
+    fields: {
+      errors: {},
+      meta: {},
+      values: {}
+    },
+    isFormReady: false,
+    isSubmitting: false,
+    meta: {
+      active: false,
+      dirty: false,
+      hasErrors: false,
+      touched: false
+    },
+    submitStatus: 'idle'
+  };
+};
+
+/**
  * Initialize state.
  */
 
@@ -284,6 +312,7 @@ function initializeState(validate) {
         meta: {},
         values: initialValues
       },
+      isFormReady: true,
       isSubmitting: false,
       meta: {
         active: false,
@@ -315,13 +344,23 @@ function useForm(options) {
     _options$validate = options.validate,
     validate = _options$validate === void 0 ? _validate3["default"] : _options$validate,
     validationOptions = options.validationOptions;
-  var validateValues = function validateValues(values) {
+  var validateValues = (0, _react.useCallback)(function (values) {
     return validate(jsonSchema, values, validationOptions);
-  };
-  var _useReducer = (0, _react.useReducer)(formReducer(validateValues, stateReducer), initialValues, initializeState(validateValues)),
+  }, [jsonSchema, validate, validationOptions]);
+  var _useReducer = (0, _react.useReducer)(formReducer(validateValues, stateReducer), initialValues, firstState),
     _useReducer2 = _slicedToArray(_useReducer, 2),
     state = _useReducer2[0],
     dispatch = _useReducer2[1];
+  (0, _react.useEffect)(function () {
+    var defaultState = initializeState(validateValues);
+    var timer = setTimeout(function () {
+      clearTimeout(timer);
+      dispatch({
+        payload: defaultState(initialValues),
+        type: actionTypes.INIT
+      });
+    }, 10);
+  }, [dispatch, initialValues, validateValues]);
   var setFieldValue = (0, _react.useCallback)(function (field, value) {
     dispatch({
       payload: {
@@ -330,7 +369,7 @@ function useForm(options) {
       },
       type: actionTypes.SET_FIELD_VALUE
     });
-  }, []);
+  }, [dispatch]);
   var blurField = (0, _react.useCallback)(function (field) {
     dispatch({
       payload: {
@@ -338,7 +377,7 @@ function useForm(options) {
       },
       type: actionTypes.BLUR
     });
-  }, []);
+  }, [dispatch]);
   var focusField = (0, _react.useCallback)(function (field) {
     dispatch({
       payload: {
@@ -346,7 +385,7 @@ function useForm(options) {
       },
       type: actionTypes.FOCUS
     });
-  }, []);
+  }, [dispatch]);
   var registerField = (0, _react.useCallback)(function (field) {
     dispatch({
       payload: {
@@ -354,7 +393,7 @@ function useForm(options) {
       },
       type: actionTypes.REGISTER_FIELD
     });
-  }, []);
+  }, [dispatch]);
   var reset = (0, _react.useCallback)(function (formValues) {
     if (formValues) {
       return dispatch({
@@ -370,7 +409,7 @@ function useForm(options) {
       },
       type: actionTypes.RESET
     });
-  }, [initialValues]);
+  }, [initialValues, dispatch]);
   var submit = (0, _react.useCallback)(function (event) {
     if (event && typeof event.preventDefault === 'function') {
       event.preventDefault();
@@ -379,7 +418,7 @@ function useForm(options) {
       payload: {},
       type: actionTypes.SUBMIT_START
     });
-  }, []);
+  }, [dispatch]);
   (0, _react.useEffect)(function () {
     if (onValuesChanged) {
       onValuesChanged(state.fields.values);
@@ -413,7 +452,7 @@ function useForm(options) {
         type: actionTypes.SUBMIT_FAILURE
       });
     });
-  }, [state, jsonSchema, onSubmit, reset]);
+  }, [dispatch, state, jsonSchema, onSubmit, reset]);
   var formActions = (0, _react.useMemo)(function () {
     return {
       reset: reset,
