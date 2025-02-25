@@ -274,6 +274,12 @@ var formReducer = function formReducer(validate, stateReducer) {
 };
 
 /**
+ * Default initial values.
+ */
+
+var defaultInitialValues = {};
+
+/**
  * First state.
  */
 
@@ -335,7 +341,7 @@ function initializeState(validate) {
 
 function useForm(options) {
   var _options$initialValue = options.initialValues,
-    initialValues = _options$initialValue === void 0 ? {} : _options$initialValue,
+    initialValues = _options$initialValue === void 0 ? defaultInitialValues : _options$initialValue,
     jsonSchema = options.jsonSchema,
     onSubmit = options.onSubmit,
     onValuesChanged = options.onValuesChanged,
