@@ -350,6 +350,12 @@ const formReducer = (validate: Object => FieldErrors, stateReducer: (state: Form
 };
 
 /**
+ * Default initial values.
+ */
+
+const defaultInitialValues = {};
+
+/**
  * First state.
  */
 
@@ -419,7 +425,7 @@ type Options = {|
 
 export default function useForm(options: Options) {
   const {
-    initialValues = {},
+    initialValues = defaultInitialValues,
     jsonSchema,
     onSubmit,
     onValuesChanged,
